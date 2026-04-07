@@ -1,3 +1,4 @@
+import Script from "next/script";
 import Link from "next/link";
 import {
   Mic,
@@ -59,6 +60,33 @@ export default function VisionPage() {
           Atlantic City to Las Vegas. Once the storytellers are gone, the
           stories go with them.
         </p>
+
+        {/* ElevenLabs AudioNative Player */}
+        <div className="mt-10 w-full max-w-2xl mx-auto">
+          <div
+            id="elevenlabs-audionative-widget"
+            data-height="90"
+            data-width="100%"
+            data-frameborder="no"
+            data-scrolling="no"
+            data-publicuserid="cc0bdceaefc0a9d96ec8f2ecf3476f85bbee8b2b3e1f7030edf789f1b258a24b"
+            data-playerurl="https://elevenlabs.io/player/index.html"
+          >
+            Loading the{" "}
+            <a
+              href="https://elevenlabs.io/text-to-speech"
+              target="_blank"
+              rel="noopener"
+            >
+              Elevenlabs Text to Speech
+            </a>{" "}
+            AudioNative Player...
+          </div>
+          <Script
+            src="https://elevenlabs.io/player/audioNativeHelper.js"
+            strategy="lazyOnload"
+          />
+        </div>
       </section>
 
       {/* The Problem */}
