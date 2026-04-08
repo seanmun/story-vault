@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Mic, Calendar } from "lucide-react";
+import { ArrowLeft, Clock, Mic, Calendar, BookOpen, Sparkles } from "lucide-react";
 
 interface Recording {
   id: string;
@@ -16,9 +16,25 @@ interface Recording {
   created_at: string;
 }
 
-export default function RecordingDetailPage() {
+interface Story {
+  id: string;
+  title: string;
+  written_content: string;
+  summary: string;
+  themes: string[];
+  characters: { name: string; relationship: string; mentions: number }[];
+  time_period: string | null;
+  location: string | null;
+  life_chapter: string;
+  status: string;
+  created_at: string;
+  recording_id: string;
+}
+
+export default function StoryDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const [story, setStory] = useState<Story | null>(null);
   const [recording, setRecording] = useState<Recording | null>(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
@@ -30,14 +46,35 @@ export default function RecordingDetailPage() {
       } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data } = await supabase
-        .from("recordings")
-        .select("id, duration_seconds, status, transcription, mime_type, file_size_bytes, created_at")
+      // Try loading as a story first
+      const { data: storyData } = await supabase
+        .from("stories")
+        .select("*")
         .eq("id", id)
         .eq("user_id", user.id)
         .single();
 
-      if (data) setRecording(data as Recording);
+      if (storyData) {
+        setStory(storyData as Story);
+
+        // Load associated recording
+        const { data: recData } = await supabase
+          .from("recordings")
+          .select("*")
+          .eq("id", storyData.recording_id)
+          .single();
+        if (recData) setRecording(recData as Recording);
+      } else {
+        // Try loading as a recording
+        const { data: recData } = await supabase
+          .from("recordings")
+          .select("*")
+          .eq("id", id)
+          .eq("user_id", user.id)
+          .single();
+        if (recData) setRecording(recData as Recording);
+      }
+
       setLoading(false);
     }
 
@@ -52,10 +89,10 @@ export default function RecordingDetailPage() {
     );
   }
 
-  if (!recording) {
+  if (!story && !recording) {
     return (
       <div className="px-6 py-8">
-        <p className="text-muted-foreground">Recording not found.</p>
+        <p className="text-muted-foreground">Not found.</p>
         <Button variant="outline" onClick={() => router.push("/stories")} className="mt-4">
           Back to Stories
         </Button>
@@ -63,6 +100,151 @@ export default function RecordingDetailPage() {
     );
   }
 
+  // If we have a generated story, show the reading view
+  if (story && story.status === "ready") {
+    return <StoryReadingView story={story} recording={recording} onBack={() => router.push("/stories")} />;
+  }
+
+  // Otherwise show the recording view
+  if (recording) {
+    return <RecordingView recording={recording} story={story} onBack={() => router.push("/stories")} />;
+  }
+
+  return null;
+}
+
+function StoryReadingView({
+  story,
+  recording,
+  onBack,
+}: {
+  story: Story;
+  recording: Recording | null;
+  onBack: () => void;
+}) {
+  const date = new Date(story.created_at);
+  const formattedDate = date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  const durationStr = recording
+    ? recording.duration_seconds >= 60
+      ? `${Math.floor(recording.duration_seconds / 60)}m ${recording.duration_seconds % 60}s`
+      : `${recording.duration_seconds}s`
+    : null;
+
+  return (
+    <div className="px-6 py-8 max-w-3xl mx-auto">
+      <button
+        onClick={onBack}
+        className="flex items-center gap-2 text-base text-muted-foreground hover:text-foreground transition-colors mb-8"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Stories
+      </button>
+
+      {/* Title */}
+      <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
+        {story.life_chapter}
+      </p>
+      <h1 className="text-3xl md:text-4xl font-heading font-semibold text-foreground mb-4 leading-tight">
+        {story.title}
+      </h1>
+
+      {/* Meta row */}
+      <div className="flex flex-wrap items-center gap-4 mb-4">
+        <span className="flex items-center gap-2 text-base text-muted-foreground">
+          <Calendar className="h-4 w-4" />
+          {formattedDate}
+        </span>
+        {durationStr && (
+          <span className="flex items-center gap-2 text-base text-muted-foreground">
+            <Clock className="h-4 w-4" />
+            {durationStr} recording
+          </span>
+        )}
+        {story.location && (
+          <span className="text-base text-muted-foreground">
+            {story.location}
+          </span>
+        )}
+        {story.time_period && (
+          <span className="text-base text-muted-foreground">
+            {story.time_period}
+          </span>
+        )}
+      </div>
+
+      {/* Themes */}
+      {story.themes?.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-8">
+          {story.themes.map((theme) => (
+            <span
+              key={theme}
+              className="text-base text-gold-dark bg-gold/10 px-3 py-1 rounded"
+            >
+              {theme}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Summary */}
+      <p className="text-lg text-muted-foreground italic leading-relaxed mb-8 border-l-2 border-gold/30 pl-4">
+        {story.summary}
+      </p>
+
+      {/* Story content */}
+      <div className="prose-custom">
+        {story.written_content.split("\n").map((paragraph, i) => {
+          if (!paragraph.trim()) return null;
+          if (paragraph.startsWith("# ")) {
+            return (
+              <h2 key={i} className="text-2xl font-heading font-semibold text-foreground mt-10 mb-4">
+                {paragraph.replace(/^#+\s*/, "")}
+              </h2>
+            );
+          }
+          return (
+            <p key={i} className="text-lg text-foreground leading-relaxed mb-4">
+              {paragraph}
+            </p>
+          );
+        })}
+      </div>
+
+      {/* Characters */}
+      {story.characters && Array.isArray(story.characters) && story.characters.length > 0 && (
+        <div className="mt-12 pt-8 border-t border-border">
+          <h3 className="text-base font-heading tracking-wider uppercase text-foreground mb-4">
+            People in This Story
+          </h3>
+          <div className="space-y-2">
+            {(story.characters as { name: string; relationship: string; mentions: number }[]).map((char, i) => (
+              <p key={i} className="text-base text-muted-foreground">
+                <span className="font-medium text-foreground">{char.name}</span>
+                {char.relationship && ` — ${char.relationship}`}
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RecordingView({
+  recording,
+  story,
+  onBack,
+}: {
+  recording: Recording;
+  story: Story | null;
+  onBack: () => void;
+}) {
   const date = new Date(recording.created_at);
   const formattedDate = date.toLocaleDateString("en-US", {
     weekday: "long",
@@ -86,16 +268,14 @@ export default function RecordingDetailPage() {
 
   return (
     <div className="px-6 py-8 max-w-3xl mx-auto">
-      {/* Back button */}
       <button
-        onClick={() => router.push("/stories")}
+        onClick={onBack}
         className="flex items-center gap-2 text-base text-muted-foreground hover:text-foreground transition-colors mb-8"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Stories
       </button>
 
-      {/* Header */}
       <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
         Recording
       </p>
@@ -103,7 +283,6 @@ export default function RecordingDetailPage() {
         {formattedDate}
       </h1>
 
-      {/* Meta */}
       <div className="flex flex-wrap gap-6 mb-8">
         <span className="flex items-center gap-2 text-base text-muted-foreground">
           <Calendar className="h-4 w-4" />
@@ -118,6 +297,20 @@ export default function RecordingDetailPage() {
           {fileSizeStr}
         </span>
       </div>
+
+      {/* Story generation status */}
+      {story && story.status === "generating" && (
+        <div className="flex items-center gap-3 text-base text-gold-dark bg-gold/10 rounded-lg p-4 mb-8">
+          <Sparkles className="h-5 w-5" />
+          Generating your story...
+        </div>
+      )}
+
+      {story && story.status === "failed" && (
+        <div className="text-base text-destructive bg-destructive/10 rounded-lg p-4 mb-8">
+          Story generation failed. You can try recording again.
+        </div>
+      )}
 
       {/* Status */}
       <div className="mb-8">

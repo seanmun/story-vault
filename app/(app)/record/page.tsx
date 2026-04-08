@@ -45,7 +45,7 @@ export default function RecordPage() {
 
       toast.success("Recording saved! Transcribing...");
 
-      // Trigger transcription in the background
+      // Trigger transcription, then story generation
       fetch("/api/transcribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,7 +54,25 @@ export default function RecordPage() {
         .then((r) => r.json())
         .then((result) => {
           if (result.transcription) {
-            toast.success("Transcription complete!");
+            toast.success("Transcription complete! Generating your story...");
+
+            // Trigger story generation
+            fetch("/api/stories/generate", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ recordingId: data.id }),
+            })
+              .then((r) => r.json())
+              .then((storyResult) => {
+                if (storyResult.title) {
+                  toast.success(`Story ready: "${storyResult.title}"`);
+                } else if (storyResult.error) {
+                  toast.error("Story generation failed: " + storyResult.error);
+                }
+              })
+              .catch(() => {
+                toast.error("Story generation failed.");
+              });
           } else if (result.error) {
             toast.error("Transcription failed: " + result.error);
           }

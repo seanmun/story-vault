@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { BookOpen, Mic, Clock, ChevronRight } from "lucide-react";
+import { BookOpen, Mic, Clock, ChevronRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 interface Recording {
@@ -10,6 +10,17 @@ interface Recording {
   duration_seconds: number;
   status: string;
   transcription: string | null;
+  created_at: string;
+  stories: Story[];
+}
+
+interface Story {
+  id: string;
+  title: string;
+  summary: string;
+  themes: string[];
+  life_chapter: string;
+  status: string;
   created_at: string;
 }
 
@@ -19,7 +30,7 @@ export default function StoriesPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    async function loadRecordings() {
+    async function load() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -27,7 +38,7 @@ export default function StoriesPage() {
 
       const { data } = await supabase
         .from("recordings")
-        .select("id, duration_seconds, status, transcription, created_at")
+        .select("id, duration_seconds, status, transcription, created_at, stories(id, title, summary, themes, life_chapter, status, created_at)")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
@@ -35,7 +46,7 @@ export default function StoriesPage() {
       setLoading(false);
     }
 
-    loadRecordings();
+    load();
   }, [supabase]);
 
   if (loading) {
@@ -72,12 +83,64 @@ export default function StoriesPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {recordings.map((rec) => (
-            <RecordingCard key={rec.id} recording={rec} />
-          ))}
+          {recordings.map((rec) => {
+            const story = rec.stories?.[0];
+            if (story && story.status === "ready") {
+              return <StoryCard key={rec.id} story={story} recording={rec} />;
+            }
+            return <RecordingCard key={rec.id} recording={rec} />;
+          })}
         </div>
       )}
     </div>
+  );
+}
+
+function StoryCard({ story, recording }: { story: Story; recording: Recording }) {
+  const date = new Date(recording.created_at);
+  const formattedDate = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  const mins = Math.floor(recording.duration_seconds / 60);
+  const secs = recording.duration_seconds % 60;
+  const durationStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+  return (
+    <Link href={`/stories/${story.id}`}>
+      <div className="rounded-lg border border-border bg-card p-5 hover:shadow-md transition-shadow cursor-pointer">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-lg font-heading font-semibold text-foreground mb-1">
+              {story.title}
+            </h3>
+            <p className="text-base text-muted-foreground leading-relaxed mb-3">
+              {story.summary}
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="flex items-center gap-1.5 text-base text-muted-foreground">
+                <Clock className="h-4 w-4" />
+                {durationStr}
+              </span>
+              <span className="text-base text-muted-foreground">
+                {formattedDate}
+              </span>
+              {story.themes?.slice(0, 3).map((theme) => (
+                <span
+                  key={theme}
+                  className="text-base text-gold-dark bg-gold/10 px-2 py-0.5 rounded"
+                >
+                  {theme}
+                </span>
+              ))}
+            </div>
+          </div>
+          <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-1" />
+        </div>
+      </div>
+    </Link>
   );
 }
 
@@ -95,10 +158,9 @@ function RecordingCard({ recording }: { recording: Recording }) {
 
   const mins = Math.floor(recording.duration_seconds / 60);
   const secs = recording.duration_seconds % 60;
-  const durationStr =
-    mins > 0
-      ? `${mins}m ${secs}s`
-      : `${secs}s`;
+  const durationStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+
+  const hasStoryGenerating = recording.stories?.some((s) => s.status === "generating");
 
   const statusLabel: Record<string, string> = {
     uploading: "Uploading",
@@ -108,15 +170,6 @@ function RecordingCard({ recording }: { recording: Recording }) {
     failed: "Failed",
   };
 
-  const statusColor: Record<string, string> = {
-    uploading: "text-muted-foreground",
-    uploaded: "text-muted-foreground",
-    transcribing: "text-gold-dark",
-    transcribed: "text-primary",
-    failed: "text-destructive",
-  };
-
-  // Preview of transcription — first ~100 chars
   const preview = recording.transcription
     ? recording.transcription.length > 120
       ? recording.transcription.slice(0, 120) + "..."
@@ -128,7 +181,6 @@ function RecordingCard({ recording }: { recording: Recording }) {
       <div className="rounded-lg border border-border bg-card p-5 hover:shadow-md transition-shadow cursor-pointer">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            {/* Date and time */}
             <div className="flex items-center gap-3 mb-2">
               <span className="text-base font-heading font-semibold text-foreground">
                 {formattedDate}
@@ -138,28 +190,30 @@ function RecordingCard({ recording }: { recording: Recording }) {
               </span>
             </div>
 
-            {/* Duration and status */}
             <div className="flex items-center gap-4 mb-3">
               <span className="flex items-center gap-1.5 text-base text-muted-foreground">
                 <Clock className="h-4 w-4" />
                 {durationStr}
               </span>
-              <span className="flex items-center gap-1.5 text-base">
-                <Mic className="h-4 w-4" />
-                <span className={statusColor[recording.status] || "text-muted-foreground"}>
+              {hasStoryGenerating ? (
+                <span className="flex items-center gap-1.5 text-base text-gold-dark">
+                  <Sparkles className="h-4 w-4" />
+                  Generating story...
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5 text-base text-muted-foreground">
+                  <Mic className="h-4 w-4" />
                   {statusLabel[recording.status] || recording.status}
                 </span>
-              </span>
+              )}
             </div>
 
-            {/* Transcription preview */}
             {preview && (
               <p className="text-base text-muted-foreground leading-relaxed italic">
                 &ldquo;{preview}&rdquo;
               </p>
             )}
           </div>
-
           <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-1" />
         </div>
       </div>
