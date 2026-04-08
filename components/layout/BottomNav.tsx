@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Mic, BookOpen, Users, Settings } from "lucide-react";
+import { Mic, BookOpen, FolderOpen, Users, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/record", label: "Record", icon: Mic },
   { href: "/stories", label: "Stories", icon: BookOpen },
+  { href: "/collections", label: "Collections", icon: FolderOpen },
   { href: "/family", label: "Family", icon: Users },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
@@ -25,7 +26,7 @@ export function BottomNav() {
               key={href}
               href={href}
               className={cn(
-                "flex flex-col items-center gap-1.5 px-4 py-3 text-base font-heading tracking-widest uppercase transition-colors min-w-[72px] min-h-[64px] justify-center",
+                "flex flex-col items-center gap-1 px-2 py-3 text-[0.65rem] font-heading tracking-wider uppercase transition-colors min-w-[60px] min-h-[60px] justify-center",
                 isActive
                   ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
