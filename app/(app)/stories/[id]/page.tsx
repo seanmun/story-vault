@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Mic, Calendar, BookOpen, Sparkles } from "lucide-react";
+import { ArrowLeft, Clock, Mic, Calendar, BookOpen, Sparkles, Volume2, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface Recording {
   id: string;
@@ -26,6 +27,7 @@ interface Story {
   time_period: string | null;
   location: string | null;
   life_chapter: string;
+  podcast_audio_path: string | null;
   status: string;
   created_at: string;
   recording_id: string;
@@ -122,6 +124,9 @@ function StoryReadingView({
   recording: Recording | null;
   onBack: () => void;
 }) {
+  const [showTranscription, setShowTranscription] = useState(false);
+  const [audioGenerating, setAudioGenerating] = useState(false);
+  const [audioPath, setAudioPath] = useState(story.podcast_audio_path);
   const date = new Date(story.created_at);
   const formattedDate = date.toLocaleDateString("en-US", {
     weekday: "long",
@@ -197,6 +202,71 @@ function StoryReadingView({
         {story.summary}
       </p>
 
+      {/* Audio player / generate button */}
+      <div className="mb-10 rounded-lg border border-border bg-card p-5">
+        {audioPath ? (
+          <div>
+            <p className="text-base font-heading tracking-wider uppercase text-foreground mb-3 flex items-center gap-2">
+              <Volume2 className="h-4 w-4 text-gold-dark" />
+              Listen
+            </p>
+            <audio
+              controls
+              src={`/api/stories/${story.id}/audio`}
+              className="w-full"
+              preload="none"
+            >
+              Your browser does not support audio playback.
+            </audio>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-base font-medium text-foreground">
+                Listen to this story
+              </p>
+              <p className="text-base text-muted-foreground">
+                Generate an audio narration
+              </p>
+            </div>
+            <Button
+              onClick={async () => {
+                setAudioGenerating(true);
+                try {
+                  const res = await fetch(`/api/stories/${story.id}/audio`, {
+                    method: "POST",
+                  });
+                  const data = await res.json();
+                  if (data.audioPath) {
+                    setAudioPath(data.audioPath);
+                    toast.success("Audio ready!");
+                  } else {
+                    toast.error(data.error || "Audio generation failed");
+                  }
+                } catch {
+                  toast.error("Audio generation failed");
+                }
+                setAudioGenerating(false);
+              }}
+              disabled={audioGenerating}
+              className="font-heading tracking-wide"
+            >
+              {audioGenerating ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Volume2 className="h-4 w-4 mr-2" />
+                  Generate Audio
+                </>
+              )}
+            </Button>
+          </div>
+        )}
+      </div>
+
       {/* Story content */}
       <div className="prose-custom">
         {story.written_content.split("\n").map((paragraph, i) => {
@@ -230,6 +300,23 @@ function StoryReadingView({
               </p>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Original Transcription */}
+      {recording?.transcription && (
+        <div className="mt-12 pt-8 border-t border-border">
+          <button
+            onClick={() => setShowTranscription(!showTranscription)}
+            className="text-base text-muted-foreground hover:text-foreground transition-colors"
+          >
+            {showTranscription ? "Hide" : "View"} Original Transcription
+          </button>
+          {showTranscription && (
+            <p className="mt-4 text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">
+              {recording.transcription}
+            </p>
+          )}
         </div>
       )}
     </div>
