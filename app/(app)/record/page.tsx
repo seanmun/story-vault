@@ -7,6 +7,9 @@ import { RecordingTimer } from "@/components/recording/RecordingTimer";
 import { AudioWaveform } from "@/components/recording/AudioWaveform";
 import { toast } from "sonner";
 
+const MAX_DURATION_MINUTES = 10;
+const MAX_DURATION_SECONDS = MAX_DURATION_MINUTES * 60;
+
 export default function RecordPage() {
   const router = useRouter();
   const {
@@ -21,13 +24,31 @@ export default function RecordPage() {
     discardRecording,
   } = useRecorder();
 
+  // Auto-stop at max duration
+  if (duration >= MAX_DURATION_SECONDS && state === "recording") {
+    handleStop();
+  }
+
   async function handleStop() {
     const blob = await stopRecording();
     if (!blob) return;
 
+    // Check file size — Vercel limit is ~4.5MB for free, 100MB for pro
+    const sizeMB = blob.size / (1024 * 1024);
+    if (sizeMB > 95) {
+      toast.error(
+        `Recording is too large (${sizeMB.toFixed(1)}MB). Try a shorter recording.`
+      );
+      return;
+    }
+
     // Upload
     const formData = new FormData();
-    formData.append("audio", blob, `recording.${blob.type.includes("mp4") ? "mp4" : "webm"}`);
+    formData.append(
+      "audio",
+      blob,
+      `recording.${blob.type.includes("mp4") ? "mp4" : "webm"}`
+    );
     formData.append("duration", String(duration));
 
     try {
@@ -35,6 +56,13 @@ export default function RecordPage() {
         method: "POST",
         body: formData,
       });
+
+      if (res.status === 413) {
+        toast.error(
+          "Recording is too large to upload. Try a shorter recording (under 10 minutes)."
+        );
+        return;
+      }
 
       const data = await res.json();
 
@@ -88,6 +116,8 @@ export default function RecordPage() {
   }
 
   const isRecording = state === "recording" || state === "paused";
+  const remainingSeconds = MAX_DURATION_SECONDS - duration;
+  const isNearLimit = remainingSeconds <= 60 && isRecording;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-12rem)] px-6">
@@ -113,6 +143,23 @@ export default function RecordPage() {
             {state === "paused" ? "Paused" : "Recording"}
           </p>
           <RecordingTimer seconds={duration} />
+
+          {/* Time remaining warning */}
+          {isNearLimit && (
+            <p className="text-base text-destructive mt-2">
+              {remainingSeconds > 0
+                ? `${remainingSeconds}s remaining`
+                : "Maximum reached — stopping..."}
+            </p>
+          )}
+
+          {/* Max duration note */}
+          {!isNearLimit && (
+            <p className="text-base text-muted-foreground mt-2">
+              Up to {MAX_DURATION_MINUTES} minutes per recording
+            </p>
+          )}
+
           <div className="mt-6">
             <AudioWaveform
               analyser={analyserNode}
@@ -124,7 +171,10 @@ export default function RecordPage() {
 
       {/* Error message */}
       {error && (
-        <p className="text-base text-destructive bg-destructive/10 rounded-md p-4 mb-8 max-w-sm text-center" role="alert">
+        <p
+          className="text-base text-destructive bg-destructive/10 rounded-md p-4 mb-8 max-w-sm text-center"
+          role="alert"
+        >
           {error}
         </p>
       )}

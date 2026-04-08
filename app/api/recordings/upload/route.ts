@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
+// Allow up to 100MB uploads and 60s timeout
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
   const supabase = await createClient();
 
