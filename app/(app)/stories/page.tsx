@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { BookOpen, Mic, Clock, ChevronRight, Sparkles } from "lucide-react";
+import { BookOpen, Mic, Clock, ChevronRight, Sparkles, Volume2, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import Link from "next/link";
 
 interface Recording {
@@ -27,6 +29,9 @@ interface Story {
 export default function StoriesPage() {
   const [recordings, setRecordings] = useState<Recording[]>([]);
   const [loading, setLoading] = useState(true);
+  const [voiceCloneTier, setVoiceCloneTier] = useState<string | null>(null);
+  const [cloning, setCloning] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -43,11 +48,50 @@ export default function StoriesPage() {
         .order("created_at", { ascending: false });
 
       if (data) setRecordings(data as Recording[]);
+
+      // Check voice clone status
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("voice_clone_tier")
+        .eq("id", user.id)
+        .single();
+
+      setVoiceCloneTier(profile?.voice_clone_tier || null);
       setLoading(false);
     }
 
     load();
   }, [supabase]);
+
+  const totalSeconds = recordings.reduce((sum, r) => sum + r.duration_seconds, 0);
+  const totalMinutes = Math.floor(totalSeconds / 60);
+  const showBasicPrompt = totalSeconds >= 300 && !voiceCloneTier && !dismissed;
+  const showEnhancedPrompt = totalSeconds >= 1800 && voiceCloneTier === "basic" && !dismissed;
+
+  async function handleClone(tier: "basic" | "enhanced") {
+    setCloning(true);
+    try {
+      const res = await fetch("/api/voice/clone", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tier }),
+      });
+      const data = await res.json();
+      if (data.voiceId) {
+        setVoiceCloneTier(tier);
+        toast.success(
+          tier === "basic"
+            ? "Your personal voice narrator is ready!"
+            : "Your enhanced voice narrator is ready!"
+        );
+      } else {
+        toast.error(data.error || "Voice cloning failed");
+      }
+    } catch {
+      toast.error("Voice cloning failed");
+    }
+    setCloning(false);
+  }
 
   if (loading) {
     return (
@@ -66,8 +110,52 @@ export default function StoriesPage() {
         Your Stories
       </h1>
       <p className="text-muted-foreground mb-8">
-        {recordings.length} recording{recordings.length !== 1 ? "s" : ""}
+        {recordings.length} recording{recordings.length !== 1 ? "s" : ""} &middot; {totalMinutes} min total
       </p>
+
+      {/* Voice clone prompt */}
+      {(showBasicPrompt || showEnhancedPrompt) && (
+        <div className="rounded-lg border border-gold/30 bg-gold/5 p-5 mb-6">
+          <div className="flex items-start gap-4">
+            <Volume2 className="h-5 w-5 text-gold-dark mt-0.5 flex-shrink-0" />
+            <div className="flex-1">
+              <p className="text-base font-medium text-foreground mb-1">
+                {showEnhancedPrompt
+                  ? "Upgrade your personal narrator"
+                  : "Create your personal narrator"}
+              </p>
+              <p className="text-base text-muted-foreground mb-4">
+                {showEnhancedPrompt
+                  ? `You now have ${totalMinutes} minutes of recordings. We can create a higher-quality version of your voice narrator.`
+                  : `You have ${totalMinutes} minutes of recordings — enough to create a narrator that sounds like you.`}
+              </p>
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => handleClone(showEnhancedPrompt ? "enhanced" : "basic")}
+                  disabled={cloning}
+                  className="font-heading tracking-wide"
+                >
+                  {cloning ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    showEnhancedPrompt ? "Upgrade Voice" : "Create My Voice"
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setDismissed(true)}
+                  className="font-heading tracking-wide"
+                >
+                  Not Now
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {recordings.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">

@@ -5,6 +5,7 @@ import { useRecorder } from "@/lib/hooks/useRecorder";
 import { RecordButton } from "@/components/recording/RecordButton";
 import { RecordingTimer } from "@/components/recording/RecordingTimer";
 import { AudioWaveform } from "@/components/recording/AudioWaveform";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
 const MAX_DURATION_MINUTES = 10;
@@ -12,6 +13,7 @@ const MAX_DURATION_SECONDS = MAX_DURATION_MINUTES * 60;
 
 export default function RecordPage() {
   const router = useRouter();
+  const supabase = createClient();
   const {
     state,
     duration,
@@ -33,41 +35,50 @@ export default function RecordPage() {
     const blob = await stopRecording();
     if (!blob) return;
 
-    // Check file size — Vercel limit is ~4.5MB for free, 100MB for pro
-    const sizeMB = blob.size / (1024 * 1024);
-    if (sizeMB > 95) {
-      toast.error(
-        `Recording is too large (${sizeMB.toFixed(1)}MB). Try a shorter recording.`
-      );
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      toast.error("You must be signed in to save recordings.");
       return;
     }
 
-    // Upload
-    const formData = new FormData();
-    formData.append(
-      "audio",
-      blob,
-      `recording.${blob.type.includes("mp4") ? "mp4" : "webm"}`
-    );
-    formData.append("duration", String(duration));
+    // Upload directly to Supabase Storage (bypasses Vercel size limits)
+    const fileExt = blob.type.includes("mp4") ? "mp4" : "webm";
+    const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
-    try {
-      const res = await fetch("/api/recordings/upload", {
-        method: "POST",
-        body: formData,
+    toast.info("Uploading recording...");
+
+    const { error: uploadError } = await supabase.storage
+      .from("recordings")
+      .upload(fileName, blob, {
+        contentType: blob.type,
+        upsert: false,
       });
 
-      if (res.status === 413) {
-        toast.error(
-          "Recording is too large to upload. Try a shorter recording (under 10 minutes)."
-        );
-        return;
-      }
+    if (uploadError) {
+      toast.error("Upload failed: " + uploadError.message);
+      return;
+    }
+
+    // Create database record via lightweight API route
+    try {
+      const res = await fetch("/api/recordings/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storagePath: fileName,
+          durationSeconds: duration,
+          fileSizeBytes: blob.size,
+          mimeType: blob.type,
+        }),
+      });
 
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.error || "Upload failed");
+        toast.error(data.error || "Failed to save recording");
         return;
       }
 
@@ -84,7 +95,6 @@ export default function RecordPage() {
           if (result.transcription) {
             toast.success("Transcription complete! Generating your story...");
 
-            // Trigger story generation
             fetch("/api/stories/generate", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -111,7 +121,7 @@ export default function RecordPage() {
 
       router.push("/stories");
     } catch {
-      toast.error("Upload failed. Please try again.");
+      toast.error("Failed to save recording. Please try again.");
     }
   }
 
