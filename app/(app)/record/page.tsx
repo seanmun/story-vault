@@ -43,7 +43,26 @@ export default function RecordPage() {
         return;
       }
 
-      toast.success("Recording saved!");
+      toast.success("Recording saved! Transcribing...");
+
+      // Trigger transcription in the background
+      fetch("/api/transcribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recordingId: data.id }),
+      })
+        .then((r) => r.json())
+        .then((result) => {
+          if (result.transcription) {
+            toast.success("Transcription complete!");
+          } else if (result.error) {
+            toast.error("Transcription failed: " + result.error);
+          }
+        })
+        .catch(() => {
+          toast.error("Transcription failed.");
+        });
+
       router.push("/stories");
     } catch {
       toast.error("Upload failed. Please try again.");
