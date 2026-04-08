@@ -1,7 +1,15 @@
 const BASE_URL = "https://api.elevenlabs.io/v1";
 
-// Default stock voice — "Rachel" is warm and clear, good for storytelling
-const DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM";
+// Stock voices for narration
+const STOCK_VOICES = {
+  female: "21m00Tcm4TlvDq8ikWAM", // Rachel — warm, clear
+  male: "pNInz6obpgDQGcFmaJgB",   // Adam — warm, narrative
+};
+
+export function getStockVoiceId(preference: string | null): string {
+  if (preference === "male") return STOCK_VOICES.male;
+  return STOCK_VOICES.female; // default
+}
 
 function getApiKey(): string {
   const key = process.env.ELEVENLABS_API_KEY;
@@ -18,7 +26,7 @@ export async function generateSpeech(
   voiceId?: string | null
 ): Promise<Buffer> {
   const apiKey = getApiKey();
-  const voice = voiceId || DEFAULT_VOICE_ID;
+  const voice = voiceId || STOCK_VOICES.female;
 
   const response = await fetch(`${BASE_URL}/text-to-speech/${voice}`, {
     method: "POST",

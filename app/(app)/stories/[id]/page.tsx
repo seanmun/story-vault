@@ -127,6 +127,8 @@ function StoryReadingView({
   const [showTranscription, setShowTranscription] = useState(false);
   const [audioGenerating, setAudioGenerating] = useState(false);
   const [audioPath, setAudioPath] = useState(story.podcast_audio_path);
+  const [showVoicePicker, setShowVoicePicker] = useState(false);
+  const supabaseClient = createClient();
   const date = new Date(story.created_at);
   const formattedDate = date.toLocaleDateString("en-US", {
     weekday: "long",
@@ -219,6 +221,55 @@ function StoryReadingView({
               Your browser does not support audio playback.
             </audio>
           </div>
+        ) : showVoicePicker ? (
+          <div>
+            <p className="text-base font-medium text-foreground mb-2">
+              How should we narrate your stories?
+            </p>
+            <p className="text-base text-muted-foreground mb-4">
+              Choose a voice for your audio narrations. You can change this later in settings.
+            </p>
+            <div className="flex gap-3">
+              {(["male", "female"] as const).map((voice) => (
+                <Button
+                  key={voice}
+                  variant="outline"
+                  className="flex-1 font-heading tracking-wide capitalize"
+                  disabled={audioGenerating}
+                  onClick={async () => {
+                    // Save preference
+                    const { data: { user } } = await supabaseClient.auth.getUser();
+                    if (user) {
+                      await supabaseClient
+                        .from("profiles")
+                        .update({ voice_preference: voice })
+                        .eq("id", user.id);
+                    }
+                    // Generate audio
+                    setShowVoicePicker(false);
+                    setAudioGenerating(true);
+                    try {
+                      const res = await fetch(`/api/stories/${story.id}/audio`, {
+                        method: "POST",
+                      });
+                      const data = await res.json();
+                      if (data.audioPath) {
+                        setAudioPath(data.audioPath);
+                        toast.success("Audio ready!");
+                      } else {
+                        toast.error(data.error || "Audio generation failed");
+                      }
+                    } catch {
+                      toast.error("Audio generation failed");
+                    }
+                    setAudioGenerating(false);
+                  }}
+                >
+                  {voice === "male" ? "Male Voice" : "Female Voice"}
+                </Button>
+              ))}
+            </div>
+          </div>
         ) : (
           <div className="flex items-center justify-between">
             <div>
@@ -231,22 +282,38 @@ function StoryReadingView({
             </div>
             <Button
               onClick={async () => {
-                setAudioGenerating(true);
-                try {
-                  const res = await fetch(`/api/stories/${story.id}/audio`, {
-                    method: "POST",
-                  });
-                  const data = await res.json();
-                  if (data.audioPath) {
-                    setAudioPath(data.audioPath);
-                    toast.success("Audio ready!");
-                  } else {
-                    toast.error(data.error || "Audio generation failed");
+                // Check if voice preference is set
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (user) {
+                  const { data: profile } = await supabaseClient
+                    .from("profiles")
+                    .select("voice_preference, elevenlabs_voice_id")
+                    .eq("id", user.id)
+                    .single();
+
+                  if (profile?.elevenlabs_voice_id || profile?.voice_preference) {
+                    // Already has a voice — generate directly
+                    setAudioGenerating(true);
+                    try {
+                      const res = await fetch(`/api/stories/${story.id}/audio`, {
+                        method: "POST",
+                      });
+                      const data = await res.json();
+                      if (data.audioPath) {
+                        setAudioPath(data.audioPath);
+                        toast.success("Audio ready!");
+                      } else {
+                        toast.error(data.error || "Audio generation failed");
+                      }
+                    } catch {
+                      toast.error("Audio generation failed");
+                    }
+                    setAudioGenerating(false);
+                    return;
                   }
-                } catch {
-                  toast.error("Audio generation failed");
                 }
-                setAudioGenerating(false);
+                // No voice set — show picker
+                setShowVoicePicker(true);
               }}
               disabled={audioGenerating}
               className="font-heading tracking-wide"

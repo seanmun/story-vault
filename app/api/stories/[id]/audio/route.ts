@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { generateSpeech } from "@/lib/ai/elevenlabs";
+import { generateSpeech, getStockVoiceId } from "@/lib/ai/elevenlabs";
 
 export const maxDuration = 120;
 
@@ -39,14 +39,14 @@ export async function POST(
     });
   }
 
-  // Get user's voice clone if available
+  // Get user's voice clone or preference
   const { data: profile } = await supabase
     .from("profiles")
-    .select("elevenlabs_voice_id")
+    .select("elevenlabs_voice_id, voice_preference")
     .eq("id", user.id)
     .single();
 
-  const voiceId = profile?.elevenlabs_voice_id || null;
+  const voiceId = profile?.elevenlabs_voice_id || getStockVoiceId(profile?.voice_preference || null);
 
   try {
     // Generate speech
