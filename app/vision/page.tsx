@@ -566,16 +566,15 @@ function FeatureSection({
   items: string[];
 }) {
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="flex items-center justify-center gap-4 mb-8">
+    <div className="max-w-2xl mx-auto">
+      <div className="flex items-center gap-4 mb-6">
         {icon}
         <h3 className="text-2xl font-semibold text-foreground">{title}</h3>
       </div>
-      <ul className="space-y-4 list-none">
+      <ul className="list-disc pl-12 space-y-3 marker:text-gold-dark">
         {items.map((item, i) => (
-          <li key={i} className="flex gap-4 text-base text-muted-foreground leading-relaxed">
-            <span className="mt-2 text-gold-dark flex-shrink-0" aria-hidden="true">&bull;</span>
-            <span>{item}</span>
+          <li key={i} className="text-base text-muted-foreground leading-relaxed pl-2">
+            {item}
           </li>
         ))}
       </ul>
