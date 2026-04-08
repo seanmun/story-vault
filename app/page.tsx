@@ -22,17 +22,17 @@ export default function HomePage() {
           <nav className="flex items-center gap-6">
             <Link
               href="/vision"
-              className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
+              className="text-base font-heading font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
             >
               Vision
             </Link>
             <Link href="/login">
-              <Button variant="ghost" size="sm" className="tracking-wide">
+              <Button variant="ghost" size="sm" className="font-heading tracking-wide">
                 Sign In
               </Button>
             </Link>
             <Link href="/signup">
-              <Button size="sm" className="tracking-wide">
+              <Button size="sm" className="font-heading tracking-wide">
                 Get Started
               </Button>
             </Link>
