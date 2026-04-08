@@ -1,0 +1,2 @@
+- [Sean Munley](user_sean.md) — project creator, Bumper turning 70 Jan 2027, billiards hustler origin story
+- [Min font size 16px](feedback_font_size.md) — all text 16px min, 55+ target audience accessibility

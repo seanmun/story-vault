@@ -14,7 +14,7 @@ export default function AuthLayout({
         StoryVault
       </Link>
       <div className="w-full max-w-sm">{children}</div>
-      <p className="mt-10 text-sm text-muted-foreground italic">
+      <p className="mt-10 text-base text-muted-foreground italic">
         Every life has a story worth keeping.
       </p>
     </div>

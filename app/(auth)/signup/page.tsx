@@ -81,7 +81,7 @@ export default function SignupPage() {
 
       {error && (
         <p
-          className="text-sm text-destructive bg-destructive/10 rounded-md p-3 mb-6"
+          className="text-base text-destructive bg-destructive/10 rounded-md p-3 mb-6"
           role="alert"
         >
           {error}
@@ -90,7 +90,7 @@ export default function SignupPage() {
 
       <form onSubmit={handleSignup} className="space-y-5">
         <div className="space-y-2">
-          <Label htmlFor="displayName" className="text-sm tracking-wide">
+          <Label htmlFor="displayName" className="text-base tracking-wide">
             Display Name
           </Label>
           <Input
@@ -105,7 +105,7 @@ export default function SignupPage() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm tracking-wide">
+          <Label htmlFor="email" className="text-base tracking-wide">
             Email
           </Label>
           <Input
@@ -120,7 +120,7 @@ export default function SignupPage() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password" className="text-sm tracking-wide">
+          <Label htmlFor="password" className="text-base tracking-wide">
             Password
           </Label>
           <Input
@@ -146,7 +146,7 @@ export default function SignupPage() {
 
       <div className="my-6 flex items-center gap-4">
         <Separator className="flex-1" />
-        <span className="text-xs text-muted-foreground tracking-widest uppercase">
+        <span className="text-base text-muted-foreground tracking-widest uppercase">
           or
         </span>
         <Separator className="flex-1" />
@@ -160,7 +160,7 @@ export default function SignupPage() {
         Continue with Google
       </Button>
 
-      <p className="text-sm text-muted-foreground text-center mt-8">
+      <p className="text-base text-muted-foreground text-center mt-8">
         Already have an account?{" "}
         <Link
           href="/login"

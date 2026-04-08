@@ -26,7 +26,7 @@ export default function VisionPage() {
           <nav className="flex items-center gap-6">
             <Link
               href="/"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
+              className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
             >
               Home
             </Link>
@@ -49,7 +49,7 @@ export default function VisionPage() {
 
       {/* Hero */}
       <section className="px-6 py-24 md:py-36 text-center">
-        <p className="mb-6 text-sm font-heading tracking-[0.3em] text-gold-dark uppercase">
+        <p className="mb-6 text-base font-heading tracking-[0.3em] text-gold-dark uppercase">
           Our Vision
         </p>
         <h1 className="max-w-4xl mx-auto text-4xl font-heading font-semibold tracking-wide text-foreground md:text-6xl lg:text-7xl leading-[1.1]">
@@ -99,7 +99,7 @@ export default function VisionPage() {
       {/* The Problem */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-4xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             The Problem
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 text-center">
@@ -134,7 +134,7 @@ export default function VisionPage() {
       {/* The Solution */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-4xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             The Solution
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 text-center">
@@ -177,7 +177,7 @@ export default function VisionPage() {
       {/* Key Features */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             Capabilities
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-20 text-center">
@@ -247,7 +247,7 @@ export default function VisionPage() {
       {/* Audience */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             Audience
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-20 text-center">
@@ -279,7 +279,7 @@ export default function VisionPage() {
       {/* Design Philosophy */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-4xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             Philosophy
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 text-center">
@@ -313,7 +313,7 @@ export default function VisionPage() {
       {/* Origin Story */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-3xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             Origin
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-12 text-center">
@@ -363,7 +363,7 @@ export default function VisionPage() {
       {/* Market */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-4xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             Opportunity
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-16 text-center">
@@ -392,7 +392,7 @@ export default function VisionPage() {
       {/* Pricing */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             Pricing
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 text-center">
@@ -457,7 +457,7 @@ export default function VisionPage() {
       {/* CTA */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-6">
+          <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-6">
             Begin Your Legacy
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-4 leading-tight">
@@ -483,14 +483,14 @@ export default function VisionPage() {
           <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-10" />
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
             <div>
-              <p className="font-heading text-sm tracking-[0.2em] text-foreground/60 uppercase">
+              <p className="font-heading text-base tracking-[0.2em] text-foreground/60 uppercase">
                 StoryVault
               </p>
-              <p className="text-sm text-muted-foreground mt-1 italic">
+              <p className="text-base text-muted-foreground mt-1 italic">
                 Every life has a story worth keeping.
               </p>
             </div>
-            <div className="flex gap-8 text-sm text-muted-foreground">
+            <div className="flex gap-8 text-base text-muted-foreground">
               <Link href="/" className="hover:text-foreground transition-colors tracking-wide">
                 Home
               </Link>
@@ -521,7 +521,7 @@ function Divider() {
 function ProblemCard({ name, problem }: { name: string; problem: string }) {
   return (
     <div className="bg-background p-8">
-      <h3 className="font-heading text-sm tracking-wider font-semibold text-foreground mb-3 uppercase">
+      <h3 className="font-heading text-base tracking-wider font-semibold text-foreground mb-3 uppercase">
         {name}
       </h3>
       <p className="text-muted-foreground leading-relaxed">{problem}</p>
@@ -546,7 +546,7 @@ function ProcessStep({
         {icon}
       </div>
       <div>
-        <div className="font-heading text-xs tracking-[0.3em] text-gold-dark uppercase mb-2">
+        <div className="font-heading text-base tracking-[0.3em] text-gold-dark uppercase mb-2">
           Step {step}
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-3">{title}</h3>
@@ -566,16 +566,16 @@ function FeatureSection({
   items: string[];
 }) {
   return (
-    <div>
-      <div className="flex items-center gap-4 mb-8">
+    <div className="max-w-3xl mx-auto">
+      <div className="flex items-center justify-center gap-4 mb-8">
         {icon}
         <h3 className="text-2xl font-semibold text-foreground">{title}</h3>
       </div>
-      <ul className="space-y-4 pl-11">
+      <ul className="space-y-4 list-none">
         {items.map((item, i) => (
-          <li key={i} className="flex gap-4 text-muted-foreground leading-relaxed">
-            <span className="mt-2.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gold/60" />
-            {item}
+          <li key={i} className="flex gap-4 text-base text-muted-foreground leading-relaxed">
+            <span className="mt-2 text-gold-dark flex-shrink-0" aria-hidden="true">&bull;</span>
+            <span>{item}</span>
           </li>
         ))}
       </ul>
@@ -600,7 +600,7 @@ function AudienceCard({
       <h3 className="font-heading text-base tracking-wide font-semibold text-foreground">
         {title}
       </h3>
-      <p className="text-xs font-heading tracking-widest text-gold-dark uppercase mt-1 mb-4">
+      <p className="text-base font-heading tracking-widest text-gold-dark uppercase mt-1 mb-4">
         {age}
       </p>
       <p className="text-muted-foreground leading-relaxed">{description}</p>
@@ -612,7 +612,7 @@ function StatCard({ value, label }: { value: string; label: string }) {
   return (
     <div className="text-center">
       <p className="text-4xl font-heading font-semibold text-primary">{value}</p>
-      <p className="text-sm text-muted-foreground mt-2">{label}</p>
+      <p className="text-base text-muted-foreground mt-2">{label}</p>
     </div>
   );
 }
@@ -626,7 +626,7 @@ function DesignPrinciple({
 }) {
   return (
     <div className="bg-background p-8">
-      <h3 className="font-heading text-sm tracking-wider font-semibold text-foreground mb-3 uppercase">
+      <h3 className="font-heading text-base tracking-wider font-semibold text-foreground mb-3 uppercase">
         {title}
       </h3>
       <p className="text-muted-foreground leading-relaxed">{description}</p>
@@ -649,16 +649,16 @@ function PricingCard({
 }) {
   return (
     <div className={`p-8 ${highlighted ? "bg-primary/5" : "bg-background"}`}>
-      <h3 className="font-heading text-sm tracking-wider font-semibold text-foreground uppercase">
+      <h3 className="font-heading text-base tracking-wider font-semibold text-foreground uppercase">
         {tier}
       </h3>
       <p className="mt-3 mb-6">
         <span className="text-3xl font-heading font-semibold text-foreground">{price}</span>
-        <span className="text-sm text-muted-foreground">{period}</span>
+        <span className="text-base text-muted-foreground">{period}</span>
       </p>
       <ul className="space-y-3">
         {features.map((feature, i) => (
-          <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
+          <li key={i} className="flex items-start gap-3 text-base text-muted-foreground">
             <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-gold-dark" />
             {feature}
           </li>

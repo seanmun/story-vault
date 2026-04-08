@@ -3,7 +3,7 @@ import { Mic } from "lucide-react";
 export default function RecordPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-5rem)] px-6">
-      <p className="text-sm font-heading tracking-[0.3em] text-gold-dark uppercase mb-4">
+      <p className="text-base font-heading tracking-[0.3em] text-gold-dark uppercase mb-4">
         Your Story Awaits
       </p>
       <h1 className="text-3xl md:text-4xl font-heading font-semibold text-foreground mb-3 text-center">
@@ -23,7 +23,7 @@ export default function RecordPage() {
         <Mic className="w-14 h-14" strokeWidth={1.5} />
       </button>
 
-      <p className="text-xs text-muted-foreground mt-12 tracking-wide font-heading uppercase">
+      <p className="text-base text-muted-foreground mt-12 tracking-wide font-heading uppercase">
         Recording available in Sprint 2
       </p>
     </div>

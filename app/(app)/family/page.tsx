@@ -3,7 +3,7 @@ import { Users } from "lucide-react";
 export default function FamilyPage() {
   return (
     <div className="px-6 py-8">
-      <p className="text-xs font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
+      <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
         Together
       </p>
       <h1 className="text-2xl font-heading font-semibold text-foreground mb-1">

@@ -22,7 +22,7 @@ export default function HomePage() {
           <nav className="flex items-center gap-6">
             <Link
               href="/vision"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
+              className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
             >
               Vision
             </Link>
@@ -48,7 +48,7 @@ export default function HomePage() {
         {/* Subtle decorative element */}
         <div className="absolute top-12 left-1/2 -translate-x-1/2 w-px h-16 bg-gradient-to-b from-transparent via-gold/40 to-transparent" />
 
-        <p className="mb-6 text-sm font-heading tracking-[0.3em] text-gold-dark uppercase">
+        <p className="mb-6 text-base font-heading tracking-[0.3em] text-gold-dark uppercase">
           Every Life Has a Story Worth Keeping
         </p>
         <h1 className="max-w-4xl text-5xl font-heading font-semibold tracking-wide text-foreground md:text-7xl lg:text-8xl leading-[1.1]">
@@ -88,7 +88,7 @@ export default function HomePage() {
       {/* How It Works */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             The Process
           </p>
           <h2 className="text-center text-3xl md:text-4xl font-semibold text-foreground mb-6">
@@ -124,7 +124,7 @@ export default function HomePage() {
       {/* Features */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
             One Recording, Many Legacies
           </p>
           <h2 className="text-center text-3xl md:text-4xl font-semibold text-foreground mb-6">
@@ -182,11 +182,11 @@ export default function HomePage() {
             the time he hustled a guy out of $5,000 in a bar in New Jersey.
             All you have to do is ask him and hand him a microphone.&rdquo;
           </blockquote>
-          <p className="text-sm font-heading tracking-[0.2em] text-gold-dark uppercase mb-8">
+          <p className="text-base font-heading tracking-[0.2em] text-gold-dark uppercase mb-8">
             The Bumper Test
           </p>
           <p className="text-muted-foreground max-w-lg mx-auto mb-10">
-            Every feature must pass this test: if a 65-year-old retired
+            Every feature must pass this test: if a soon-to-be-70 retired
             billiards hustler can&apos;t figure it out in 10 seconds, it gets
             redesigned.
           </p>
@@ -202,7 +202,7 @@ export default function HomePage() {
       {/* CTA */}
       <section className="px-6 py-28">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-heading tracking-[0.25em] text-gold-dark uppercase mb-6">
+          <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-6">
             Begin Today
           </p>
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 leading-tight">
@@ -226,14 +226,14 @@ export default function HomePage() {
           <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-10" />
           <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
             <div>
-              <p className="font-heading text-sm tracking-[0.2em] text-foreground/60 uppercase">
+              <p className="font-heading text-base tracking-[0.2em] text-foreground/60 uppercase">
                 StoryVault
               </p>
-              <p className="text-sm text-muted-foreground mt-1 italic">
+              <p className="text-base text-muted-foreground mt-1 italic">
                 Every life has a story worth keeping.
               </p>
             </div>
-            <div className="flex gap-8 text-sm text-muted-foreground">
+            <div className="flex gap-8 text-base text-muted-foreground">
               <Link href="/vision" className="hover:text-foreground transition-colors tracking-wide">
                 Vision
               </Link>
@@ -267,7 +267,7 @@ function Step({
       <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-gold/30 text-gold-dark">
         {icon}
       </div>
-      <div className="mb-3 font-heading text-xs tracking-[0.3em] text-gold-dark uppercase">
+      <div className="mb-3 font-heading text-base tracking-[0.3em] text-gold-dark uppercase">
         Step {number}
       </div>
       <h3 className="mb-3 text-xl font-semibold text-foreground">{title}</h3>
@@ -291,7 +291,7 @@ function FeatureCard({
     <div className="group p-8 transition-colors hover:bg-card rounded-lg">
       <div className="mb-4">{icon}</div>
       <h3 className="mb-2 text-base font-heading tracking-wide font-semibold text-foreground">{title}</h3>
-      <p className="text-[0.95rem] text-muted-foreground leading-relaxed">
+      <p className="text-base text-muted-foreground leading-relaxed">
         {description}
       </p>
     </div>
