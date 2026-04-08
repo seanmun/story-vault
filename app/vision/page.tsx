@@ -16,37 +16,7 @@ import { Button } from "@/components/ui/button";
 
 export default function VisionPage() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Nav */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md">
-        <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6">
-          <Link href="/" className="font-heading text-2xl tracking-widest text-primary uppercase">
-            StoryVault
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link
-              href="/"
-              className="text-base font-heading font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
-            >
-              Home
-            </Link>
-            <Link href="/login">
-              <Button variant="ghost" size="sm" className="font-heading tracking-wide">
-                Sign In
-              </Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm" className="font-heading tracking-wide">
-                Get Started
-              </Button>
-            </Link>
-          </nav>
-        </div>
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-        </div>
-      </header>
-
+    <div>
       {/* Hero */}
       <section className="px-6 py-24 md:py-36 text-center">
         <p className="mb-6 text-base font-heading tracking-[0.3em] text-gold-dark uppercase">
@@ -476,34 +446,6 @@ export default function VisionPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="px-6 py-10">
-        <div className="mx-auto max-w-6xl">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-10" />
-          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-            <div>
-              <p className="font-heading text-base tracking-[0.2em] text-foreground/60 uppercase">
-                StoryVault
-              </p>
-              <p className="text-base text-muted-foreground mt-1 italic">
-                Every life has a story worth keeping.
-              </p>
-            </div>
-            <div className="flex gap-8 text-base text-muted-foreground">
-              <Link href="/" className="hover:text-foreground transition-colors tracking-wide">
-                Home
-              </Link>
-              <Link href="/login" className="hover:text-foreground transition-colors tracking-wide">
-                Sign In
-              </Link>
-              <Link href="/signup" className="hover:text-foreground transition-colors tracking-wide">
-                Sign Up
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

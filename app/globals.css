@@ -55,14 +55,14 @@
 :root {
   /* Rich parchment / warm ivory background */
   --background: oklch(0.97 0.008 80);
-  --foreground: oklch(0.20 0.02 55);
+  --foreground: oklch(0.15 0.02 55);
 
   /* Cards: warm white with subtle warmth */
   --card: oklch(0.99 0.005 80);
-  --card-foreground: oklch(0.20 0.02 55);
+  --card-foreground: oklch(0.15 0.02 55);
 
   --popover: oklch(0.99 0.005 80);
-  --popover-foreground: oklch(0.20 0.02 55);
+  --popover-foreground: oklch(0.15 0.02 55);
 
   /* Primary: deep burgundy / wine — rich and timeless */
   --primary: oklch(0.38 0.12 20);
@@ -74,7 +74,7 @@
 
   /* Muted: parchment tones */
   --muted: oklch(0.93 0.01 80);
-  --muted-foreground: oklch(0.48 0.02 55);
+  --muted-foreground: oklch(0.23 0.02 55);
 
   /* Accent: burnished amber */
   --accent: oklch(0.88 0.04 75);
@@ -90,7 +90,7 @@
   /* Gold accents */
   --gold: oklch(0.72 0.12 85);
   --gold-light: oklch(0.82 0.08 85);
-  --gold-dark: oklch(0.58 0.14 75);
+  --gold-dark: oklch(0.45 0.14 75);
 
   --chart-1: oklch(0.38 0.12 20);
   --chart-2: oklch(0.72 0.12 85);
@@ -140,7 +140,7 @@
 
   --gold: oklch(0.72 0.12 85);
   --gold-light: oklch(0.82 0.08 85);
-  --gold-dark: oklch(0.58 0.14 75);
+  --gold-dark: oklch(0.45 0.14 75);
 
   --chart-1: oklch(0.72 0.12 85);
   --chart-2: oklch(0.55 0.10 20);
@@ -175,9 +175,9 @@
     letter-spacing: 0.02em;
   }
 
-  /* Refined body text sizing */
+  /* User-adjustable text sizing via accessibility widget */
   body {
-    font-size: 1.125rem;
-    line-height: 1.7;
+    font-size: var(--user-font-size, 1.125rem);
+    line-height: var(--user-line-height, 1.7);
   }
 }

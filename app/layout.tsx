@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Cinzel, Cormorant_Garamond, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { Providers } from "@/components/providers";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { AccessibilityWidget } from "@/components/layout/AccessibilityWidget";
 import "./globals.css";
 
 const cinzel = Cinzel({
@@ -35,10 +39,16 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${cinzel.variable} ${cormorant.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-body">
-        {children}
-        <Toaster />
+        <Providers>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <AccessibilityWidget />
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
