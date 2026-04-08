@@ -7,14 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -53,64 +46,89 @@ export default function LoginPage() {
   }
 
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">StoryVault</CardTitle>
-        <CardDescription>
-          Sign in to preserve your family stories
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleLogin}>
-        <CardContent className="space-y-4">
-          {error && (
-            <p className="text-sm text-destructive bg-destructive/10 rounded-md p-3" role="alert">
-              {error}
-            </p>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="current-password"
-            />
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-3">
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={handleGoogleLogin}
-          >
-            Continue with Google
-          </Button>
-          <p className="text-sm text-muted-foreground text-center">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-primary hover:underline">
-              Sign up
-            </Link>
-          </p>
-        </CardFooter>
+    <div>
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-heading tracking-wide text-foreground">
+          Welcome Back
+        </h1>
+        <p className="text-muted-foreground mt-2">
+          Sign in to continue your story
+        </p>
+      </div>
+
+      {error && (
+        <p
+          className="text-sm text-destructive bg-destructive/10 rounded-md p-3 mb-6"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
+
+      <form onSubmit={handleLogin} className="space-y-5">
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-sm tracking-wide">
+            Email
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+            className="h-12"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password" className="text-sm tracking-wide">
+            Password
+          </Label>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="current-password"
+            className="h-12"
+          />
+        </div>
+        <Button
+          type="submit"
+          className="w-full h-12 tracking-wide"
+          disabled={loading}
+        >
+          {loading ? "Signing in..." : "Sign In"}
+        </Button>
       </form>
-    </Card>
+
+      <div className="my-6 flex items-center gap-4">
+        <Separator className="flex-1" />
+        <span className="text-xs text-muted-foreground tracking-widest uppercase">
+          or
+        </span>
+        <Separator className="flex-1" />
+      </div>
+
+      <Button
+        variant="outline"
+        className="w-full h-12 tracking-wide"
+        onClick={handleGoogleLogin}
+      >
+        Continue with Google
+      </Button>
+
+      <p className="text-sm text-muted-foreground text-center mt-8">
+        Don&apos;t have an account?{" "}
+        <Link
+          href="/signup"
+          className="text-primary hover:underline font-medium"
+        >
+          Create one
+        </Link>
+      </p>
+    </div>
   );
 }

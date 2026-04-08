@@ -6,13 +6,6 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { LogOut, User } from "lucide-react";
 
@@ -74,49 +67,63 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="px-4 py-6">
-        <p className="text-muted-foreground">Loading...</p>
+      <div className="px-6 py-8">
+        <p className="text-muted-foreground italic">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-6 space-y-6">
-      <h1 className="text-2xl font-bold text-foreground">Settings</h1>
+    <div className="px-6 py-8 space-y-8">
+      <div>
+        <p className="text-xs font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
+          Account
+        </p>
+        <h1 className="text-2xl font-heading font-semibold text-foreground">
+          Settings
+        </h1>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5" />
+      <div className="rounded-lg border border-border p-6 space-y-6">
+        <div className="flex items-center gap-3 mb-2">
+          <User className="h-5 w-5 text-gold-dark" strokeWidth={1.5} />
+          <h2 className="font-heading text-sm tracking-wider font-semibold text-foreground uppercase">
             Profile
-          </CardTitle>
-          <CardDescription>Manage your account details</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="displayName">Display Name</Label>
-            <Input
-              id="displayName"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="Your display name"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" value={email} disabled />
-          </div>
-          <Button onClick={handleSave} disabled={saving}>
-            {saving ? "Saving..." : "Save Changes"}
-          </Button>
-        </CardContent>
-      </Card>
+          </h2>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="displayName" className="text-sm tracking-wide">
+            Display Name
+          </Label>
+          <Input
+            id="displayName"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            placeholder="Your display name"
+            className="h-12"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-sm tracking-wide">
+            Email
+          </Label>
+          <Input id="email" value={email} disabled className="h-12" />
+        </div>
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          className="tracking-wide"
+        >
+          {saving ? "Saving..." : "Save Changes"}
+        </Button>
+      </div>
 
       <Separator />
 
       <Button
         variant="outline"
-        className="w-full text-destructive"
+        className="w-full h-12 text-destructive tracking-wide"
         onClick={handleSignOut}
       >
         <LogOut className="h-4 w-4 mr-2" />

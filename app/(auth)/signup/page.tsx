@@ -2,19 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 export default function SignupPage() {
   const [displayName, setDisplayName] = useState("");
@@ -23,7 +15,6 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const router = useRouter();
   const supabase = createClient();
 
   async function handleSignup(e: React.FormEvent) {
@@ -59,98 +50,125 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Check your email</CardTitle>
-          <CardDescription>
-            We sent a confirmation link to <strong>{email}</strong>. Click it to
-            activate your account.
-          </CardDescription>
-        </CardHeader>
-        <CardFooter>
-          <Link href="/login" className="w-full">
-            <Button variant="outline" className="w-full">
-              Back to Sign In
-            </Button>
-          </Link>
-        </CardFooter>
-      </Card>
+      <div className="text-center">
+        <h1 className="text-2xl font-heading tracking-wide text-foreground mb-4">
+          Check Your Email
+        </h1>
+        <p className="text-muted-foreground leading-relaxed mb-8">
+          We sent a confirmation link to{" "}
+          <strong className="text-foreground">{email}</strong>. Click it to
+          activate your account.
+        </p>
+        <Link href="/login">
+          <Button variant="outline" className="tracking-wide">
+            Back to Sign In
+          </Button>
+        </Link>
+      </div>
     );
   }
 
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
-        <CardDescription>
-          Start preserving your family stories today
-        </CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSignup}>
-        <CardContent className="space-y-4">
-          {error && (
-            <p className="text-sm text-destructive bg-destructive/10 rounded-md p-3" role="alert">
-              {error}
-            </p>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="displayName">Display Name</Label>
-            <Input
-              id="displayName"
-              type="text"
-              placeholder="What should we call you?"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              required
-              autoComplete="name"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="At least 6 characters"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              autoComplete="new-password"
-            />
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-3">
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Creating account..." : "Create Account"}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={handleGoogleSignup}
-          >
-            Continue with Google
-          </Button>
-          <p className="text-sm text-muted-foreground text-center">
-            Already have an account?{" "}
-            <Link href="/login" className="text-primary hover:underline">
-              Sign in
-            </Link>
-          </p>
-        </CardFooter>
+    <div>
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-heading tracking-wide text-foreground">
+          Create Your Vault
+        </h1>
+        <p className="text-muted-foreground mt-2">
+          Start preserving your stories today
+        </p>
+      </div>
+
+      {error && (
+        <p
+          className="text-sm text-destructive bg-destructive/10 rounded-md p-3 mb-6"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
+
+      <form onSubmit={handleSignup} className="space-y-5">
+        <div className="space-y-2">
+          <Label htmlFor="displayName" className="text-sm tracking-wide">
+            Display Name
+          </Label>
+          <Input
+            id="displayName"
+            type="text"
+            placeholder="What should we call you?"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            required
+            autoComplete="name"
+            className="h-12"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-sm tracking-wide">
+            Email
+          </Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+            className="h-12"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password" className="text-sm tracking-wide">
+            Password
+          </Label>
+          <Input
+            id="password"
+            type="password"
+            placeholder="At least 6 characters"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6}
+            autoComplete="new-password"
+            className="h-12"
+          />
+        </div>
+        <Button
+          type="submit"
+          className="w-full h-12 tracking-wide"
+          disabled={loading}
+        >
+          {loading ? "Creating your vault..." : "Create Account"}
+        </Button>
       </form>
-    </Card>
+
+      <div className="my-6 flex items-center gap-4">
+        <Separator className="flex-1" />
+        <span className="text-xs text-muted-foreground tracking-widest uppercase">
+          or
+        </span>
+        <Separator className="flex-1" />
+      </div>
+
+      <Button
+        variant="outline"
+        className="w-full h-12 tracking-wide"
+        onClick={handleGoogleSignup}
+      >
+        Continue with Google
+      </Button>
+
+      <p className="text-sm text-muted-foreground text-center mt-8">
+        Already have an account?{" "}
+        <Link
+          href="/login"
+          className="text-primary hover:underline font-medium"
+        >
+          Sign in
+        </Link>
+      </p>
+    </div>
   );
 }
