@@ -44,10 +44,10 @@ export function AccessibilityWidget() {
 
   return (
     <>
-      {/* Toggle Button — bottom-24 accounts for bottom nav on app pages */}
+      {/* Toggle Button — top right, just under header */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-24 right-6 z-[60] flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-105 focus:outline-none focus:ring-4 focus:ring-ring/30"
+        className="fixed top-24 right-6 z-[60] flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-105 focus:outline-none focus:ring-4 focus:ring-ring/30"
         aria-label={open ? "Close accessibility settings" : "Open accessibility settings"}
       >
         {open ? (
@@ -60,7 +60,7 @@ export function AccessibilityWidget() {
       {/* Panel */}
       {open && (
         <div
-          className="fixed bottom-40 right-6 z-[60] w-80 rounded-xl border border-border bg-card shadow-2xl"
+          className="fixed top-36 right-6 z-[60] w-80 rounded-xl border border-border bg-card shadow-2xl"
           role="dialog"
           aria-label="Accessibility settings"
         >
