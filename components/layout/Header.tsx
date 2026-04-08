@@ -10,9 +10,7 @@ export function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Hide on auth pages — they have their own branding
   const isAuthPage = pathname === "/login" || pathname === "/signup";
-  if (isAuthPage) return null;
 
   // Check if inside the app (authenticated pages)
   const isAppPage =
@@ -31,7 +29,7 @@ export function Header() {
           StoryVault
         </Link>
 
-        {!isAppPage && (
+        {!isAppPage && !isAuthPage && (
           <>
             {/* Desktop nav */}
             <nav className="hidden md:flex items-center gap-6">
@@ -70,7 +68,7 @@ export function Header() {
       </div>
 
       {/* Mobile menu panel */}
-      {!isAppPage && mobileOpen && (
+      {!isAppPage && !isAuthPage && mobileOpen && (
         <div className="md:hidden border-b border-border bg-card">
           <nav className="mx-auto max-w-6xl flex flex-col px-6 py-6 gap-4">
             <Link
