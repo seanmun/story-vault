@@ -32,9 +32,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://www.toposterity.ai"
+  ),
   title: "To Posterity",
   description:
     "Letters to posterity. In your own voice. Record your stories and leave a legacy your family will read for generations.",
+  openGraph: {
+    title: "To Posterity",
+    description:
+      "Letters to posterity. In your own voice. Record your stories and leave a legacy your family will read for generations.",
+    type: "website",
+    siteName: "To Posterity",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "To Posterity",
+    description:
+      "Letters to posterity. In your own voice. Record your stories and leave a legacy your family will read for generations.",
+  },
 };
 
 export default function RootLayout({

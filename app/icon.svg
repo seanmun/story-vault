@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="wax" cx="38%" cy="32%" r="75%">
+      <stop offset="0%" stop-color="#9B3939"/>
+      <stop offset="45%" stop-color="#6E2525"/>
+      <stop offset="85%" stop-color="#4A1515"/>
+      <stop offset="100%" stop-color="#3A0F0F"/>
+    </radialGradient>
+    <radialGradient id="highlight" cx="35%" cy="28%" r="25%">
+      <stop offset="0%" stop-color="#C26060" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#C26060" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Main seal body -->
+  <circle cx="32" cy="32" r="30" fill="url(#wax)"/>
+
+  <!-- Top-left highlight -->
+  <circle cx="32" cy="32" r="30" fill="url(#highlight)"/>
+
+  <!-- Inner embossed ring -->
+  <circle cx="32" cy="32" r="24" fill="none" stroke="#2A0A0A" stroke-width="1.2" stroke-opacity="0.5"/>
+  <circle cx="32" cy="32" r="24" fill="none" stroke="#E8C8B8" stroke-width="0.6" stroke-opacity="0.15"/>
+
+  <!-- TP monogram -->
+  <text x="32" y="41"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-weight="700"
+        font-size="26"
+        fill="#2A0A0A"
+        letter-spacing="1">TP</text>
+
+  <!-- Subtle text highlight for emboss -->
+  <text x="32" y="40.4"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-weight="700"
+        font-size="26"
+        fill="#E8C8B8"
+        fill-opacity="0.15"
+        letter-spacing="1">TP</text>
+</svg>
