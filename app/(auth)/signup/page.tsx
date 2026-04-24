@@ -51,10 +51,8 @@ export default function SignupPage() {
   if (success) {
     return (
       <div className="text-center">
-        <h1 className="text-2xl font-heading tracking-wide text-foreground mb-4">
-          Check Your Email
-        </h1>
-        <p className="text-muted-foreground leading-relaxed mb-8">
+        <h1 className="mb-4">Check Your Email</h1>
+        <p className="text-muted-foreground mb-8">
           We sent a confirmation link to{" "}
           <strong className="text-foreground">{email}</strong>. Click it to
           activate your account.
@@ -71,9 +69,7 @@ export default function SignupPage() {
   return (
     <div>
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-heading tracking-wide text-foreground">
-          Create Your Vault
-        </h1>
+        <h1>Create Your Vault</h1>
         <p className="text-muted-foreground mt-2">
           Start preserving your stories today
         </p>
@@ -81,7 +77,7 @@ export default function SignupPage() {
 
       {error && (
         <p
-          className="text-base text-destructive bg-destructive/10 rounded-md p-3 mb-6"
+          className="text-destructive bg-destructive/10 rounded-md p-3 mb-6"
           role="alert"
         >
           {error}
@@ -90,7 +86,7 @@ export default function SignupPage() {
 
       <form onSubmit={handleSignup} className="space-y-5">
         <div className="space-y-2">
-          <Label htmlFor="displayName" className="text-base tracking-wide">
+          <Label htmlFor="displayName" className="tracking-wide">
             Display Name
           </Label>
           <Input
@@ -105,7 +101,7 @@ export default function SignupPage() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-base tracking-wide">
+          <Label htmlFor="email" className="tracking-wide">
             Email
           </Label>
           <Input
@@ -120,7 +116,7 @@ export default function SignupPage() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password" className="text-base tracking-wide">
+          <Label htmlFor="password" className="tracking-wide">
             Password
           </Label>
           <Input
@@ -146,7 +142,7 @@ export default function SignupPage() {
 
       <div className="my-6 flex items-center gap-4">
         <Separator className="flex-1" />
-        <span className="text-base text-muted-foreground tracking-widest uppercase">
+        <span className="text-muted-foreground tracking-widest uppercase">
           or
         </span>
         <Separator className="flex-1" />
@@ -160,7 +156,7 @@ export default function SignupPage() {
         Continue with Google
       </Button>
 
-      <p className="text-base text-muted-foreground text-center mt-8">
+      <p className="text-muted-foreground text-center mt-8">
         Already have an account?{" "}
         <Link
           href="/login"

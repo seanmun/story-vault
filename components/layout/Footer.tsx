@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { WaxSeal } from "@/components/WaxSeal";
+import { Logo } from "@/components/Logo";
 
 export function Footer() {
   const pathname = usePathname();
@@ -22,15 +24,16 @@ export function Footer() {
       <div className="mx-auto max-w-6xl">
         <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-10" />
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-          <div>
-            <p className="font-heading text-base tracking-[0.2em] text-foreground/60 uppercase">
-              StoryVault
-            </p>
-            <p className="text-base text-muted-foreground mt-1 italic">
-              Every life has a story worth keeping.
-            </p>
+          <div className="flex items-center gap-4">
+            <WaxSeal size={56} monogram="TP" />
+            <div>
+              <Logo size="sm" className="text-foreground/70" />
+              <p className="text-muted-foreground mt-1 italic">
+                Every life has a story worth keeping.
+              </p>
+            </div>
           </div>
-          <div className="flex gap-8 text-base text-muted-foreground">
+          <div className="flex gap-8 text-muted-foreground">
             {isAppPage ? (
               <>
                 <Link href="/" className="hover:text-foreground transition-colors tracking-wide">

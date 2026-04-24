@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
 import { Menu, X } from "lucide-react";
 
 export function Header() {
@@ -24,9 +25,9 @@ export function Header() {
       <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6">
         <Link
           href={isAppPage ? "/record" : "/"}
-          className="font-heading text-2xl tracking-widest text-primary uppercase"
+          aria-label="To Posterity"
         >
-          StoryVault
+          <Logo size="sm" />
         </Link>
 
         {!isAppPage && !isAuthPage && (
@@ -35,7 +36,7 @@ export function Header() {
             <nav className="hidden md:flex items-center gap-6">
               <Link
                 href="/vision"
-                className="text-base font-heading font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
+                className="font-heading font-medium text-muted-foreground hover:text-foreground transition-colors tracking-wide"
               >
                 Vision
               </Link>
@@ -74,14 +75,14 @@ export function Header() {
             <Link
               href="/vision"
               onClick={() => setMobileOpen(false)}
-              className="text-lg font-heading font-medium text-foreground tracking-wide py-2"
+              className="font-heading font-medium text-foreground tracking-wide py-2"
             >
               Vision
             </Link>
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="text-lg font-heading font-medium text-muted-foreground tracking-wide py-2"
+              className="font-heading font-medium text-muted-foreground tracking-wide py-2"
             >
               Sign In
             </Link>

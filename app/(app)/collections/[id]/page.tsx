@@ -143,7 +143,7 @@ export default function CollectionDetailPage() {
     <div className="px-6 py-8 max-w-3xl mx-auto">
       <button
         onClick={() => router.push("/collections")}
-        className="flex items-center gap-2 text-base text-muted-foreground hover:text-foreground transition-colors mb-8"
+        className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Collections
@@ -151,12 +151,8 @@ export default function CollectionDetailPage() {
 
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
-            Collection
-          </p>
-          <h1 className="text-2xl font-heading font-semibold text-foreground mb-1">
-            {collection.name}
-          </h1>
+          <p className="label text-gold-dark mb-2">Collection</p>
+          <h1 className="mb-1">{collection.name}</h1>
           {collection.description && (
             <p className="text-muted-foreground">{collection.description}</p>
           )}
@@ -183,7 +179,7 @@ export default function CollectionDetailPage() {
             </DialogHeader>
             <div className="space-y-3 mt-4 max-h-96 overflow-y-auto">
               {available.length === 0 ? (
-                <p className="text-base text-muted-foreground text-center py-8">
+                <p className="text-muted-foreground text-center py-8">
                   No recordings available to add. Record a new story first!
                 </p>
               ) : (
@@ -207,15 +203,15 @@ export default function CollectionDetailPage() {
                       className="w-full text-left rounded-lg border border-border p-4 hover:bg-muted transition-colors"
                     >
                       <div className="flex items-center gap-3 mb-1">
-                        <span className="text-base font-medium text-foreground">
+                        <span className="font-medium text-foreground">
                           {formattedDate}
                         </span>
-                        <span className="flex items-center gap-1 text-base text-muted-foreground">
+                        <span className="flex items-center gap-1 text-muted-foreground">
                           <Clock className="h-3.5 w-3.5" />
                           {durationStr}
                         </span>
                       </div>
-                      <p className="text-base text-muted-foreground italic truncate">
+                      <p className="text-muted-foreground italic truncate">
                         {preview}
                       </p>
                     </button>
@@ -230,10 +226,8 @@ export default function CollectionDetailPage() {
       {/* Recordings list */}
       {recordings.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <p className="text-lg font-heading font-semibold text-foreground mb-2">
-            No recordings yet
-          </p>
-          <p className="text-base text-muted-foreground max-w-xs leading-relaxed">
+          <h3 className="mb-2">No recordings yet</h3>
+          <p className="text-muted-foreground max-w-xs">
             Add recordings to this collection to build your story.
           </p>
         </div>
@@ -264,21 +258,21 @@ export default function CollectionDetailPage() {
                 <div className="flex items-start gap-4">
                   <div className="flex items-center gap-2 text-muted-foreground mt-1">
                     <GripVertical className="h-4 w-4" />
-                    <span className="text-base font-heading font-semibold w-6 text-center">
+                    <span className="font-heading font-semibold w-6 text-center">
                       {index + 1}
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
-                      <span className="text-base font-medium text-foreground">
+                      <span className="font-medium text-foreground">
                         {formattedDate}
                       </span>
-                      <span className="flex items-center gap-1 text-base text-muted-foreground">
+                      <span className="flex items-center gap-1 text-muted-foreground">
                         <Clock className="h-4 w-4" />
                         {durationStr}
                       </span>
                     </div>
-                    <p className="text-base text-muted-foreground italic">
+                    <p className="text-muted-foreground italic">
                       &ldquo;{preview}&rdquo;
                     </p>
                   </div>

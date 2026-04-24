@@ -65,13 +65,13 @@ export function AccessibilityWidget() {
           aria-label="Accessibility settings"
         >
           <div className="p-6 space-y-6">
-            <h2 className="font-heading text-lg tracking-wide font-semibold text-foreground">
+            <h2 className="font-heading tracking-wide text-foreground">
               Accessibility
             </h2>
 
             {/* Theme Toggle */}
             <div>
-              <p className="text-base font-medium text-foreground mb-3">
+              <p className="font-medium text-foreground mb-3">
                 Display Mode
               </p>
               <div className="flex gap-2">
@@ -99,11 +99,11 @@ export function AccessibilityWidget() {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Type className="h-4 w-4 text-gold-dark" />
-                  <p className="text-base font-medium text-foreground">
+                  <p className="font-medium text-foreground">
                     Font Size
                   </p>
                 </div>
-                <span className="text-base text-muted-foreground font-heading">
+                <span className="text-muted-foreground font-heading">
                   {fontSize}px
                 </span>
               </div>
@@ -142,11 +142,11 @@ export function AccessibilityWidget() {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <AlignJustify className="h-4 w-4 text-gold-dark" />
-                  <p className="text-base font-medium text-foreground">
+                  <p className="font-medium text-foreground">
                     Line Spacing
                   </p>
                 </div>
-                <span className="text-base text-muted-foreground font-heading">
+                <span className="text-muted-foreground font-heading">
                   {lineHeight.toFixed(1)}
                 </span>
               </div>

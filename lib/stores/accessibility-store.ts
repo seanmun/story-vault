@@ -14,7 +14,7 @@ interface AccessibilityState {
 }
 
 const DEFAULTS = {
-  fontSize: 18,
+  fontSize: 20,
   lineHeight: 1.7,
 };
 

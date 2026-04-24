@@ -117,12 +117,8 @@ export default function CollectionsPage() {
     <div className="px-6 py-8">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
-            Organize
-          </p>
-          <h1 className="text-2xl font-heading font-semibold text-foreground mb-1">
-            Collections
-          </h1>
+          <p className="label text-gold-dark mb-2">Organize</p>
+          <h1 className="mb-1">Collections</h1>
           <p className="text-muted-foreground">
             Group recordings into stories and themes
           </p>
@@ -143,7 +139,7 @@ export default function CollectionsPage() {
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <div>
-                <label className="text-base font-medium text-foreground mb-2 block">
+                <label className="font-medium text-foreground mb-2 block">
                   Name
                 </label>
                 <Input
@@ -154,7 +150,7 @@ export default function CollectionsPage() {
                 />
               </div>
               <div>
-                <label className="text-base font-medium text-foreground mb-2 block">
+                <label className="font-medium text-foreground mb-2 block">
                   Description (optional)
                 </label>
                 <Input
@@ -186,15 +182,13 @@ export default function CollectionsPage() {
                     {iconMap[col.icon] || iconMap.folder}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-heading font-semibold text-foreground">
-                      {col.name}
-                    </h3>
+                    <h3>{col.name}</h3>
                     {col.description && (
-                      <p className="text-base text-muted-foreground truncate">
+                      <p className="text-muted-foreground truncate">
                         {col.description}
                       </p>
                     )}
-                    <p className="text-base text-muted-foreground mt-1">
+                    <p className="text-muted-foreground mt-1">
                       {col.recording_count} recording{col.recording_count !== 1 ? "s" : ""}
                     </p>
                   </div>

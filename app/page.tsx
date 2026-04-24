@@ -9,6 +9,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
 
 export default function HomePage() {
   return (
@@ -18,30 +19,26 @@ export default function HomePage() {
         {/* Subtle decorative element */}
         <div className="absolute top-12 left-1/2 -translate-x-1/2 w-px h-16 bg-gradient-to-b from-transparent via-gold/40 to-transparent" />
 
-        <p className="mb-6 text-base font-heading tracking-[0.3em] text-gold-dark uppercase">
-          Every Life Has a Story Worth Keeping
+        <p className="label text-gold-dark mb-6">
+          Ad Posteros &middot; Since 1350
         </p>
-        <h1 className="max-w-4xl text-5xl font-heading font-semibold tracking-wide text-foreground md:text-7xl lg:text-8xl leading-[1.1]">
-          Your Voice
-          <br />
-          <span className="text-primary italic font-body font-light">becomes your</span>
-          <br />
-          Legacy
-        </h1>
-        <p className="mt-8 max-w-lg text-lg text-muted-foreground leading-relaxed">
-          Simply talk. StoryVault transforms your spoken memories into polished
-          stories, podcasts, and keepsakes your family will treasure for
-          generations.
+        <Logo as="h1" size="xl" className="max-w-4xl" />
+        <p className="lead mt-8 max-w-xl font-body italic text-foreground/80">
+          In your own voice.
         </p>
-        <div className="mt-12 flex flex-col gap-4 sm:flex-row">
+        <p className="mt-6 max-w-lg text-muted-foreground">
+          Record a story for your grandkids. We turn it into a letter
+          your family will read, hear, and share for generations.
+        </p>
+        <div className="mt-12 flex flex-col gap-6 sm:flex-row sm:gap-5 sm:items-center">
           <Link href="/signup">
-            <Button size="lg" className="text-base px-10 tracking-wide">
-              Begin Your Legacy
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Button size="lg" className="tracking-wide">
+              Write Your First Letter
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
           <Link href="/vision">
-            <Button variant="outline" size="lg" className="text-base px-10 tracking-wide">
+            <Button variant="outline" size="lg" className="tracking-wide">
               Our Vision
             </Button>
           </Link>
@@ -58,12 +55,10 @@ export default function HomePage() {
       {/* How It Works */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="label text-center text-gold-dark mb-4">
             The Process
           </p>
-          <h2 className="text-center text-3xl md:text-4xl font-semibold text-foreground mb-6">
-            Three Steps to Forever
-          </h2>
+          <h2 className="text-center mb-6">Three Steps to Forever</h2>
           <p className="text-center text-muted-foreground mb-20 max-w-xl mx-auto">
             If you can have a conversation, you can preserve your legacy.
             No writing. No typing. No tech skills required.
@@ -94,10 +89,10 @@ export default function HomePage() {
       {/* Features */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
+          <p className="label text-center text-gold-dark mb-4">
             One Recording, Many Legacies
           </p>
-          <h2 className="text-center text-3xl md:text-4xl font-semibold text-foreground mb-6">
+          <h2 className="text-center mb-6">
             Every Format Your Family Will Treasure
           </h2>
           <p className="text-center text-muted-foreground mb-20 max-w-xl mx-auto">
@@ -147,12 +142,12 @@ export default function HomePage() {
             <div className="h-1.5 w-1.5 rounded-full bg-current" />
             <div className="h-px w-12 bg-current" />
           </div>
-          <blockquote className="text-2xl md:text-3xl font-body font-light italic leading-relaxed text-foreground/80 mb-8">
+          <blockquote className="quote text-foreground/80 mb-8">
             &ldquo;He would sit in his living room and talk for an hour about
             the time he hustled a guy out of $5,000 in a bar in New Jersey.
             All you have to do is ask him and hand him a microphone.&rdquo;
           </blockquote>
-          <p className="text-base font-heading tracking-[0.2em] text-gold-dark uppercase mb-8">
+          <p className="label text-gold-dark mb-8">
             The Bumper Test
           </p>
           <p className="text-muted-foreground max-w-lg mx-auto mb-10">
@@ -172,19 +167,19 @@ export default function HomePage() {
       {/* CTA */}
       <section className="px-6 py-28">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-6">
+          <p className="label text-gold-dark mb-6">
             Begin Today
           </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 leading-tight">
+          <h2 className="mb-6 leading-tight">
             Two hundred years from now, your story should still be heard
           </h2>
-          <p className="text-lg text-muted-foreground mb-10 italic font-light">
+          <p className="lead text-muted-foreground mb-10 italic font-light">
             Record it. Keep it. Pass it on.
           </p>
           <Link href="/signup">
-            <Button size="lg" className="text-base px-12 tracking-wide">
+            <Button size="lg" className="tracking-wide">
               Get Started Free
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
         </div>
@@ -209,13 +204,9 @@ function Step({
       <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-gold/30 text-gold-dark">
         {icon}
       </div>
-      <div className="mb-3 font-heading text-base tracking-[0.3em] text-gold-dark uppercase">
-        Step {number}
-      </div>
-      <h3 className="mb-3 text-xl font-semibold text-foreground">{title}</h3>
-      <p className="text-muted-foreground leading-relaxed">
-        {description}
-      </p>
+      <div className="label text-gold-dark mb-3">Step {number}</div>
+      <h3 className="mb-3">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
     </div>
   );
 }
@@ -232,10 +223,8 @@ function FeatureCard({
   return (
     <div className="group p-8 transition-colors hover:bg-card rounded-lg">
       <div className="mb-4">{icon}</div>
-      <h3 className="mb-2 text-base font-heading tracking-wide font-semibold text-foreground">{title}</h3>
-      <p className="text-base text-muted-foreground leading-relaxed">
-        {description}
-      </p>
+      <h3 className="mb-2">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
     </div>
   );
 }

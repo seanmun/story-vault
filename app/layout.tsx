@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Cormorant_Garamond, Geist_Mono } from "next/font/google";
+import { Cinzel, Cormorant_Garamond, IM_Fell_English, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/components/providers";
 import { Header } from "@/components/layout/Header";
@@ -19,15 +19,22 @@ const cormorant = Cormorant_Garamond({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+const imFell = IM_Fell_English({
+  variable: "--font-im-fell",
+  subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
+});
+
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "StoryVault",
+  title: "To Posterity",
   description:
-    "Preserve your family stories forever. Record, transform, and share the stories that matter most.",
+    "Letters to posterity. In your own voice. Record your stories and leave a legacy your family will read for generations.",
 };
 
 export default function RootLayout({
@@ -38,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cinzel.variable} ${cormorant.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${cinzel.variable} ${cormorant.variable} ${imFell.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col font-body">

@@ -76,24 +76,18 @@ export default function SettingsPage() {
   return (
     <div className="px-6 py-8 space-y-8">
       <div>
-        <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
-          Account
-        </p>
-        <h1 className="text-2xl font-heading font-semibold text-foreground">
-          Settings
-        </h1>
+        <p className="label text-gold-dark mb-2">Account</p>
+        <h1>Settings</h1>
       </div>
 
       <div className="rounded-lg border border-border p-6 space-y-6">
         <div className="flex items-center gap-3 mb-2">
           <User className="h-5 w-5 text-gold-dark" strokeWidth={1.5} />
-          <h2 className="font-heading text-base tracking-wider font-semibold text-foreground uppercase">
-            Profile
-          </h2>
+          <p className="label text-foreground">Profile</p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="displayName" className="text-base tracking-wide">
+          <Label htmlFor="displayName" className="tracking-wide">
             Display Name
           </Label>
           <Input
@@ -105,7 +99,7 @@ export default function SettingsPage() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-base tracking-wide">
+          <Label htmlFor="email" className="tracking-wide">
             Email
           </Label>
           <Input id="email" value={email} disabled className="h-12" />

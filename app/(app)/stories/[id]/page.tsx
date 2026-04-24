@@ -147,41 +147,33 @@ function StoryReadingView({
     <div className="px-6 py-8 max-w-3xl mx-auto">
       <button
         onClick={onBack}
-        className="flex items-center gap-2 text-base text-muted-foreground hover:text-foreground transition-colors mb-8"
+        className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Stories
       </button>
 
       {/* Title */}
-      <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
-        {story.life_chapter}
-      </p>
-      <h1 className="text-3xl md:text-4xl font-heading font-semibold text-foreground mb-4 leading-tight">
-        {story.title}
-      </h1>
+      <p className="label text-gold-dark mb-2">{story.life_chapter}</p>
+      <h1 className="mb-4 leading-tight">{story.title}</h1>
 
       {/* Meta row */}
       <div className="flex flex-wrap items-center gap-4 mb-4">
-        <span className="flex items-center gap-2 text-base text-muted-foreground">
+        <span className="flex items-center gap-2 text-muted-foreground">
           <Calendar className="h-4 w-4" />
           {formattedDate}
         </span>
         {durationStr && (
-          <span className="flex items-center gap-2 text-base text-muted-foreground">
+          <span className="flex items-center gap-2 text-muted-foreground">
             <Clock className="h-4 w-4" />
             {durationStr} recording
           </span>
         )}
         {story.location && (
-          <span className="text-base text-muted-foreground">
-            {story.location}
-          </span>
+          <span className="text-muted-foreground">{story.location}</span>
         )}
         {story.time_period && (
-          <span className="text-base text-muted-foreground">
-            {story.time_period}
-          </span>
+          <span className="text-muted-foreground">{story.time_period}</span>
         )}
       </div>
 
@@ -191,7 +183,7 @@ function StoryReadingView({
           {story.themes.map((theme) => (
             <span
               key={theme}
-              className="text-base text-gold-dark bg-gold/10 px-3 py-1 rounded"
+              className="text-gold-dark bg-gold/10 px-3 py-1 rounded"
             >
               {theme}
             </span>
@@ -200,7 +192,7 @@ function StoryReadingView({
       )}
 
       {/* Summary */}
-      <p className="text-lg text-muted-foreground italic leading-relaxed mb-8 border-l-2 border-gold/30 pl-4">
+      <p className="lead text-muted-foreground italic mb-8 border-l-2 border-gold/30 pl-4">
         {story.summary}
       </p>
 
@@ -208,7 +200,7 @@ function StoryReadingView({
       <div className="mb-10 rounded-lg border border-border bg-card p-5">
         {audioPath ? (
           <div>
-            <p className="text-base font-heading tracking-wider uppercase text-foreground mb-3 flex items-center gap-2">
+            <p className="label text-foreground mb-3 flex items-center gap-2">
               <Volume2 className="h-4 w-4 text-gold-dark" />
               Listen
             </p>
@@ -223,10 +215,10 @@ function StoryReadingView({
           </div>
         ) : showVoicePicker ? (
           <div>
-            <p className="text-base font-medium text-foreground mb-2">
+            <p className="font-medium text-foreground mb-2">
               How should we narrate your stories?
             </p>
-            <p className="text-base text-muted-foreground mb-4">
+            <p className="text-muted-foreground mb-4">
               Choose a voice for your audio narrations. You can change this later in settings.
             </p>
             <div className="flex gap-3">
@@ -273,10 +265,10 @@ function StoryReadingView({
         ) : (
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-base font-medium text-foreground">
+              <p className="font-medium text-foreground">
                 Listen to this story
               </p>
-              <p className="text-base text-muted-foreground">
+              <p className="text-muted-foreground">
                 Generate an audio narration
               </p>
             </div>
@@ -340,13 +332,13 @@ function StoryReadingView({
           if (!paragraph.trim()) return null;
           if (paragraph.startsWith("# ")) {
             return (
-              <h2 key={i} className="text-2xl font-heading font-semibold text-foreground mt-10 mb-4">
+              <h2 key={i} className="mt-10 mb-4">
                 {paragraph.replace(/^#+\s*/, "")}
               </h2>
             );
           }
           return (
-            <p key={i} className="text-lg text-foreground leading-relaxed mb-4">
+            <p key={i} className="text-foreground mb-4">
               {paragraph}
             </p>
           );
@@ -356,12 +348,10 @@ function StoryReadingView({
       {/* Characters */}
       {story.characters && Array.isArray(story.characters) && story.characters.length > 0 && (
         <div className="mt-12 pt-8 border-t border-border">
-          <h3 className="text-base font-heading tracking-wider uppercase text-foreground mb-4">
-            People in This Story
-          </h3>
+          <p className="label text-foreground mb-4">People in This Story</p>
           <div className="space-y-2">
             {(story.characters as { name: string; relationship: string; mentions: number }[]).map((char, i) => (
-              <p key={i} className="text-base text-muted-foreground">
+              <p key={i} className="text-muted-foreground">
                 <span className="font-medium text-foreground">{char.name}</span>
                 {char.relationship && ` — ${char.relationship}`}
               </p>
@@ -375,12 +365,12 @@ function StoryReadingView({
         <div className="mt-12 pt-8 border-t border-border">
           <button
             onClick={() => setShowTranscription(!showTranscription)}
-            className="text-base text-muted-foreground hover:text-foreground transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-colors"
           >
             {showTranscription ? "Hide" : "View"} Original Transcription
           </button>
           {showTranscription && (
-            <p className="mt-4 text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">
+            <p className="mt-4 text-muted-foreground whitespace-pre-wrap">
               {recording.transcription}
             </p>
           )}
@@ -424,29 +414,25 @@ function RecordingView({
     <div className="px-6 py-8 max-w-3xl mx-auto">
       <button
         onClick={onBack}
-        className="flex items-center gap-2 text-base text-muted-foreground hover:text-foreground transition-colors mb-8"
+        className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Stories
       </button>
 
-      <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
-        Recording
-      </p>
-      <h1 className="text-2xl font-heading font-semibold text-foreground mb-6">
-        {formattedDate}
-      </h1>
+      <p className="label text-gold-dark mb-2">Recording</p>
+      <h1 className="mb-6">{formattedDate}</h1>
 
       <div className="flex flex-wrap gap-6 mb-8">
-        <span className="flex items-center gap-2 text-base text-muted-foreground">
+        <span className="flex items-center gap-2 text-muted-foreground">
           <Calendar className="h-4 w-4" />
           {formattedTime}
         </span>
-        <span className="flex items-center gap-2 text-base text-muted-foreground">
+        <span className="flex items-center gap-2 text-muted-foreground">
           <Clock className="h-4 w-4" />
           {durationStr}
         </span>
-        <span className="flex items-center gap-2 text-base text-muted-foreground">
+        <span className="flex items-center gap-2 text-muted-foreground">
           <Mic className="h-4 w-4" />
           {fileSizeStr}
         </span>
@@ -454,41 +440,35 @@ function RecordingView({
 
       {/* Story generation status */}
       {story && story.status === "generating" && (
-        <div className="flex items-center gap-3 text-base text-gold-dark bg-gold/10 rounded-lg p-4 mb-8">
+        <div className="flex items-center gap-3 text-gold-dark bg-gold/10 rounded-lg p-4 mb-8">
           <Sparkles className="h-5 w-5" />
           Generating your story...
         </div>
       )}
 
       {story && story.status === "failed" && (
-        <div className="text-base text-destructive bg-destructive/10 rounded-lg p-4 mb-8">
+        <div className="text-destructive bg-destructive/10 rounded-lg p-4 mb-8">
           Story generation failed. You can try recording again.
         </div>
       )}
 
       {/* Status */}
       <div className="mb-8">
-        <p className="text-base font-heading tracking-wider uppercase text-foreground mb-1">
-          Status
-        </p>
-        <p className="text-base text-primary font-medium capitalize">
-          {recording.status}
-        </p>
+        <p className="label text-foreground mb-1">Status</p>
+        <p className="text-primary font-medium capitalize">{recording.status}</p>
       </div>
 
       {/* Transcription */}
       <div>
-        <p className="text-base font-heading tracking-wider uppercase text-foreground mb-3">
-          Transcription
-        </p>
+        <p className="label text-foreground mb-3">Transcription</p>
         {recording.transcription ? (
           <div className="rounded-lg border border-border bg-card p-6">
-            <p className="text-base text-foreground leading-relaxed whitespace-pre-wrap">
+            <p className="text-foreground whitespace-pre-wrap">
               {recording.transcription}
             </p>
           </div>
         ) : (
-          <p className="text-base text-muted-foreground italic">
+          <p className="text-muted-foreground italic">
             {recording.status === "transcribing"
               ? "Transcription in progress..."
               : recording.status === "failed"

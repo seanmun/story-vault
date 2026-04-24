@@ -49,7 +49,6 @@ export default function StoriesPage() {
 
       if (data) setRecordings(data as Recording[]);
 
-      // Check voice clone status
       const { data: profile } = await supabase
         .from("profiles")
         .select("voice_clone_tier")
@@ -103,12 +102,8 @@ export default function StoriesPage() {
 
   return (
     <div className="px-6 py-8">
-      <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-2">
-        Library
-      </p>
-      <h1 className="text-2xl font-heading font-semibold text-foreground mb-1">
-        Your Stories
-      </h1>
+      <p className="label text-gold-dark mb-2">Library</p>
+      <h1 className="mb-1">Your Stories</h1>
       <p className="text-muted-foreground mb-8">
         {recordings.length} recording{recordings.length !== 1 ? "s" : ""} &middot; {totalMinutes} min total
       </p>
@@ -119,12 +114,12 @@ export default function StoriesPage() {
           <div className="flex items-start gap-4">
             <Volume2 className="h-5 w-5 text-gold-dark mt-0.5 flex-shrink-0" />
             <div className="flex-1">
-              <p className="text-base font-medium text-foreground mb-1">
+              <p className="font-medium text-foreground mb-1">
                 {showEnhancedPrompt
                   ? "Upgrade your personal narrator"
                   : "Create your personal narrator"}
               </p>
-              <p className="text-base text-muted-foreground mb-4">
+              <p className="text-muted-foreground mb-4">
                 {showEnhancedPrompt
                   ? `You now have ${totalMinutes} minutes of recordings. We can create a higher-quality version of your voice narrator.`
                   : `You have ${totalMinutes} minutes of recordings — enough to create a narrator that sounds like you.`}
@@ -162,10 +157,8 @@ export default function StoriesPage() {
           <div className="flex items-center justify-center w-16 h-16 rounded-full border border-border mb-6">
             <BookOpen className="w-7 h-7 text-muted-foreground" strokeWidth={1.5} />
           </div>
-          <h2 className="text-lg font-heading font-semibold text-foreground mb-2">
-            No Stories Yet
-          </h2>
-          <p className="text-muted-foreground max-w-xs leading-relaxed">
+          <h2 className="mb-2">No Stories Yet</h2>
+          <p className="text-muted-foreground max-w-xs">
             Record your first story and it will appear here.
           </p>
         </div>
@@ -201,24 +194,18 @@ function StoryCard({ story, recording }: { story: Story; recording: Recording })
       <div className="rounded-lg border border-border bg-card p-5 hover:shadow-md transition-shadow cursor-pointer">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-heading font-semibold text-foreground mb-1">
-              {story.title}
-            </h3>
-            <p className="text-base text-muted-foreground leading-relaxed mb-3">
-              {story.summary}
-            </p>
+            <h3 className="mb-1">{story.title}</h3>
+            <p className="text-muted-foreground mb-3">{story.summary}</p>
             <div className="flex flex-wrap items-center gap-3">
-              <span className="flex items-center gap-1.5 text-base text-muted-foreground">
+              <span className="flex items-center gap-1.5 text-muted-foreground">
                 <Clock className="h-4 w-4" />
                 {durationStr}
               </span>
-              <span className="text-base text-muted-foreground">
-                {formattedDate}
-              </span>
+              <span className="text-muted-foreground">{formattedDate}</span>
               {story.themes?.slice(0, 3).map((theme) => (
                 <span
                   key={theme}
-                  className="text-base text-gold-dark bg-gold/10 px-2 py-0.5 rounded"
+                  className="text-gold-dark bg-gold/10 px-2 py-0.5 rounded"
                 >
                   {theme}
                 </span>
@@ -270,26 +257,24 @@ function RecordingCard({ recording }: { recording: Recording }) {
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
-              <span className="text-base font-heading font-semibold text-foreground">
+              <span className="font-heading font-semibold text-foreground">
                 {formattedDate}
               </span>
-              <span className="text-base text-muted-foreground">
-                {formattedTime}
-              </span>
+              <span className="text-muted-foreground">{formattedTime}</span>
             </div>
 
             <div className="flex items-center gap-4 mb-3">
-              <span className="flex items-center gap-1.5 text-base text-muted-foreground">
+              <span className="flex items-center gap-1.5 text-muted-foreground">
                 <Clock className="h-4 w-4" />
                 {durationStr}
               </span>
               {hasStoryGenerating ? (
-                <span className="flex items-center gap-1.5 text-base text-gold-dark">
+                <span className="flex items-center gap-1.5 text-gold-dark">
                   <Sparkles className="h-4 w-4" />
                   Generating story...
                 </span>
               ) : (
-                <span className="flex items-center gap-1.5 text-base text-muted-foreground">
+                <span className="flex items-center gap-1.5 text-muted-foreground">
                   <Mic className="h-4 w-4" />
                   {statusLabel[recording.status] || recording.status}
                 </span>
@@ -297,7 +282,7 @@ function RecordingCard({ recording }: { recording: Recording }) {
             </div>
 
             {preview && (
-              <p className="text-base text-muted-foreground leading-relaxed italic">
+              <p className="text-muted-foreground italic">
                 &ldquo;{preview}&rdquo;
               </p>
             )}

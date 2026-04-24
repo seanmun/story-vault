@@ -134,12 +134,8 @@ export default function RecordPage() {
       {/* Header text */}
       {!isRecording && state !== "uploading" && state !== "processing" && (
         <>
-          <p className="text-base font-heading tracking-[0.3em] text-gold-dark uppercase mb-4">
-            Your Story Awaits
-          </p>
-          <h1 className="text-3xl md:text-4xl font-heading font-semibold text-foreground mb-3 text-center">
-            Tell Your Story
-          </h1>
+          <p className="label text-gold-dark mb-4">Your Story Awaits</p>
+          <h1 className="mb-3 text-center">Tell Your Story</h1>
           <p className="text-muted-foreground text-center mb-16 max-w-xs">
             Tap the button and start talking. We&apos;ll do the rest.
           </p>
@@ -149,14 +145,14 @@ export default function RecordPage() {
       {/* Recording status */}
       {isRecording && (
         <div className="flex flex-col items-center mb-8">
-          <p className="text-base font-heading tracking-[0.3em] text-primary uppercase mb-4">
+          <p className="label text-primary mb-4">
             {state === "paused" ? "Paused" : "Recording"}
           </p>
           <RecordingTimer seconds={duration} />
 
           {/* Time remaining warning */}
           {isNearLimit && (
-            <p className="text-base text-destructive mt-2">
+            <p className="text-destructive mt-2">
               {remainingSeconds > 0
                 ? `${remainingSeconds}s remaining`
                 : "Maximum reached — stopping..."}
@@ -165,7 +161,7 @@ export default function RecordPage() {
 
           {/* Max duration note */}
           {!isNearLimit && (
-            <p className="text-base text-muted-foreground mt-2">
+            <p className="text-muted-foreground mt-2">
               Up to {MAX_DURATION_MINUTES} minutes per recording
             </p>
           )}
@@ -182,7 +178,7 @@ export default function RecordPage() {
       {/* Error message */}
       {error && (
         <p
-          className="text-base text-destructive bg-destructive/10 rounded-md p-4 mb-8 max-w-sm text-center"
+          className="text-destructive bg-destructive/10 rounded-md p-4 mb-8 max-w-sm text-center"
           role="alert"
         >
           {error}

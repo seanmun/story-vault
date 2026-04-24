@@ -68,7 +68,7 @@ export async function createVoiceClone(
 
   const formData = new FormData();
   formData.append("name", name);
-  formData.append("description", `StoryVault voice clone for ${name}`);
+  formData.append("description", `To Posterity voice clone for ${name}`);
 
   for (const file of audioFiles) {
     const blob = new Blob([new Uint8Array(file.buffer)], { type: "audio/webm" });

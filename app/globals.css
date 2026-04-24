@@ -11,6 +11,7 @@
   --font-body: var(--font-cormorant);
   --font-mono: var(--font-geist-mono);
   --font-sans: var(--font-cormorant);
+  --font-logo: var(--font-im-fell);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -167,17 +168,105 @@
   }
   html {
     @apply font-body;
+    /* User-adjustable base font size — applied to html so all rem-based text scales.
+       Default 20px for 55+ accessibility. Widget can adjust. */
+    font-size: var(--user-font-size, 20px);
+    line-height: var(--user-line-height, 1.7);
   }
 
-  /* Heading styles — Cinzel for all headings */
+  /* ============================================================
+     Type scale — ONE place for typography rules.
+     Base html font-size is user-adjustable (default 20px).
+     All sizes here use rem so they scale together.
+     ============================================================ */
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-cinzel), serif;
+    font-weight: 600;
     letter-spacing: 0.02em;
+    color: var(--foreground);
   }
 
-  /* User-adjustable text sizing via accessibility widget */
-  body {
-    font-size: var(--user-font-size, 1.125rem);
+  /* H1 — in-app page titles, auth titles, article titles */
+  h1 {
+    font-size: 2rem;        /* 40px at 20 base */
+    line-height: 1.2;
+  }
+  @media (min-width: 768px) {
+    h1 { font-size: 2.4rem; /* 48px */ }
+  }
+
+  /* H2 — section headings */
+  h2 {
+    font-size: 1.6rem;      /* 32px */
+    line-height: 1.25;
+  }
+  @media (min-width: 768px) {
+    h2 { font-size: 2rem;   /* 40px */ }
+  }
+
+  /* H3 — card titles, subsection heads */
+  h3 {
+    font-size: 1.2rem;      /* 24px */
+    line-height: 1.3;
+  }
+
+  /* Body paragraphs — inherit html font-size (20px default) */
+  p {
     line-height: var(--user-line-height, 1.7);
   }
 }
+
+/* ============================================================
+   Semantic modifier classes — apply explicitly where needed.
+   ============================================================ */
+
+/* .display — marketing hero H1 only (home, vision top) */
+.display {
+  font-size: 3rem;          /* 60px */
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+@media (min-width: 768px) {
+  .display {
+    font-size: 4rem;        /* 80px */
+  }
+}
+
+/* .lead — hero subheads, intro paragraphs, emphasis body */
+.lead {
+  font-size: 1.2rem;        /* 24px */
+  line-height: 1.5;
+}
+
+/* .quote — pull quotes and blockquotes */
+.quote {
+  font-size: 1.4rem;        /* 28px */
+  line-height: 1.45;
+  font-style: italic;
+  font-weight: 300;
+  font-family: var(--font-cormorant), serif;
+}
+@media (min-width: 768px) {
+  .quote {
+    font-size: 1.6rem;      /* 32px */
+  }
+}
+
+/* .stat — big numbers (market stats, prices) */
+.stat {
+  font-size: 2rem;          /* 40px */
+  line-height: 1;
+  font-family: var(--font-cinzel), serif;
+  font-weight: 600;
+}
+
+/* .label — small uppercase gold tracking labels */
+.label {
+  font-size: 0.9rem;        /* 18px — just below body, still readable */
+  font-family: var(--font-cinzel), serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+}
+

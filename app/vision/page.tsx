@@ -19,17 +19,15 @@ export default function VisionPage() {
     <div>
       {/* Hero */}
       <section className="px-6 py-24 md:py-36 text-center">
-        <p className="mb-6 text-base font-heading tracking-[0.3em] text-gold-dark uppercase">
-          Our Vision
-        </p>
-        <h1 className="max-w-4xl mx-auto text-4xl font-heading font-semibold tracking-wide text-foreground md:text-6xl lg:text-7xl leading-[1.1]">
+        <p className="label text-gold-dark mb-6">Our Vision</p>
+        <h1 className="display max-w-4xl mx-auto">
           Stories Are Dying
           <br />
           <span className="text-primary italic font-body font-light">with the people</span>
           <br />
           Who Lived Them
         </h1>
-        <p className="mt-8 max-w-2xl mx-auto text-lg text-muted-foreground leading-relaxed">
+        <p className="lead mt-8 max-w-2xl mx-auto text-muted-foreground">
           Every day, irreplaceable stories disappear. The veteran who never
           wrote about the war. The grandmother whose recipes kept a family
           alive. The pool hustler who ran tables from coast to coast. Once the
@@ -69,13 +67,9 @@ export default function VisionPage() {
       {/* The Problem */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-4xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
-            The Problem
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 text-center">
-            Existing Solutions Miss the Mark
-          </h2>
-          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-16 leading-relaxed">
+          <p className="label text-center text-gold-dark mb-4">The Problem</p>
+          <h2 className="mb-6 text-center">Existing Solutions Miss the Mark</h2>
+          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-16">
             Current platforms carry significant friction for the people
             who need them most. Older adults have stories to tell but lack the
             technical confidence or patience for complex tools.
@@ -104,13 +98,9 @@ export default function VisionPage() {
       {/* The Solution */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-4xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
-            The Solution
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 text-center">
-            The StoryVault Approach
-          </h2>
-          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-20 leading-relaxed">
+          <p className="label text-center text-gold-dark mb-4">The Solution</p>
+          <h2 className="mb-6 text-center">How It Works</h2>
+          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-20">
             A voice-first platform built around one action: press a button and
             start talking. Everything else happens automatically.
           </p>
@@ -147,12 +137,8 @@ export default function VisionPage() {
       {/* Key Features */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
-            Capabilities
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-20 text-center">
-            Key Features
-          </h2>
+          <p className="label text-center text-gold-dark mb-4">Capabilities</p>
+          <h2 className="mb-20 text-center">Key Features</h2>
 
           <div className="space-y-24">
             <FeatureSection
@@ -217,12 +203,8 @@ export default function VisionPage() {
       {/* Audience */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
-            Audience
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-20 text-center">
-            Who It&apos;s For
-          </h2>
+          <p className="label text-center text-gold-dark mb-4">Audience</p>
+          <h2 className="mb-20 text-center">Who It&apos;s For</h2>
           <div className="grid gap-8 md:grid-cols-3">
             <AudienceCard
               icon={<Volume2 className="h-5 w-5 text-gold-dark" />}
@@ -234,7 +216,7 @@ export default function VisionPage() {
               icon={<Heart className="h-5 w-5 text-gold-dark" />}
               title="The Family Champion"
               age="Ages 30-55"
-              description={"The adult child or grandchild who buys StoryVault as a gift. The one who has said \"I wish I had recorded Grandpa's stories before he passed.\""}
+              description={"The adult child or grandchild who buys To Posterity as a gift. The one who has said \"I wish I had recorded Grandpa's stories before he passed.\""}
             />
             <AudienceCard
               icon={<MessageCircle className="h-5 w-5 text-gold-dark" />}
@@ -249,13 +231,9 @@ export default function VisionPage() {
       {/* Design Philosophy */}
       <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-4xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
-            Philosophy
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 text-center">
-            Radical Simplicity
-          </h2>
-          <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto leading-relaxed">
+          <p className="label text-center text-gold-dark mb-4">Philosophy</p>
+          <h2 className="mb-6 text-center">Radical Simplicity</h2>
+          <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
             Every screen, every interaction, every notification must pass the
             Bumper Test.
           </p>
@@ -280,16 +258,32 @@ export default function VisionPage() {
         </div>
       </section>
 
-      {/* Origin Story */}
+      {/* The Name — Petrarch */}
       <section className="px-6 py-24">
         <div className="mx-auto max-w-3xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
-            Origin
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-12 text-center">
-            Why This Exists
-          </h2>
-          <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+          <p className="label text-center text-gold-dark mb-4">The Name</p>
+          <h2 className="mb-12 text-center">Ad Posteros</h2>
+          <div className="space-y-6 text-muted-foreground">
+            <p className="lead text-foreground">
+              In 1350, Petrarch sat down and wrote a letter. He didn&apos;t
+              know who would read it. He addressed it simply: <em>To Posterity</em>{" "}
+              &mdash; to whoever came after, whoever they turned out to be.
+            </p>
+            <p>
+              Seven hundred years later, people still read it. This is that
+              same letter. Except now you get to speak it, and the person
+              who opens it is someone you love.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Origin Story — Bumper */}
+      <section className="bg-card px-6 py-24">
+        <div className="mx-auto max-w-3xl">
+          <p className="label text-center text-gold-dark mb-4">Origin</p>
+          <h2 className="mb-12 text-center">Why This Exists</h2>
+          <div className="space-y-6 text-muted-foreground">
             <p>
               Bumper was a billiards hustler. Not the kind you see in movies,
               standing silently in a dark corner waiting to reveal his hidden
@@ -314,11 +308,11 @@ export default function VisionPage() {
 
             <Divider />
 
-            <p className="text-foreground font-medium text-xl leading-relaxed">
-              That is the insight behind StoryVault. The world is full of
-              Bumpers. People with extraordinary lives and extraordinary
-              stories who will never become authors. The technology now exists
-              to meet them exactly where they are: in conversation.
+            <p className="lead text-foreground font-medium">
+              That is why this exists. The world is full of Bumpers. People
+              with extraordinary lives and extraordinary stories who will
+              never become authors. The technology now exists to meet them
+              exactly where they are: in conversation.
             </p>
             <p className="italic">
               Two hundred years from now, Bumper&apos;s
@@ -331,20 +325,16 @@ export default function VisionPage() {
       </section>
 
       {/* Market */}
-      <section className="bg-card px-6 py-24">
+      <section className="px-6 py-24">
         <div className="mx-auto max-w-4xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
-            Opportunity
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-16 text-center">
-            The Market
-          </h2>
+          <p className="label text-center text-gold-dark mb-4">Opportunity</p>
+          <h2 className="mb-16 text-center">The Market</h2>
           <div className="grid gap-12 sm:grid-cols-3 mb-16">
             <StatCard value="$22.5B+" label="Digital legacy market (2024)" />
             <StatCard value="73M" label="Baby Boomers in the US" />
             <StatCard value="13-15%" label="Annual market growth" />
           </div>
-          <div className="space-y-5 text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <div className="space-y-5 text-muted-foreground max-w-3xl mx-auto">
             <p>
               The Baby Boomer generation represents the wealthiest and most
               tech-adjacent older generation in history. By 2030, all Boomers
@@ -360,14 +350,10 @@ export default function VisionPage() {
       </section>
 
       {/* Pricing */}
-      <section className="px-6 py-24">
+      <section className="bg-card px-6 py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="text-center text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-4">
-            Pricing
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-6 text-center">
-            Simple & Transparent
-          </h2>
+          <p className="label text-center text-gold-dark mb-4">Pricing</p>
+          <h2 className="mb-6 text-center">Simple &amp; Transparent</h2>
           <p className="text-center text-muted-foreground mb-16">
             Start free. Upgrade when you&apos;re ready.
           </p>
@@ -425,22 +411,20 @@ export default function VisionPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-card px-6 py-24">
+      <section className="px-6 py-24">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-base font-heading tracking-[0.25em] text-gold-dark uppercase mb-6">
-            Begin Your Legacy
-          </p>
-          <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-4 leading-tight">
+          <p className="label text-gold-dark mb-6">Begin Your Legacy</p>
+          <h2 className="mb-4 leading-tight">
             Every life has a story worth keeping
           </h2>
-          <p className="text-lg text-muted-foreground mb-2 italic font-light">
+          <p className="lead text-muted-foreground mb-2 italic font-light">
             Record it. Keep it. Pass it on.
           </p>
           <div className="mt-10">
             <Link href="/signup">
-              <Button size="lg" className="text-base px-12 tracking-wide">
+              <Button size="lg" className="tracking-wide">
                 Get Started Free
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
           </div>
@@ -463,10 +447,8 @@ function Divider() {
 function ProblemCard({ name, problem }: { name: string; problem: string }) {
   return (
     <div className="bg-background p-8">
-      <h3 className="font-heading text-base tracking-wider font-semibold text-foreground mb-3 uppercase">
-        {name}
-      </h3>
-      <p className="text-muted-foreground leading-relaxed">{problem}</p>
+      <p className="label text-foreground mb-3">{name}</p>
+      <p className="text-muted-foreground">{problem}</p>
     </div>
   );
 }
@@ -488,11 +470,9 @@ function ProcessStep({
         {icon}
       </div>
       <div>
-        <div className="font-heading text-base tracking-[0.3em] text-gold-dark uppercase mb-2">
-          Step {step}
-        </div>
-        <h3 className="text-xl font-semibold text-foreground mb-3">{title}</h3>
-        <p className="text-muted-foreground leading-relaxed">{description}</p>
+        <p className="label text-gold-dark mb-2">Step {step}</p>
+        <h3 className="mb-3">{title}</h3>
+        <p className="text-muted-foreground">{description}</p>
       </div>
     </div>
   );
@@ -511,11 +491,11 @@ function FeatureSection({
     <div className="max-w-2xl mx-auto">
       <div className="flex items-center gap-4 mb-6">
         {icon}
-        <h3 className="text-2xl font-semibold text-foreground">{title}</h3>
+        <h3>{title}</h3>
       </div>
       <ul className="list-disc pl-12 space-y-3 marker:text-gold-dark">
         {items.map((item, i) => (
-          <li key={i} className="text-base text-muted-foreground leading-relaxed pl-2">
+          <li key={i} className="text-muted-foreground pl-2">
             {item}
           </li>
         ))}
@@ -538,13 +518,9 @@ function AudienceCard({
   return (
     <div className="rounded-lg border border-border p-8 text-center">
       <div className="flex justify-center mb-4">{icon}</div>
-      <h3 className="font-heading text-base tracking-wide font-semibold text-foreground">
-        {title}
-      </h3>
-      <p className="text-base font-heading tracking-widest text-gold-dark uppercase mt-1 mb-4">
-        {age}
-      </p>
-      <p className="text-muted-foreground leading-relaxed">{description}</p>
+      <h3>{title}</h3>
+      <p className="label text-gold-dark mt-1 mb-4">{age}</p>
+      <p className="text-muted-foreground">{description}</p>
     </div>
   );
 }
@@ -552,8 +528,8 @@ function AudienceCard({
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
     <div className="text-center">
-      <p className="text-4xl font-heading font-semibold text-primary">{value}</p>
-      <p className="text-base text-muted-foreground mt-2">{label}</p>
+      <p className="stat text-primary">{value}</p>
+      <p className="text-muted-foreground mt-2">{label}</p>
     </div>
   );
 }
@@ -567,10 +543,8 @@ function DesignPrinciple({
 }) {
   return (
     <div className="bg-background p-8">
-      <h3 className="font-heading text-base tracking-wider font-semibold text-foreground mb-3 uppercase">
-        {title}
-      </h3>
-      <p className="text-muted-foreground leading-relaxed">{description}</p>
+      <p className="label text-foreground mb-3">{title}</p>
+      <p className="text-muted-foreground">{description}</p>
     </div>
   );
 }
@@ -590,18 +564,16 @@ function PricingCard({
 }) {
   return (
     <div className={`p-8 ${highlighted ? "bg-primary/5" : "bg-background"}`}>
-      <h3 className="font-heading text-base tracking-wider font-semibold text-foreground uppercase">
-        {tier}
-      </h3>
+      <p className="label text-foreground">{tier}</p>
       <p className="mt-3 mb-6">
-        <span className="text-3xl font-heading font-semibold text-foreground">{price}</span>
-        <span className="text-base text-muted-foreground">{period}</span>
+        <span className="stat text-foreground">{price}</span>
+        <span className="text-muted-foreground ml-1">{period}</span>
       </p>
       <ul className="space-y-3">
         {features.map((feature, i) => (
-          <li key={i} className="flex items-start gap-3 text-base text-muted-foreground">
-            <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-gold-dark" />
-            {feature}
+          <li key={i} className="flex items-start gap-3 text-muted-foreground">
+            <span className="mt-3 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gold-dark" />
+            <span>{feature}</span>
           </li>
         ))}
       </ul>
