@@ -8,283 +8,99 @@ import {
   Sparkles,
   ArrowRight,
   Globe,
-  Heart,
-  MessageCircle,
-  Volume2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WaxSeal } from "@/components/WaxSeal";
 
 export default function VisionPage() {
   return (
-    <div>
+    <div className="paper-texture">
       {/* Hero */}
-      <section className="px-6 py-24 md:py-36 text-center">
-        <p className="label text-gold-dark mb-6">Our Vision</p>
-        <h1 className="display max-w-4xl mx-auto">
-          Stories Are Dying
-          <br />
-          <span className="text-primary italic font-body font-light">with the people</span>
-          <br />
-          Who Lived Them
-        </h1>
-        <p className="lead mt-8 max-w-2xl mx-auto text-muted-foreground">
-          Every day, irreplaceable stories disappear. The veteran who never
-          wrote about the war. The grandmother whose recipes kept a family
-          alive. The pool hustler who ran tables from coast to coast. Once the
-          storytellers are gone, the stories go with them.
-        </p>
+      <section className="px-6 pt-20 pb-24 md:pt-28 md:pb-32 text-center">
+        <div className="mx-auto max-w-4xl">
+          <p className="label text-gold-dark mb-8">Our Vision</p>
+          <h1 className="display mb-10">
+            Stories Are Dying
+            <br />
+            <span className="text-primary italic font-body font-light">
+              with the people
+            </span>
+            <br />
+            Who Lived Them
+          </h1>
+          <p className="lead mx-auto max-w-2xl text-muted-foreground">
+            Every day, irreplaceable stories disappear. The veteran who never
+            wrote about the war. The grandmother whose recipes kept a family
+            alive. Once the storytellers are gone, the stories go with them.
+          </p>
 
-        {/* ElevenLabs AudioNative Player */}
-        <div className="mt-10 w-full max-w-2xl mx-auto">
-          <div
-            id="elevenlabs-audionative-widget"
-            data-height="90"
-            data-width="100%"
-            data-frameborder="no"
-            data-scrolling="no"
-            data-publicuserid="cc0bdceaefc0a9d96ec8f2ecf3476f85bbee8b2b3e1f7030edf789f1b258a24b"
-            data-playerurl="https://elevenlabs.io/player/index.html"
-          >
-            Loading the{" "}
-            <a
-              href="https://elevenlabs.io/text-to-speech"
-              target="_blank"
-              rel="noopener"
+          {/* ElevenLabs AudioNative Player */}
+          <div className="mt-14 w-full max-w-2xl mx-auto">
+            <div
+              id="elevenlabs-audionative-widget"
+              data-height="90"
+              data-width="100%"
+              data-frameborder="no"
+              data-scrolling="no"
+              data-publicuserid="cc0bdceaefc0a9d96ec8f2ecf3476f85bbee8b2b3e1f7030edf789f1b258a24b"
+              data-playerurl="https://elevenlabs.io/player/index.html"
             >
-              Elevenlabs Text to Speech
-            </a>{" "}
-            AudioNative Player...
-          </div>
-          <Script
-            src="https://elevenlabs.io/player/audioNativeHelper.js"
-            strategy="lazyOnload"
-          />
-        </div>
-
-        <Divider />
-      </section>
-
-      {/* The Problem */}
-      <section className="bg-card px-6 py-24">
-        <div className="mx-auto max-w-4xl">
-          <p className="label text-center text-gold-dark mb-4">The Problem</p>
-          <h2 className="mb-6 text-center">Existing Solutions Miss the Mark</h2>
-          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-16">
-            Current platforms carry significant friction for the people
-            who need them most. Older adults have stories to tell but lack the
-            technical confidence or patience for complex tools.
-          </p>
-          <div className="grid gap-px bg-border md:grid-cols-2 rounded-lg overflow-hidden">
-            <ProblemCard
-              name="Text-Based Platforms"
-              problem="Require written responses — a non-starter for many older adults who aren't comfortable writers."
-            />
-            <ProblemCard
-              name="Basic Voice Apps"
-              problem="Improved with voice recording, but still require navigating complex smartphone interfaces."
-            />
-            <ProblemCard
-              name="AI Phone Calls"
-              problem="Remove the user's agency and spontaneity. Robotic prompts feel impersonal and scripted."
-            />
-            <ProblemCard
-              name="Limited Outputs"
-              problem="Competitors offer transcription and book printing, then stop. No podcasts, no AI notebooks, no shareable clips."
+              Loading the{" "}
+              <a
+                href="https://elevenlabs.io/text-to-speech"
+                target="_blank"
+                rel="noopener"
+              >
+                Elevenlabs Text to Speech
+              </a>{" "}
+              AudioNative Player...
+            </div>
+            <Script
+              src="https://elevenlabs.io/player/audioNativeHelper.js"
+              strategy="lazyOnload"
             />
           </div>
         </div>
       </section>
 
-      {/* The Solution */}
-      <section className="px-6 py-24">
-        <div className="mx-auto max-w-4xl">
-          <p className="label text-center text-gold-dark mb-4">The Solution</p>
-          <h2 className="mb-6 text-center">How It Works</h2>
-          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-20">
-            A voice-first platform built around one action: press a button and
-            start talking. Everything else happens automatically.
-          </p>
+      <SectionBreak />
 
-          <div className="space-y-20">
-            <ProcessStep
-              step="I"
-              title="Record"
-              description="Open the app and tap the big, unmissable Record button. Tell your story in your own words, for as long or as short as you want. No prompts required, though guided questions are available."
-              icon={<Mic className="h-6 w-6" />}
-            />
-            <ProcessStep
-              step="II"
-              title="AI Processes"
-              description="The recording is transcribed, enhanced, and analyzed. AI identifies themes, characters, time periods, and emotional arcs. It organizes the content and finds connections to your other stories."
-              icon={<Sparkles className="h-6 w-6" />}
-            />
-            <ProcessStep
-              step="III"
-              title="Multi-Format Output"
-              description="Your story becomes a polished written narrative, a podcast-style audio episode, an AI Notebook prompt for interactive conversations, and a shareable audio clip for family."
-              icon={<BookOpen className="h-6 w-6" />}
-            />
-            <ProcessStep
-              step="IV"
-              title="Organize & Share"
-              description="Stories are automatically organized into life chapters — childhood, career, family, adventures. Share with family, and over time your collection becomes a complete memoir."
-              icon={<Users className="h-6 w-6" />}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Key Features */}
-      <section className="bg-card px-6 py-24">
-        <div className="mx-auto max-w-5xl">
-          <p className="label text-center text-gold-dark mb-4">Capabilities</p>
-          <h2 className="mb-20 text-center">Key Features</h2>
-
-          <div className="space-y-24">
-            <FeatureSection
-              title="Voice-First Recording"
-              icon={<Mic className="h-7 w-7 text-gold-dark" />}
-              items={[
-                "One-tap recording with a large, prominent button designed for accessibility",
-                "No time limits — whether it's a 2-minute anecdote or a 45-minute saga",
-                "Optional guided prompts that can be customized by family members",
-                "Automatic silence detection and smart segmentation for natural story breaks",
-                "Offline recording capability — stories sync when connection is restored",
-              ]}
-            />
-            <FeatureSection
-              title="AI Story Engine"
-              icon={<Sparkles className="h-7 w-7 text-gold-dark" />}
-              items={[
-                "High-accuracy transcription optimized for older voices, accents, and colloquial language",
-                "Narrative enhancement that preserves the speaker's authentic voice and style",
-                "Automatic theme tagging, character identification, and timeline placement",
-                "Cross-story connections that weave individual tales into a larger narrative",
-                "Fact-checking prompts for dates, names, and places to verify details",
-              ]}
-            />
-            <FeatureSection
-              title="Multi-Format Output"
-              icon={<BookOpen className="h-7 w-7 text-gold-dark" />}
-              items={[
-                "Written Stories: polished prose that reads like memoir chapters, in the storyteller's voice",
-                "Podcast Episodes: AI-generated audio with intro, outro, and ambient sound",
-                "AI Notebook Prompts: let family members have conversations with the stories",
-                "Shareable Clips: 60-second highlights with the storyteller's actual voice",
-                "Legacy Books: hardcover printed books compiled from all stories",
-              ]}
-            />
-            <FeatureSection
-              title="Legacy Vault & Succession"
-              icon={<Shield className="h-7 w-7 text-gold-dark" />}
-              items={[
-                "Secure cloud storage with end-to-end encryption",
-                "Designated Heir system: name family members who inherit full access",
-                "Time-Release Capsules: stories that unlock on specific dates — birthdays, weddings, anniversaries",
-                "Inactivity Transfer: automatic access transfer after a configurable period",
-                "Annual wellness check-in with escalating notifications to heirs",
-              ]}
-            />
-            <FeatureSection
-              title="Community & Discovery"
-              icon={<Globe className="h-7 w-7 text-gold-dark" />}
-              items={[
-                "Story Circles: topic-based groups — veterans, truckers, pool players, nurses, immigrants",
-                "Era Collections: curated feeds organized by decade",
-                "Generational Bridge: pairing younger listeners with older storytellers",
-                "Family Tree Integration: connect stories to family members across lineages",
-                "Privacy controls at every level: private, family, circle, or public",
-              ]}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Audience */}
-      <section className="px-6 py-24">
-        <div className="mx-auto max-w-5xl">
-          <p className="label text-center text-gold-dark mb-4">Audience</p>
-          <h2 className="mb-20 text-center">Who It&apos;s For</h2>
-          <div className="grid gap-8 md:grid-cols-3">
-            <AudienceCard
-              icon={<Volume2 className="h-5 w-5 text-gold-dark" />}
-              title="The Storyteller"
-              age="Ages 55+"
-              description="Adults who have lived extraordinary lives but are unlikely to write a memoir. Comfortable talking, motivated by the idea that their grandchildren will one day hear their stories."
-            />
-            <AudienceCard
-              icon={<Heart className="h-5 w-5 text-gold-dark" />}
-              title="The Family Champion"
-              age="Ages 30-55"
-              description={"The adult child or grandchild who buys To Posterity as a gift. The one who has said \"I wish I had recorded Grandpa's stories before he passed.\""}
-            />
-            <AudienceCard
-              icon={<MessageCircle className="h-5 w-5 text-gold-dark" />}
-              title="History Enthusiasts"
-              age="All Ages"
-              description="People passionate about oral history. Veterans groups, cultural organizations, and retirement communities preserving collective memory."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Design Philosophy */}
-      <section className="bg-card px-6 py-24">
-        <div className="mx-auto max-w-4xl">
-          <p className="label text-center text-gold-dark mb-4">Philosophy</p>
-          <h2 className="mb-6 text-center">Radical Simplicity</h2>
-          <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
-            Every screen, every interaction, every notification must pass the
-            Bumper Test.
-          </p>
-          <div className="grid gap-px bg-border sm:grid-cols-2 rounded-lg overflow-hidden">
-            <DesignPrinciple
-              title="The Big Button"
-              description="The home screen is dominated by a single, large Record button. Nothing else competes for attention. Large enough for arthritic fingers, obvious enough for low-vision users."
-            />
-            <DesignPrinciple
-              title="Zero Navigation"
-              description="The app opens to Record. Previous stories are one swipe away. Settings hide behind a simple icon. No onboarding tutorial — because none should be needed."
-            />
-            <DesignPrinciple
-              title="Accessible by Default"
-              description="Large text, high contrast, hearing-aid compatible audio, screen reader optimized, and a simplified Easy Mode for non-essential elements."
-            />
-            <DesignPrinciple
-              title="Warm & Personal"
-              description="The app feels like a living room, not a tech product. Warm colors, gentle animations, and language that treats you as a storyteller."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* The Name — Petrarch */}
-      <section className="px-6 py-24">
+      {/* The Name — Petrarch (now elevated to second section) */}
+      <section className="marketing-section px-6">
         <div className="mx-auto max-w-3xl">
-          <p className="label text-center text-gold-dark mb-4">The Name</p>
-          <h2 className="mb-12 text-center">Ad Posteros</h2>
-          <div className="space-y-6 text-muted-foreground">
-            <p className="lead text-foreground">
-              In 1350, Petrarch sat down and wrote a letter. He didn&apos;t
-              know who would read it. He addressed it simply: <em>To Posterity</em>{" "}
-              &mdash; to whoever came after, whoever they turned out to be.
-            </p>
-            <p>
-              Seven hundred years later, people still read it. This is that
-              same letter. Except now you get to speak it, and the person
-              who opens it is someone you love.
-            </p>
+          <div className="text-center mb-16">
+            <div className="mb-10 flex justify-center">
+              <WaxSeal size={88} monogram="TP" />
+            </div>
+            <p className="label text-gold-dark mb-4">The Name</p>
+            <h2>Ad Posteros</h2>
           </div>
+
+          <blockquote className="pull-quote text-foreground/85 mb-10 pl-8 md:pl-12">
+            In 1350, Petrarch sat down and wrote a letter. He didn&apos;t know
+            who would read it. He addressed it simply: To Posterity &mdash;
+            to whoever came after, whoever they turned out to be.
+          </blockquote>
+
+          <p className="lead text-muted-foreground">
+            Seven hundred years later, people still read it. This is that
+            same letter. Except now you get to speak it, and the person
+            who opens it is someone you love.
+          </p>
         </div>
       </section>
 
-      {/* Origin Story — Bumper */}
-      <section className="bg-card px-6 py-24">
+      <SectionBreak />
+
+      {/* Origin — Bumper */}
+      <section className="marketing-section px-6">
         <div className="mx-auto max-w-3xl">
-          <p className="label text-center text-gold-dark mb-4">Origin</p>
-          <h2 className="mb-12 text-center">Why This Exists</h2>
+          <div className="text-center mb-16">
+            <p className="label text-gold-dark mb-4">Origin</p>
+            <h2>Why This Exists</h2>
+          </div>
           <div className="space-y-6 text-muted-foreground">
-            <p>
+            <p className="drop-cap text-foreground">
               Bumper was a billiards hustler. Not the kind you see in movies,
               standing silently in a dark corner waiting to reveal his hidden
               talent. Bumper was loud, colorful, and impossible to ignore.
@@ -306,7 +122,11 @@ export default function VisionPage() {
               a microphone.
             </p>
 
-            <Divider />
+            <div className="py-6">
+              <div className="section-ornament">
+                <span className="section-ornament-dot" />
+              </div>
+            </div>
 
             <p className="lead text-foreground font-medium">
               That is why this exists. The world is full of Bumpers. People
@@ -324,56 +144,154 @@ export default function VisionPage() {
         </div>
       </section>
 
-      {/* Market */}
-      <section className="px-6 py-24">
-        <div className="mx-auto max-w-4xl">
-          <p className="label text-center text-gold-dark mb-4">Opportunity</p>
-          <h2 className="mb-16 text-center">The Market</h2>
-          <div className="grid gap-12 sm:grid-cols-3 mb-16">
-            <StatCard value="$22.5B+" label="Digital legacy market (2024)" />
-            <StatCard value="73M" label="Baby Boomers in the US" />
-            <StatCard value="13-15%" label="Annual market growth" />
+      <SectionBreak />
+
+      {/* How It Works — vertical timeline */}
+      <section className="marketing-section px-6">
+        <div className="mx-auto max-w-3xl">
+          <div className="text-center mb-20">
+            <p className="label text-gold-dark mb-4">The Process</p>
+            <h2>How It Works</h2>
+            <p className="lead mt-6 text-muted-foreground max-w-2xl mx-auto">
+              A voice-first platform built around one action: press a button
+              and start talking. Everything else happens automatically.
+            </p>
           </div>
-          <div className="space-y-5 text-muted-foreground max-w-3xl mx-auto">
-            <p>
-              The Baby Boomer generation represents the wealthiest and most
-              tech-adjacent older generation in history. By 2030, all Boomers
-              will be over 65, creating peak demand for legacy preservation.
-            </p>
-            <p>
-              The convergence of cultural awareness around oral history with
-              AI capabilities that make voice-to-content transformation
-              seamless creates a unique window of opportunity.
-            </p>
+
+          <ol className="relative">
+            {/* Vertical line */}
+            <div
+              aria-hidden="true"
+              className="absolute left-7 top-7 bottom-7 w-px bg-gold/30"
+            />
+
+            <TimelineStep
+              roman="I"
+              title="Record"
+              description="Open the app and tap the big, unmissable Record button. Tell your story in your own words. No prompts required."
+              icon={<Mic className="h-5 w-5" />}
+            />
+            <TimelineStep
+              roman="II"
+              title="AI Processes"
+              description="Your recording is transcribed and analyzed. AI identifies themes, characters, time periods, and emotional arcs."
+              icon={<Sparkles className="h-5 w-5" />}
+            />
+            <TimelineStep
+              roman="III"
+              title="Multi-Format Output"
+              description="Your story becomes polished written prose, a podcast-style audio episode, and a shareable clip — all in your voice."
+              icon={<BookOpen className="h-5 w-5" />}
+            />
+            <TimelineStep
+              roman="IV"
+              title="Organize & Share"
+              description="Stories organize into life chapters. Share with family, and over time your collection becomes a complete memoir."
+              icon={<Users className="h-5 w-5" />}
+              isLast
+            />
+          </ol>
+        </div>
+      </section>
+
+      <SectionBreak />
+
+      {/* Key Features */}
+      <section className="marketing-section px-6">
+        <div className="mx-auto max-w-5xl">
+          <div className="text-center mb-20">
+            <p className="label text-gold-dark mb-4">Capabilities</p>
+            <h2>Key Features</h2>
+          </div>
+
+          <div className="space-y-24">
+            <FeatureSection
+              title="Voice-First Recording"
+              icon={<Mic className="h-7 w-7 text-gold-dark" />}
+              items={[
+                "One-tap recording designed for accessibility — no menus, no setup",
+                "No time limits, from a 2-minute anecdote to a 45-minute saga",
+                "Optional guided prompts that family members can customize",
+                "Offline recording — stories sync when connection is restored",
+              ]}
+            />
+            <FeatureSection
+              title="AI Story Engine"
+              icon={<Sparkles className="h-7 w-7 text-gold-dark" />}
+              items={[
+                "Transcription optimized for older voices, accents, and colloquial language",
+                "Narrative enhancement that preserves the speaker's authentic voice",
+                "Automatic theme tagging, character identification, and timeline placement",
+                "Cross-story connections that weave individual tales into a larger narrative",
+              ]}
+            />
+            <FeatureSection
+              title="Multi-Format Output"
+              icon={<BookOpen className="h-7 w-7 text-gold-dark" />}
+              items={[
+                "Written Stories: memoir-style prose in the storyteller's voice",
+                "Podcast Episodes: AI-generated audio in the user's own cloned voice",
+                "AI Notebook Prompts: let family converse with the stories",
+                "Legacy Books: hardcover printed books compiled from all stories",
+              ]}
+            />
+            <FeatureSection
+              title="Legacy Vault & Succession"
+              icon={<Shield className="h-7 w-7 text-gold-dark" />}
+              items={[
+                "Secure cloud storage with end-to-end encryption",
+                "Designated Heirs: name family members who inherit full access",
+                "Time-Release Capsules: stories that unlock on specific dates",
+                "Inactivity Transfer with annual wellness check-ins",
+              ]}
+            />
+            <FeatureSection
+              title="Community & Discovery"
+              icon={<Globe className="h-7 w-7 text-gold-dark" />}
+              items={[
+                "Story Circles: topic-based groups — veterans, truckers, immigrants",
+                "Era Collections: curated feeds organized by decade",
+                "Generational Bridge pairing younger listeners with older storytellers",
+                "Privacy controls at every level: private, family, circle, or public",
+              ]}
+            />
           </div>
         </div>
       </section>
 
+      <SectionBreak />
+
       {/* Pricing */}
-      <section className="bg-card px-6 py-24">
+      <section className="marketing-section px-6">
         <div className="mx-auto max-w-5xl">
-          <p className="label text-center text-gold-dark mb-4">Pricing</p>
-          <h2 className="mb-6 text-center">Simple &amp; Transparent</h2>
-          <p className="text-center text-muted-foreground mb-16">
-            Start free. Upgrade when you&apos;re ready.
-          </p>
+          <div className="text-center mb-16">
+            <p className="label text-gold-dark mb-4">Pricing</p>
+            <h2>Free While We&apos;re in Beta</h2>
+            <p className="lead mt-6 text-muted-foreground max-w-xl mx-auto">
+              Everything is free right now. Paid tiers below are a preview of
+              what&apos;s coming when we leave beta.
+            </p>
+          </div>
           <div className="grid gap-px bg-border md:grid-cols-2 lg:grid-cols-4 rounded-lg overflow-hidden">
             <PricingCard
               tier="Free"
               price="$0"
               period=""
+              highlighted
+              betaTag
               features={[
-                "5 recordings/month",
-                "Basic transcription",
+                "Unlimited recordings during beta",
+                "Full AI transcription",
                 "Written story output",
-                "1 GB storage",
+                "Audio narration",
+                "Voice cloning after 5 min recorded",
               ]}
             />
             <PricingCard
               tier="Storyteller"
               price="$9.99"
               period="/mo"
-              highlighted
+              disabled
               features={[
                 "Unlimited recordings",
                 "Full AI output suite",
@@ -386,6 +304,7 @@ export default function VisionPage() {
               tier="Family Legacy"
               price="$19.99"
               period="/mo"
+              disabled
               features={[
                 "Everything in Storyteller",
                 "5 family accounts",
@@ -398,6 +317,7 @@ export default function VisionPage() {
               tier="Legacy Forever"
               price="$299"
               period=" once"
+              disabled
               features={[
                 "Lifetime access",
                 "500 GB storage",
@@ -410,71 +330,69 @@ export default function VisionPage() {
         </div>
       </section>
 
+      <SectionBreak />
+
       {/* CTA */}
-      <section className="px-6 py-24">
+      <section className="marketing-section px-6">
         <div className="mx-auto max-w-2xl text-center">
+          <div className="mb-10 flex justify-center">
+            <WaxSeal size={64} monogram="TP" />
+          </div>
           <p className="label text-gold-dark mb-6">Begin Your Legacy</p>
-          <h2 className="mb-4 leading-tight">
+          <h2 className="mb-6 leading-tight">
             Every life has a story worth keeping
           </h2>
-          <p className="lead text-muted-foreground mb-2 italic font-light">
+          <p className="lead text-muted-foreground mb-12 italic font-light">
             Record it. Keep it. Pass it on.
           </p>
-          <div className="mt-10">
-            <Link href="/signup">
-              <Button size="lg" className="tracking-wide">
-                Get Started Free
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
+          <Link href="/signup">
+            <Button size="lg" className="tracking-wide">
+              Get Started Free
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
         </div>
       </section>
     </div>
   );
 }
 
-function Divider() {
+function SectionBreak() {
   return (
-    <div className="flex items-center justify-center gap-4 text-gold/40 py-4">
-      <div className="h-px w-12 bg-current" />
-      <div className="h-1.5 w-1.5 rounded-full bg-current" />
-      <div className="h-px w-12 bg-current" />
+    <div className="px-6">
+      <div className="mx-auto max-w-4xl py-2">
+        <div className="section-ornament">
+          <span className="section-ornament-dot" />
+        </div>
+      </div>
     </div>
   );
 }
 
-function ProblemCard({ name, problem }: { name: string; problem: string }) {
-  return (
-    <div className="bg-background p-8">
-      <p className="label text-foreground mb-3">{name}</p>
-      <p className="text-muted-foreground">{problem}</p>
-    </div>
-  );
-}
-
-function ProcessStep({
-  step,
+function TimelineStep({
+  roman,
   title,
   description,
   icon,
+  isLast,
 }: {
-  step: string;
+  roman: string;
   title: string;
   description: string;
   icon: React.ReactNode;
+  isLast?: boolean;
 }) {
   return (
-    <div className="flex gap-8 items-start">
-      <div className="flex-shrink-0 flex h-14 w-14 items-center justify-center rounded-full border border-gold/30 text-gold-dark">
+    <li className={`relative flex gap-6 ${isLast ? "" : "mb-12"}`}>
+      <div className="flex-shrink-0 z-10 flex h-14 w-14 items-center justify-center rounded-full border border-gold/40 bg-background text-gold-dark">
         {icon}
       </div>
-      <div>
-        <p className="label text-gold-dark mb-2">Step {step}</p>
+      <div className="flex-1 pt-2">
+        <p className="label text-gold-dark mb-2">Step {roman}</p>
         <h3 className="mb-3">{title}</h3>
         <p className="text-muted-foreground">{description}</p>
       </div>
-    </div>
+    </li>
   );
 }
 
@@ -504,79 +422,60 @@ function FeatureSection({
   );
 }
 
-function AudienceCard({
-  icon,
-  title,
-  age,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  age: string;
-  description: string;
-}) {
-  return (
-    <div className="rounded-lg border border-border p-8 text-center">
-      <div className="flex justify-center mb-4">{icon}</div>
-      <h3>{title}</h3>
-      <p className="label text-gold-dark mt-1 mb-4">{age}</p>
-      <p className="text-muted-foreground">{description}</p>
-    </div>
-  );
-}
-
-function StatCard({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="text-center">
-      <p className="stat text-primary">{value}</p>
-      <p className="text-muted-foreground mt-2">{label}</p>
-    </div>
-  );
-}
-
-function DesignPrinciple({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="bg-background p-8">
-      <p className="label text-foreground mb-3">{title}</p>
-      <p className="text-muted-foreground">{description}</p>
-    </div>
-  );
-}
-
 function PricingCard({
   tier,
   price,
   period,
   features,
   highlighted,
+  disabled,
+  betaTag,
 }: {
   tier: string;
   price: string;
   period: string;
   features: string[];
   highlighted?: boolean;
+  disabled?: boolean;
+  betaTag?: boolean;
 }) {
   return (
-    <div className={`p-8 ${highlighted ? "bg-primary/5" : "bg-background"}`}>
-      <p className="label text-foreground">{tier}</p>
-      <p className="mt-3 mb-6">
-        <span className="stat text-foreground">{price}</span>
-        <span className="text-muted-foreground ml-1">{period}</span>
-      </p>
-      <ul className="space-y-3">
-        {features.map((feature, i) => (
-          <li key={i} className="flex items-start gap-3 text-muted-foreground">
-            <span className="mt-3 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gold-dark" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
+    <div
+      className={`p-8 ${
+        disabled
+          ? "bg-background/60"
+          : highlighted
+          ? "bg-primary/5"
+          : "bg-background"
+      }`}
+    >
+      <div className={disabled ? "opacity-40" : ""}>
+        <div className="flex items-center justify-between mb-3">
+          <p className="label text-foreground">{tier}</p>
+          {betaTag && (
+            <span className="label text-primary border border-primary/40 px-3 py-1 rounded text-base">
+              Beta
+            </span>
+          )}
+        </div>
+        <p className="mb-6">
+          <span className="stat text-foreground">{price}</span>
+          <span className="text-muted-foreground ml-1">{period}</span>
+        </p>
+        <ul className="space-y-3">
+          {features.map((feature, i) => (
+            <li key={i} className="flex items-start gap-3 text-muted-foreground">
+              <span className="mt-3 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gold-dark" />
+              <span>{feature}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      {disabled && (
+        <p className="mt-6 pt-6 border-t border-border/50 text-muted-foreground italic">
+          Available after beta
+        </p>
+      )}
     </div>
   );
 }

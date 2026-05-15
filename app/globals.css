@@ -168,10 +168,16 @@
   }
   html {
     @apply font-body;
-    /* User-adjustable base font size — applied to html so all rem-based text scales.
-       Default 20px for 55+ accessibility. Widget can adjust. */
-    font-size: var(--user-font-size, 20px);
-    line-height: var(--user-line-height, 1.7);
+    /* Fixed root size — layout/buttons/hero use rem and never scale.
+       Browser standard 16px. */
+    font-size: 16px;
+  }
+
+  body {
+    /* User-adjustable body text size — only paragraphs/headings (via em) scale.
+       Default 20px. Widget presets: Normal 20 / Big 24 / Bigger 28. */
+    font-size: var(--user-body-size, 20px);
+    line-height: 1.65;
   }
 
   /* ============================================================
@@ -187,33 +193,33 @@
     color: var(--foreground);
   }
 
-  /* H1 — in-app page titles, auth titles, article titles */
+  /* H1 — in-app page titles, auth titles. Uses em so it scales with body. */
   h1 {
-    font-size: 2rem;        /* 40px at 20 base */
+    font-size: 2em;
     line-height: 1.2;
   }
   @media (min-width: 768px) {
-    h1 { font-size: 2.4rem; /* 48px */ }
+    h1 { font-size: 2.4em; }
   }
 
   /* H2 — section headings */
   h2 {
-    font-size: 1.6rem;      /* 32px */
+    font-size: 1.6em;
     line-height: 1.25;
   }
   @media (min-width: 768px) {
-    h2 { font-size: 2rem;   /* 40px */ }
+    h2 { font-size: 2em; }
   }
 
   /* H3 — card titles, subsection heads */
   h3 {
-    font-size: 1.2rem;      /* 24px */
+    font-size: 1.2em;
     line-height: 1.3;
   }
 
-  /* Body paragraphs — inherit html font-size (20px default) */
+  /* Body paragraphs */
   p {
-    line-height: var(--user-line-height, 1.7);
+    line-height: 1.65;
   }
 }
 
@@ -221,21 +227,28 @@
    Semantic modifier classes — apply explicitly where needed.
    ============================================================ */
 
-/* .display — marketing hero H1 only (home, vision top) */
+/* .display — marketing hero H1 only (home, vision top)
+   Normal marketing hero scale. */
 .display {
-  font-size: 3rem;          /* 60px */
-  line-height: 1.1;
-  letter-spacing: 0.02em;
+  font-size: 3rem;          /* ~54px at 18 base */
+  line-height: 1.05;
+  letter-spacing: 0.01em;
 }
 @media (min-width: 768px) {
   .display {
-    font-size: 4rem;        /* 80px */
+    font-size: 4rem;        /* ~72px */
+  }
+}
+@media (min-width: 1024px) {
+  .display {
+    font-size: 4.5rem;      /* ~81px */
   }
 }
 
-/* .lead — hero subheads, intro paragraphs, emphasis body */
+/* .lead — hero subheads, intro paragraphs, emphasis body.
+   Uses em so it scales with body. */
 .lead {
-  font-size: 1.2rem;        /* 24px */
+  font-size: 1.2em;
   line-height: 1.5;
 }
 
@@ -261,12 +274,118 @@
   font-weight: 600;
 }
 
-/* .label — small uppercase gold tracking labels */
+/* .label — uppercase gold tracking labels.
+   16px minimum to honor accessibility rule. */
 .label {
-  font-size: 0.9rem;        /* 18px — just below body, still readable */
+  font-size: 1rem;          /* 16px */
   font-family: var(--font-cinzel), serif;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.2em;
 }
 
+/* ============================================================
+   Marketing-only classes
+   ============================================================ */
+
+/* Paper texture — subtle parchment grain via SVG noise.
+   Apply via .paper-texture on a container. */
+.paper-texture {
+  position: relative;
+}
+.paper-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.30 0 0 0 0 0.18 0 0 0 0 0.08 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+.paper-texture > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* .pull-quote — large editorial quote with oversized opening mark.
+   Use on blockquote elements. */
+.pull-quote {
+  position: relative;
+  font-family: var(--font-cormorant), serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  padding-left: 0;
+}
+@media (min-width: 768px) {
+  .pull-quote {
+    font-size: 2rem;
+  }
+}
+.pull-quote::before {
+  content: "\201C";
+  position: absolute;
+  top: -0.3em;
+  left: -0.1em;
+  font-family: var(--font-cinzel), serif;
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--gold-dark);
+  opacity: 0.4;
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  .pull-quote::before {
+    font-size: 7rem;
+    top: -0.35em;
+    left: -0.15em;
+  }
+}
+
+/* Section ornament — gold line with center dot, decorative break */
+.section-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--gold-dark);
+  opacity: 0.45;
+}
+.section-ornament::before,
+.section-ornament::after {
+  content: "";
+  flex: 0 0 4rem;
+  height: 1px;
+  background: currentColor;
+}
+.section-ornament-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Decorative drop-cap — large first letter for opening paragraphs */
+.drop-cap::first-letter {
+  font-family: var(--font-cinzel), serif;
+  font-size: 4.5em;
+  line-height: 0.85;
+  float: left;
+  padding-right: 0.1em;
+  padding-top: 0.05em;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Marketing section spacing — more breathing room than app pages */
+.marketing-section {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+@media (min-width: 768px) {
+  .marketing-section {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}

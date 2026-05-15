@@ -2,43 +2,42 @@
 
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { useAccessibilityStore } from "@/lib/stores/accessibility-store";
+import {
+  useAccessibilityStore,
+  TEXT_SIZE_PX,
+  type TextSize,
+} from "@/lib/stores/accessibility-store";
 import { Button } from "@/components/ui/button";
 import {
   Settings2,
   Sun,
   Moon,
-  Plus,
-  Minus,
   RotateCcw,
   X,
-  Type,
-  AlignJustify,
 } from "lucide-react";
+
+const TEXT_SIZE_OPTIONS: { value: TextSize; label: string }[] = [
+  { value: "normal", label: "Normal" },
+  { value: "big", label: "Big" },
+  { value: "bigger", label: "Bigger" },
+];
 
 export function AccessibilityWidget() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
-  const {
-    fontSize,
-    lineHeight,
-    increaseFontSize,
-    decreaseFontSize,
-    increaseLineHeight,
-    decreaseLineHeight,
-    reset,
-  } = useAccessibilityStore();
+  const { textSize, setTextSize, reset } = useAccessibilityStore();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Apply font size and line height to the document
+  // Apply body text size via CSS custom property — scales body content only,
+  // not layout/hero/buttons.
   useEffect(() => {
-    document.documentElement.style.setProperty("--user-font-size", `${fontSize}px`);
-    document.documentElement.style.setProperty("--user-line-height", `${lineHeight}`);
-  }, [fontSize, lineHeight]);
+    const px = TEXT_SIZE_PX[textSize];
+    document.documentElement.style.setProperty("--user-body-size", `${px}px`);
+  }, [textSize]);
 
   if (!mounted) return null;
 
@@ -48,13 +47,11 @@ export function AccessibilityWidget() {
       <button
         onClick={() => setOpen(!open)}
         className="fixed top-24 right-6 z-[60] flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-105 focus:outline-none focus:ring-4 focus:ring-ring/30"
-        aria-label={open ? "Close accessibility settings" : "Open accessibility settings"}
+        aria-label={
+          open ? "Close accessibility settings" : "Open accessibility settings"
+        }
       >
-        {open ? (
-          <X className="h-4 w-4" />
-        ) : (
-          <Settings2 className="h-4 w-4" />
-        )}
+        {open ? <X className="h-4 w-4" /> : <Settings2 className="h-4 w-4" />}
       </button>
 
       {/* Panel */}
@@ -65,15 +62,30 @@ export function AccessibilityWidget() {
           aria-label="Accessibility settings"
         >
           <div className="p-6 space-y-6">
-            <h2 className="font-heading tracking-wide text-foreground">
+            <p className="font-heading tracking-wide text-foreground text-base font-semibold">
               Accessibility
-            </h2>
+            </p>
 
-            {/* Theme Toggle */}
+            {/* Text Size */}
             <div>
-              <p className="font-medium text-foreground mb-3">
-                Display Mode
-              </p>
+              <p className="font-medium text-foreground mb-3">Text Size</p>
+              <div className="grid grid-cols-3 gap-2">
+                {TEXT_SIZE_OPTIONS.map((option) => (
+                  <Button
+                    key={option.value}
+                    variant={textSize === option.value ? "default" : "outline"}
+                    className="font-heading tracking-wide"
+                    onClick={() => setTextSize(option.value)}
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Theme */}
+            <div>
+              <p className="font-medium text-foreground mb-3">Display Mode</p>
               <div className="flex gap-2">
                 <Button
                   variant={theme === "light" ? "default" : "outline"}
@@ -94,92 +106,6 @@ export function AccessibilityWidget() {
               </div>
             </div>
 
-            {/* Font Size */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Type className="h-4 w-4 text-gold-dark" />
-                  <p className="font-medium text-foreground">
-                    Font Size
-                  </p>
-                </div>
-                <span className="text-muted-foreground font-heading">
-                  {fontSize}px
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={decreaseFontSize}
-                  disabled={fontSize <= 16}
-                  aria-label="Decrease font size"
-                  className="h-10 w-10"
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <div className="flex-1 h-2 rounded-full bg-muted relative">
-                  <div
-                    className="h-2 rounded-full bg-primary transition-all"
-                    style={{ width: `${((fontSize - 16) / 16) * 100}%` }}
-                  />
-                </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={increaseFontSize}
-                  disabled={fontSize >= 32}
-                  aria-label="Increase font size"
-                  className="h-10 w-10"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Line Height */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <AlignJustify className="h-4 w-4 text-gold-dark" />
-                  <p className="font-medium text-foreground">
-                    Line Spacing
-                  </p>
-                </div>
-                <span className="text-muted-foreground font-heading">
-                  {lineHeight.toFixed(1)}
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={decreaseLineHeight}
-                  disabled={lineHeight <= 1.4}
-                  aria-label="Decrease line spacing"
-                  className="h-10 w-10"
-                >
-                  <Minus className="h-4 w-4" />
-                </Button>
-                <div className="flex-1 h-2 rounded-full bg-muted relative">
-                  <div
-                    className="h-2 rounded-full bg-primary transition-all"
-                    style={{ width: `${((lineHeight - 1.4) / 1.0) * 100}%` }}
-                  />
-                </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={increaseLineHeight}
-                  disabled={lineHeight >= 2.4}
-                  aria-label="Increase line spacing"
-                  className="h-10 w-10"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
             {/* Reset */}
             <Button
               variant="outline"
@@ -187,7 +113,7 @@ export function AccessibilityWidget() {
               onClick={reset}
             >
               <RotateCcw className="h-4 w-4 mr-2" />
-              Reset to Defaults
+              Reset
             </Button>
           </div>
         </div>
