@@ -37,7 +37,7 @@ export default function HomePage() {
           <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:items-center">
             <Link href="/signup">
               <Button size="lg" className="tracking-wide">
-                Write Your First Letter
+                Tell Your First Letter
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { WaxSeal } from "@/components/WaxSeal";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -47,10 +48,14 @@ export default function LoginPage() {
 
   return (
     <div>
-      <div className="text-center mb-8">
-        <h1>Welcome Back</h1>
-        <p className="text-muted-foreground mt-2">
-          Sign in to continue your story
+      <div className="text-center mb-10">
+        <div className="mb-6 flex justify-center">
+          <WaxSeal size={56} monogram="TP" />
+        </div>
+        <p className="label text-gold-dark mb-3">Welcome Back</p>
+        <h1 className="mb-2">Sign In</h1>
+        <p className="text-muted-foreground italic">
+          Continue your story
         </p>
       </div>
 

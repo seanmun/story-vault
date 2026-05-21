@@ -154,8 +154,8 @@ function StoryReadingView({
       </button>
 
       {/* Title */}
-      <p className="label text-gold-dark mb-2">{story.life_chapter}</p>
-      <h1 className="mb-4 leading-tight">{story.title}</h1>
+      <p className="label text-gold-dark mb-3 capitalize">{story.life_chapter}</p>
+      <h1 className="mb-6 leading-tight">{story.title}</h1>
 
       {/* Meta row */}
       <div className="flex flex-wrap items-center gap-4 mb-4">
@@ -191,10 +191,14 @@ function StoryReadingView({
         </div>
       )}
 
-      {/* Summary */}
-      <p className="lead text-muted-foreground italic mb-8 border-l-2 border-gold/30 pl-4">
+      {/* Summary — editorial dek */}
+      <p className="lead text-foreground/75 italic mb-10 max-w-prose">
         {story.summary}
       </p>
+
+      <div className="section-ornament mb-10">
+        <span className="section-ornament-dot" />
+      </div>
 
       {/* Audio player / generate button */}
       <div className="mb-10 rounded-lg border border-border bg-card p-5">
@@ -327,22 +331,34 @@ function StoryReadingView({
       </div>
 
       {/* Story content */}
-      <div className="prose-custom">
-        {story.written_content.split("\n").map((paragraph, i) => {
-          if (!paragraph.trim()) return null;
-          if (paragraph.startsWith("# ")) {
+      <div className="prose-custom space-y-5">
+        {(() => {
+          const lines = story.written_content
+            .split("\n")
+            .filter((p) => p.trim());
+          let firstParagraphRendered = false;
+          return lines.map((paragraph, i) => {
+            if (paragraph.startsWith("# ")) {
+              return (
+                <h2 key={i} className="mt-12 mb-4">
+                  {paragraph.replace(/^#+\s*/, "")}
+                </h2>
+              );
+            }
+            const isFirst = !firstParagraphRendered;
+            if (isFirst) firstParagraphRendered = true;
             return (
-              <h2 key={i} className="mt-10 mb-4">
-                {paragraph.replace(/^#+\s*/, "")}
-              </h2>
+              <p
+                key={i}
+                className={`text-foreground leading-relaxed ${
+                  isFirst ? "drop-cap" : ""
+                }`}
+              >
+                {paragraph}
+              </p>
             );
-          }
-          return (
-            <p key={i} className="text-foreground mb-4">
-              {paragraph}
-            </p>
-          );
-        })}
+          });
+        })()}
       </div>
 
       {/* Characters */}

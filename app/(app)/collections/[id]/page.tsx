@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -149,12 +149,12 @@ export default function CollectionDetailPage() {
         Back to Collections
       </button>
 
-      <div className="flex items-start justify-between mb-8">
+      <div className="flex items-start justify-between mb-10 gap-4">
         <div>
-          <p className="label text-gold-dark mb-2">Collection</p>
-          <h1 className="mb-1">{collection.name}</h1>
+          <p className="label text-gold-dark mb-3">Collection</p>
+          <h1 className="mb-2">{collection.name}</h1>
           {collection.description && (
-            <p className="text-muted-foreground">{collection.description}</p>
+            <p className="text-muted-foreground italic">{collection.description}</p>
           )}
         </div>
 
@@ -165,11 +165,11 @@ export default function CollectionDetailPage() {
             if (open) loadAvailable();
           }}
         >
-          <DialogTrigger>
-            <Button className="font-heading tracking-wide">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Recording
-            </Button>
+          <DialogTrigger
+            className={buttonVariants({ className: "font-heading tracking-wide" })}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Recording
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

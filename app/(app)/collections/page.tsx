@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
@@ -114,22 +114,22 @@ export default function CollectionsPage() {
   }
 
   return (
-    <div className="px-6 py-8">
-      <div className="flex items-start justify-between mb-8">
+    <div className="px-6 py-10 max-w-3xl mx-auto">
+      <div className="flex items-start justify-between mb-10 gap-4">
         <div>
-          <p className="label text-gold-dark mb-2">Organize</p>
-          <h1 className="mb-1">Collections</h1>
-          <p className="text-muted-foreground">
+          <p className="label text-gold-dark mb-3">Organize</p>
+          <h1 className="mb-2">Collections</h1>
+          <p className="text-muted-foreground italic">
             Group recordings into stories and themes
           </p>
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger>
-            <Button className="font-heading tracking-wide">
-              <Plus className="h-4 w-4 mr-2" />
-              New
-            </Button>
+          <DialogTrigger
+            className={buttonVariants({ className: "font-heading tracking-wide" })}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            New
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

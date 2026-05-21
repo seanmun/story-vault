@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { WaxSeal } from "@/components/WaxSeal";
 
 export default function SignupPage() {
   const [displayName, setDisplayName] = useState("");
@@ -51,11 +52,15 @@ export default function SignupPage() {
   if (success) {
     return (
       <div className="text-center">
+        <div className="mb-6 flex justify-center">
+          <WaxSeal size={56} monogram="TP" />
+        </div>
+        <p className="label text-gold-dark mb-3">Sealed &amp; Sent</p>
         <h1 className="mb-4">Check Your Email</h1>
-        <p className="text-muted-foreground mb-8">
+        <p className="lead italic text-muted-foreground mb-8">
           We sent a confirmation link to{" "}
-          <strong className="text-foreground">{email}</strong>. Click it to
-          activate your account.
+          <strong className="text-foreground not-italic">{email}</strong>.
+          Click it to begin your legacy.
         </p>
         <Link href="/login">
           <Button variant="outline" className="tracking-wide">
@@ -68,10 +73,14 @@ export default function SignupPage() {
 
   return (
     <div>
-      <div className="text-center mb-8">
-        <h1>Create Your Vault</h1>
-        <p className="text-muted-foreground mt-2">
-          Start preserving your stories today
+      <div className="text-center mb-10">
+        <div className="mb-6 flex justify-center">
+          <WaxSeal size={56} monogram="TP" />
+        </div>
+        <p className="label text-gold-dark mb-3">Begin Today</p>
+        <h1 className="mb-2">Create Your Account</h1>
+        <p className="text-muted-foreground italic">
+          Start preserving your stories
         </p>
       </div>
 

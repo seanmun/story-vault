@@ -135,9 +135,9 @@ export default function RecordPage() {
       {!isRecording && state !== "uploading" && state !== "processing" && (
         <>
           <p className="label text-gold-dark mb-4">Your Story Awaits</p>
-          <h1 className="mb-3 text-center">Tell Your Story</h1>
-          <p className="text-muted-foreground text-center mb-16 max-w-xs">
-            Tap the button and start talking. We&apos;ll do the rest.
+          <h1 className="mb-4 text-center">Tell Your Story</h1>
+          <p className="lead italic text-muted-foreground text-center mb-16 max-w-sm">
+            Tap the seal and start talking.
           </p>
         </>
       )}

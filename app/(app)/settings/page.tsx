@@ -74,10 +74,13 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="px-6 py-8 space-y-8">
+    <div className="px-6 py-10 max-w-3xl mx-auto space-y-10">
       <div>
-        <p className="label text-gold-dark mb-2">Account</p>
-        <h1>Settings</h1>
+        <p className="label text-gold-dark mb-3">Account</p>
+        <h1 className="mb-2">Settings</h1>
+        <p className="text-muted-foreground italic">
+          Manage your account details
+        </p>
       </div>
 
       <div className="rounded-lg border border-border p-6 space-y-6">
