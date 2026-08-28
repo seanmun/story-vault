@@ -57,7 +57,7 @@ export default function StoryDetailPage() {
         .single();
 
       if (storyData) {
-        setStory(storyData as Story);
+        setStory(storyData as unknown as Story);
 
         // Load associated recording
         const { data: recData } = await supabase

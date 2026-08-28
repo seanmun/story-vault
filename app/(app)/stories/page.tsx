@@ -36,7 +36,9 @@ interface Recording {
   status: string;
   transcription: string | null;
   created_at: string;
-  stories: Story[];
+  // One story per recording (unique index) — PostgREST embeds it as an
+  // object, not an array.
+  stories: Story | null;
 }
 
 interface Story {
@@ -283,7 +285,7 @@ export default function StoriesPage() {
       ) : (
         <div className="space-y-3">
           {recordings.map((rec) => {
-            const story = rec.stories?.[0];
+            const story = rec.stories ?? undefined;
             const renderActions = (
               <CardActions
                 onAddToCollection={() => setCollectionRecording(rec)}
@@ -540,7 +542,7 @@ function RecordingCard({
   const secs = recording.duration_seconds % 60;
   const durationStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 
-  const hasStoryGenerating = recording.stories?.some((s) => s.status === "generating");
+  const hasStoryGenerating = recording.stories?.status === "generating";
 
   const statusLabel: Record<string, string> = {
     uploading: "Uploading",

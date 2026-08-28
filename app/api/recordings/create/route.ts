@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import { tasks } from "@trigger.dev/sdk";
 import { createClient } from "@/lib/supabase/server";
+import type { processRecording } from "@/trigger/pipeline";
 
 const MAX_DURATION_SECONDS = 660; // 10-minute client cap plus buffer
 const MAX_FILE_SIZE_BYTES = 52428800; // matches the bucket limit
+const MAX_RECORDINGS_PER_DAY = 50; // generous for real use, bounds abuse
 const ALLOWED_MIME_TYPES = [
   "audio/webm",
   "audio/mp4",
@@ -45,6 +48,22 @@ export async function POST(request: Request) {
   const baseMimeType = typeof mimeType === "string" ? mimeType.split(";")[0].trim() : "";
   if (!ALLOWED_MIME_TYPES.includes(baseMimeType)) {
     return NextResponse.json({ error: "Invalid mimeType" }, { status: 400 });
+  }
+
+  // Every recording triggers paid transcription + LLM calls downstream —
+  // bound the daily volume per account.
+  const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { count: recentCount } = await supabase
+    .from("recordings")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", user.id)
+    .gte("created_at", dayAgo);
+
+  if ((recentCount ?? 0) >= MAX_RECORDINGS_PER_DAY) {
+    return NextResponse.json(
+      { error: "Daily recording limit reached. Try again tomorrow." },
+      { status: 429 }
+    );
   }
 
   // Verify the object actually exists and take its size from storage rather
@@ -90,9 +109,23 @@ export async function POST(request: Request) {
     );
   }
 
+  // Queue the durable pipeline (transcribe → story). If Trigger.dev isn't
+  // reachable, the client falls back to driving the old route chain, and the
+  // reaper re-queues anything stranded.
+  let queued = false;
+  try {
+    await tasks.trigger<typeof processRecording>("process-recording", {
+      recordingId: recording.id,
+    });
+    queued = true;
+  } catch (err) {
+    console.error("Failed to queue process-recording", err);
+  }
+
   return NextResponse.json({
     id: recording.id,
     storagePath,
     status: "uploaded",
+    queued,
   });
 }

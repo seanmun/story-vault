@@ -1,3 +1,5 @@
+import Anthropic from "@anthropic-ai/sdk";
+
 interface LLMResponse {
   text: string;
 }
@@ -19,31 +21,20 @@ async function generateWithAnthropic(
   systemPrompt: string,
   userPrompt: string
 ): Promise<LLMResponse> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) throw new Error("ANTHROPIC_API_KEY not configured");
+  // SDK defaults: 2 retries on 408/429/5xx, 10-minute timeout.
+  const client = new Anthropic();
 
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 4096,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userPrompt }],
-    }),
+  const response = await client.messages.create({
+    model: "claude-opus-5",
+    max_tokens: 16000,
+    system: systemPrompt,
+    messages: [{ role: "user", content: userPrompt }],
   });
 
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`Anthropic error ${response.status}: ${err}`);
-  }
-
-  const result = await response.json();
-  const text = result.content?.[0]?.text || "";
+  const text = response.content
+    .filter((block) => block.type === "text")
+    .map((block) => block.text)
+    .join("");
   return { text };
 }
 
@@ -60,6 +51,7 @@ async function generateWithOpenAI(
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
+    signal: AbortSignal.timeout(120_000),
     body: JSON.stringify({
       model: "gpt-4o",
       max_tokens: 4096,

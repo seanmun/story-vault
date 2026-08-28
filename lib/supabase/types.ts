@@ -20,6 +20,9 @@ export type Database = {
           subscription_tier: "free" | "storyteller" | "family_legacy" | "legacy_forever";
           onboarding_complete: boolean;
           last_active_at: string | null;
+          elevenlabs_voice_id: string | null;
+          voice_clone_tier: "basic" | "enhanced" | null;
+          voice_preference: "male" | "female" | null;
           created_at: string;
           updated_at: string;
         };
@@ -33,6 +36,9 @@ export type Database = {
           subscription_tier?: "free" | "storyteller" | "family_legacy" | "legacy_forever";
           onboarding_complete?: boolean;
           last_active_at?: string | null;
+          elevenlabs_voice_id?: string | null;
+          voice_clone_tier?: "basic" | "enhanced" | null;
+          voice_preference?: "male" | "female" | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -46,9 +52,13 @@ export type Database = {
           subscription_tier?: "free" | "storyteller" | "family_legacy" | "legacy_forever";
           onboarding_complete?: boolean;
           last_active_at?: string | null;
+          elevenlabs_voice_id?: string | null;
+          voice_clone_tier?: "basic" | "enhanced" | null;
+          voice_preference?: "male" | "female" | null;
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       recordings: {
         Row: {
@@ -93,6 +103,14 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "recordings_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       stories: {
         Row: {
@@ -158,6 +176,95 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "stories_recording_id_fkey";
+            columns: ["recording_id"];
+            isOneToOne: true;
+            referencedRelation: "recordings";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "stories_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      collections: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          description: string | null;
+          icon: string | null;
+          is_default: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name: string;
+          description?: string | null;
+          icon?: string | null;
+          is_default?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          name?: string;
+          description?: string | null;
+          icon?: string | null;
+          is_default?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "collections_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      collection_recordings: {
+        Row: {
+          collection_id: string;
+          recording_id: string;
+          position: number;
+          added_at: string;
+        };
+        Insert: {
+          collection_id: string;
+          recording_id: string;
+          position?: number;
+          added_at?: string;
+        };
+        Update: {
+          collection_id?: string;
+          recording_id?: string;
+          position?: number;
+          added_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "collection_recordings_collection_id_fkey";
+            columns: ["collection_id"];
+            referencedRelation: "collections";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "collection_recordings_recording_id_fkey";
+            columns: ["recording_id"];
+            referencedRelation: "recordings";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       family_groups: {
         Row: {
@@ -184,6 +291,14 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "family_groups_owner_id_fkey";
+            columns: ["owner_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       family_members: {
         Row: {
@@ -207,6 +322,20 @@ export type Database = {
           relationship?: string | null;
           created_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "family_members_family_group_id_fkey";
+            columns: ["family_group_id"];
+            referencedRelation: "family_groups";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "family_members_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       designated_heirs: {
         Row: {
@@ -245,6 +374,20 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "designated_heirs_owner_id_fkey";
+            columns: ["owner_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "designated_heirs_heir_user_id_fkey";
+            columns: ["heir_user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
     };
     Views: Record<string, never>;

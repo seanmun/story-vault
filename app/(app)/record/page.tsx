@@ -120,9 +120,19 @@ export default function RecordPage() {
         return;
       }
 
+      if (data.queued) {
+        // The durable server-side pipeline has it from here.
+        toast.success(
+          "Recording saved! Your story is being written — it will appear in Stories shortly."
+        );
+        router.push("/stories");
+        return;
+      }
+
       toast.success("Recording saved! Transcribing...");
 
-      // Trigger transcription, then story generation
+      // Fallback: drive the pipeline from the client (works without
+      // Trigger.dev; the reaper also re-queues anything stranded).
       fetch("/api/transcribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
