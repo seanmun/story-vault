@@ -71,7 +71,12 @@ export default function StoriesPage() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      // Expired session on a client-side transition — bounce instead of
+      // pinning the page to "Loading..." forever.
+      window.location.assign("/login");
+      return;
+    }
 
     const [{ data: recs }, { data: cols }, { data: cms }, { data: profile }] =
       await Promise.all([
@@ -114,7 +119,11 @@ export default function StoriesPage() {
   }, []);
 
   useEffect(() => {
-    load();
+    // load() is async — every setState inside it happens after network awaits,
+    // never synchronously in the effect body; the rule can't see through the
+    // call graph.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void load();
   }, [load]);
 
   const totalSeconds = recordings.reduce((sum, r) => sum + r.duration_seconds, 0);
@@ -421,7 +430,7 @@ function CardActions({
           e.preventDefault();
           e.stopPropagation();
         }}
-        className="flex items-center justify-center h-9 w-9 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+        className="flex items-center justify-center h-11 w-11 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
       >
         <MoreVertical className="h-5 w-5" />
       </DropdownMenuTrigger>
@@ -499,7 +508,7 @@ function StoryCard({
           <Link
             href={`/stories/${story.id}`}
             aria-label="Open story"
-            className="flex items-center justify-center h-9 w-9 text-muted-foreground hover:text-foreground"
+            className="flex items-center justify-center h-11 w-11 text-muted-foreground hover:text-foreground"
           >
             <ChevronRight className="h-5 w-5" />
           </Link>
@@ -587,7 +596,7 @@ function RecordingCard({
           <Link
             href={`/stories/${recording.id}`}
             aria-label="Open recording"
-            className="flex items-center justify-center h-9 w-9 text-muted-foreground hover:text-foreground"
+            className="flex items-center justify-center h-11 w-11 text-muted-foreground hover:text-foreground"
           >
             <ChevronRight className="h-5 w-5" />
           </Link>

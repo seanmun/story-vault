@@ -17,7 +17,8 @@ export function Footer() {
     pathname.startsWith("/record") ||
     pathname.startsWith("/stories") ||
     pathname.startsWith("/family") ||
-    pathname.startsWith("/settings");
+    pathname.startsWith("/settings") ||
+    pathname.startsWith("/collections");
 
   return (
     <footer className={`px-6 py-10 ${isAppPage ? "pb-24" : ""}`}>

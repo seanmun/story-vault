@@ -43,10 +43,10 @@ export function RecordButton({
         {/* Stop = broken seal — still wax, but with stop square */}
         <button
           onClick={onStop}
-          className="group relative focus:outline-none"
+          className="group relative rounded-full outline-none focus-visible:ring-4 focus-visible:ring-destructive/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
           aria-label="Stop recording"
         >
-          <div className="relative transition-transform duration-300 group-hover:scale-[1.02] focus:ring-4 focus:ring-destructive/30 rounded-full">
+          <div className="relative transition-transform duration-300 group-hover:scale-[1.02] rounded-full">
             <WaxSeal size={SEAL_SIZE} animated={state === "recording"}>
               <Square
                 className="w-12 h-12"
@@ -65,31 +65,34 @@ export function RecordButton({
           {state === "recording" ? (
             <Button
               variant="outline"
+              size="lg"
               onClick={onPause}
               className="font-heading tracking-wide"
               aria-label="Pause recording"
             >
-              <Pause className="h-4 w-4 mr-2" />
+              <Pause className="h-5 w-5 mr-2" />
               Pause
             </Button>
           ) : (
             <Button
               variant="outline"
+              size="lg"
               onClick={onResume}
               className="font-heading tracking-wide"
               aria-label="Resume recording"
             >
-              <Play className="h-4 w-4 mr-2" />
+              <Play className="h-5 w-5 mr-2" />
               Resume
             </Button>
           )}
           <Button
             variant="outline"
+            size="lg"
             onClick={onDiscard}
             className="font-heading tracking-wide text-destructive"
             aria-label="Discard recording"
           >
-            <Trash2 className="h-4 w-4 mr-2" />
+            <Trash2 className="h-5 w-5 mr-2" />
             Discard
           </Button>
         </div>
@@ -101,7 +104,7 @@ export function RecordButton({
   return (
     <button
       onClick={onStart}
-      className="group relative focus:outline-none"
+      className="group relative rounded-full outline-none focus-visible:ring-4 focus-visible:ring-ring/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
       aria-label="Start recording — seal a letter"
     >
       {/* Decorative outer rings — the paper/envelope edge */}

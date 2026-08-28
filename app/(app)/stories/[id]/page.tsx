@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, Mic, Calendar, BookOpen, Sparkles, Volume2, Loader2 } from "lucide-react";
+import { ArrowLeft, Clock, Mic, Calendar, Sparkles, Volume2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface Recording {
@@ -336,7 +336,9 @@ function StoryReadingView({
           const lines = story.written_content
             .split("\n")
             .filter((p) => p.trim());
-          let firstParagraphRendered = false;
+          const firstParagraphIndex = lines.findIndex(
+            (line) => !line.startsWith("# ")
+          );
           return lines.map((paragraph, i) => {
             if (paragraph.startsWith("# ")) {
               return (
@@ -345,8 +347,7 @@ function StoryReadingView({
                 </h2>
               );
             }
-            const isFirst = !firstParagraphRendered;
-            if (isFirst) firstParagraphRendered = true;
+            const isFirst = i === firstParagraphIndex;
             return (
               <p
                 key={i}

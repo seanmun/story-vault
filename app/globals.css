@@ -75,7 +75,8 @@
 
   /* Muted: parchment tones */
   --muted: oklch(0.93 0.01 80);
-  --muted-foreground: oklch(0.23 0.02 55);
+  /* Distinct from --foreground (0.15) so "muted" reads as hierarchy; still ≥7:1 on the paper background */
+  --muted-foreground: oklch(0.45 0.02 55);
 
   /* Accent: burnished amber */
   --accent: oklch(0.88 0.04 75);
@@ -129,6 +130,8 @@
 
   --muted: oklch(0.24 0.015 55);
   --muted-foreground: oklch(0.65 0.02 75);
+  /* NOTE: --gold-dark is raised below (vs. light mode's 0.45) — as text on the
+     0.14 background the light-mode value lands ~2.6:1, failing WCAG AA. */
 
   --accent: oklch(0.24 0.02 60);
   --accent-foreground: oklch(0.93 0.008 80);
@@ -141,7 +144,7 @@
 
   --gold: oklch(0.72 0.12 85);
   --gold-light: oklch(0.82 0.08 85);
-  --gold-dark: oklch(0.45 0.14 75);
+  --gold-dark: oklch(0.75 0.12 80);
 
   --chart-1: oklch(0.72 0.12 85);
   --chart-2: oklch(0.55 0.10 20);
@@ -302,9 +305,14 @@
   background-image: url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.30 0 0 0 0 0.18 0 0 0 0 0.08 0 0 0 0.22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: multiply;
 }
-.paper-texture > * {
-  position: relative;
-  z-index: 1;
+/* Lift children above the ::before grain. Layered as `base` so Tailwind
+   positioning utilities (layer `utilities`, e.g. the bottom nav's `fixed`)
+   still win — unlayered, this rule silently overrode them. */
+@layer base {
+  .paper-texture > * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 /* .pull-quote — large editorial quote with oversized opening mark.

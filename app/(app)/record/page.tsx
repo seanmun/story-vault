@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useRecorder } from "@/lib/hooks/useRecorder";
 import { RecordButton } from "@/components/recording/RecordButton";
@@ -26,10 +27,23 @@ export default function RecordPage() {
     discardRecording,
   } = useRecorder();
 
-  // Auto-stop at max duration
-  if (duration >= MAX_DURATION_SECONDS && state === "recording") {
-    handleStop();
-  }
+  // Auto-stop at max duration. Must run in an effect, not the render body —
+  // stopping the recorder during render fires side effects mid-render and can
+  // double-run under StrictMode. The ref guards against re-firing while the
+  // recorder state catches up.
+  const autoStopFired = useRef(false);
+  useEffect(() => {
+    if (duration < MAX_DURATION_SECONDS) {
+      autoStopFired.current = false;
+      return;
+    }
+    if (state === "recording" && !autoStopFired.current) {
+      autoStopFired.current = true;
+      handleStop();
+    }
+    // handleStop is recreated each render; duration/state are the real triggers
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [duration, state]);
 
   async function handleStop() {
     const blob = await stopRecording();
@@ -41,44 +55,68 @@ export default function RecordPage() {
 
     if (!user) {
       toast.error("You must be signed in to save recordings.");
+      discardRecording();
       return;
     }
 
-    // Upload directly to Supabase Storage (bypasses Vercel size limits)
+    // Upload directly to Supabase Storage (bypasses Vercel size limits).
+    // Retry transient failures — this blob is irreplaceable.
     const fileExt = blob.type.includes("mp4") ? "mp4" : "webm";
     const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
     toast.info("Uploading recording...");
 
-    const { error: uploadError } = await supabase.storage
-      .from("recordings")
-      .upload(fileName, blob, {
-        contentType: blob.type,
-        upsert: false,
-      });
+    let uploadError: { message: string } | null = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const { error } = await supabase.storage
+        .from("recordings")
+        .upload(fileName, blob, {
+          contentType: blob.type,
+          upsert: true,
+        });
+      uploadError = error;
+      if (!error) break;
+      await new Promise((r) => setTimeout(r, 1500));
+    }
 
     if (uploadError) {
       toast.error("Upload failed: " + uploadError.message);
+      discardRecording();
       return;
     }
 
     // Create database record via lightweight API route
     try {
-      const res = await fetch("/api/recordings/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          storagePath: fileName,
-          durationSeconds: duration,
-          fileSizeBytes: blob.size,
-          mimeType: blob.type,
-        }),
-      });
+      let res: Response | null = null;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          res = await fetch("/api/recordings/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              storagePath: fileName,
+              durationSeconds: duration,
+              mimeType: blob.type,
+            }),
+          });
+          if (res.status < 500) break;
+        } catch {
+          res = null;
+        }
+        await new Promise((r) => setTimeout(r, 1500));
+      }
+
+      if (!res) {
+        toast.error("Failed to save recording. Please try again.");
+        discardRecording();
+        return;
+      }
 
       const data = await res.json();
 
       if (!res.ok) {
         toast.error(data.error || "Failed to save recording");
+        discardRecording();
         return;
       }
 
@@ -122,6 +160,7 @@ export default function RecordPage() {
       router.push("/stories");
     } catch {
       toast.error("Failed to save recording. Please try again.");
+      discardRecording();
     }
   }
 

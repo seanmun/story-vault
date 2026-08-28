@@ -3,9 +3,11 @@ import { persist } from "zustand/middleware";
 
 export type TextSize = "normal" | "big" | "bigger";
 
+// Must stay in sync with globals.css: the body default is 20px, so "Normal"
+// must be 20 — a smaller value would make the accessibility widget SHRINK text.
 export const TEXT_SIZE_PX: Record<TextSize, number> = {
-  normal: 18,
-  big: 22,
+  normal: 20,
+  big: 24,
   bigger: 28,
 };
 

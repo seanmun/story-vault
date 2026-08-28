@@ -30,13 +30,6 @@ export function Header() {
 
   const isAuthPage = pathname === "/login" || pathname === "/signup";
 
-  const isAppPage =
-    pathname.startsWith("/record") ||
-    pathname.startsWith("/stories") ||
-    pathname.startsWith("/family") ||
-    pathname.startsWith("/settings") ||
-    pathname.startsWith("/collections");
-
   useEffect(() => {
     const supabase = createClient();
     let mounted = true;
@@ -155,8 +148,9 @@ export function Header() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden flex items-center justify-center h-10 w-10 text-foreground"
+              className="md:hidden flex items-center justify-center h-12 w-12 text-foreground"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
             >
               {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>

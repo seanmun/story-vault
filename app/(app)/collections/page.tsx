@@ -62,7 +62,10 @@ export default function CollectionsPage() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      window.location.assign("/login");
+      return;
+    }
 
     const { data } = await supabase
       .from("collections")
@@ -88,7 +91,11 @@ export default function CollectionsPage() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      setCreating(false);
+      window.location.assign("/login");
+      return;
+    }
 
     await supabase.from("collections").insert({
       user_id: user.id,

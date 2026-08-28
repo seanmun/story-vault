@@ -57,7 +57,10 @@ export default function CollectionDetailPage() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      router.push("/login");
+      return;
+    }
 
     // Load collection
     const { data: colData } = await supabase
@@ -278,10 +281,10 @@ export default function CollectionDetailPage() {
                   </div>
                   <button
                     onClick={() => removeRecording(cr.recording_id)}
-                    className="text-muted-foreground hover:text-destructive transition-colors p-2"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                     aria-label="Remove from collection"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-5 w-5" />
                   </button>
                 </div>
               </div>

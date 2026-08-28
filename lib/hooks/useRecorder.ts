@@ -35,15 +35,6 @@ export function useRecorder(): UseRecorderReturn {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioContext = useRef<AudioContext | null>(null);
 
-  // Clean up on unmount
-  useEffect(() => {
-    return () => {
-      stopTimer();
-      cleanupStream();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   function startTimer() {
     setDuration(0);
     timerRef.current = setInterval(() => {
@@ -69,6 +60,14 @@ export function useRecorder(): UseRecorderReturn {
     }
     setAnalyserNode(null);
   }
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      stopTimer();
+      cleanupStream();
+    };
+  }, []);
 
   const startRecording = useCallback(async () => {
     try {
@@ -141,6 +140,10 @@ export function useRecorder(): UseRecorderReturn {
         chunks.current = [];
         stopTimer();
         cleanupStream();
+        // The caller is about to upload — reflect that instead of staying in
+        // "recording" with a live-looking timer. Failure paths reset via
+        // discardRecording().
+        setState("uploading");
         resolve(blob);
       };
 

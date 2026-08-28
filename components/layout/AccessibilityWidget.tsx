@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import {
   useAccessibilityStore,
@@ -22,15 +22,35 @@ const TEXT_SIZE_OPTIONS: { value: TextSize; label: string }[] = [
   { value: "bigger", label: "Bigger" },
 ];
 
+// Hydration-safe "mounted" flag: false during SSR/hydration, true after.
+const emptySubscribe = () => () => {};
+
 export function AccessibilityWidget() {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
   const { theme, setTheme } = useTheme();
   const { textSize, setTextSize, reset } = useAccessibilityStore();
+  const panelRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
+  // Dialog behavior: move focus into the panel on open, close on Escape and
+  // return focus to the toggle so keyboard users aren't stranded.
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!open) return;
+    panelRef.current?.focus();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   // Apply body text size via CSS custom property — scales body content only,
   // not layout/hero/buttons.
@@ -45,19 +65,25 @@ export function AccessibilityWidget() {
     <>
       {/* Toggle Button — top right, just under header */}
       <button
+        ref={toggleRef}
         onClick={() => setOpen(!open)}
-        className="fixed top-24 right-6 z-[60] flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-105 focus:outline-none focus:ring-4 focus:ring-ring/30"
+        className="fixed top-24 right-6 z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:shadow-lg transition-all hover:scale-105 outline-none focus-visible:ring-4 focus-visible:ring-ring/50"
         aria-label={
           open ? "Close accessibility settings" : "Open accessibility settings"
         }
+        aria-expanded={open}
+        aria-controls="accessibility-panel"
       >
-        {open ? <X className="h-4 w-4" /> : <Settings2 className="h-4 w-4" />}
+        {open ? <X className="h-5 w-5" /> : <Settings2 className="h-5 w-5" />}
       </button>
 
       {/* Panel */}
       {open && (
         <div
-          className="fixed top-36 right-6 z-[60] w-80 rounded-xl border border-border bg-card shadow-2xl"
+          ref={panelRef}
+          id="accessibility-panel"
+          tabIndex={-1}
+          className="fixed top-36 right-6 z-[60] w-80 rounded-xl border border-border bg-card shadow-2xl outline-none"
           role="dialog"
           aria-label="Accessibility settings"
         >
