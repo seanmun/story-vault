@@ -2,3 +2,5 @@
 - [Min font size 16px](feedback_font_size.md) — all text 16px min, 55+ target audience accessibility
 - [Collections feature](project_collections.md) — many-to-many recordings/collections, default collections on signup
 - [No speculative changes](feedback_no_guessing.md) — diagnose first, recommend fix, wait for approval before changing code
+- [Video pipeline pivot](project_video_pipeline.md) — async story→video pipeline (Deepgram word timestamps, Claude scenes, Flux, ffmpeg); ElevenLabs demoted to consent-gated extras
+- [Direct style](feedback_direct_style.md) — bullets, numbers, specific step-by-step instructions
