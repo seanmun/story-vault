@@ -57,13 +57,17 @@ export async function POST(request: Request) {
     }
 
     // Save transcription
-    await supabase
+    const { error: saveError } = await supabase
       .from("recordings")
       .update({
         transcription,
         status: "transcribed",
       })
       .eq("id", recordingId);
+
+    if (saveError) {
+      throw new Error("Failed to save transcription: " + saveError.message);
+    }
 
     return NextResponse.json({ transcription, status: "transcribed" });
   } catch (err) {

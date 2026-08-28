@@ -84,7 +84,35 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Could not download recordings" }, { status: 500 });
     }
 
-    // Delete old voice clone if upgrading
+    // Create the new voice clone FIRST — if this fails, the user's existing
+    // clone must remain intact and referenced.
+    const name = profile?.display_name || "Storyteller";
+    const voiceId = await createVoiceClone(
+      `${name} (${tier === "basic" ? "Basic" : "Enhanced"})`,
+      audioFiles
+    );
+
+    // Save to profile before deleting the old voice, so a failure here never
+    // leaves the profile pointing at a deleted voice.
+    const { error: saveError } = await supabase
+      .from("profiles")
+      .update({
+        elevenlabs_voice_id: voiceId,
+        voice_clone_tier: tier,
+      })
+      .eq("id", user.id);
+
+    if (saveError) {
+      // Roll back the just-created voice so we don't leak a paid voice slot.
+      try {
+        await deleteVoiceClone(voiceId);
+      } catch {
+        // Best effort — the old profile state is still consistent.
+      }
+      throw new Error("Failed to save voice clone: " + saveError.message);
+    }
+
+    // Delete the replaced voice last.
     if (profile?.elevenlabs_voice_id) {
       try {
         await deleteVoiceClone(profile.elevenlabs_voice_id);
@@ -92,22 +120,6 @@ export async function POST(request: Request) {
         // OK if delete fails — might already be gone
       }
     }
-
-    // Create new voice clone
-    const name = profile?.display_name || "Storyteller";
-    const voiceId = await createVoiceClone(
-      `${name} (${tier === "basic" ? "Basic" : "Enhanced"})`,
-      audioFiles
-    );
-
-    // Save to profile
-    await supabase
-      .from("profiles")
-      .update({
-        elevenlabs_voice_id: voiceId,
-        voice_clone_tier: tier,
-      })
-      .eq("id", user.id);
 
     return NextResponse.json({
       voiceId,

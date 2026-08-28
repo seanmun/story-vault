@@ -36,19 +36,29 @@ export async function updateSession(request: NextRequest) {
   const isApiRoute = request.nextUrl.pathname.startsWith("/api");
   const isPublicPath =
     request.nextUrl.pathname === "/" ||
-    request.nextUrl.pathname === "/vision";
+    request.nextUrl.pathname === "/vision" ||
+    request.nextUrl.pathname === "/changelog" ||
+    request.nextUrl.pathname.startsWith("/opengraph-image");
+
+  // Any redirect must carry the refreshed auth cookies accumulated on
+  // supabaseResponse, or a token rotation during the redirect logs the user out.
+  const redirectWithCookies = (pathname: string) => {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname;
+    const response = NextResponse.redirect(url);
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      response.cookies.set(cookie);
+    });
+    return response;
+  };
 
   if (!user && !isAuthPage && !isApiRoute && !isPublicPath) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+    return redirectWithCookies("/login");
   }
 
   // Redirect authenticated users away from auth pages
   if (user && isAuthPage) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/record";
-    return NextResponse.redirect(url);
+    return redirectWithCookies("/record");
   }
 
   return supabaseResponse;

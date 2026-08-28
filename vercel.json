@@ -1,9 +1,5 @@
 {
   "functions": {
-    "app/api/recordings/upload/route.ts": {
-      "maxDuration": 60,
-      "memory": 1024
-    },
     "app/api/transcribe/route.ts": {
       "maxDuration": 120
     },

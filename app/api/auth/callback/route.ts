@@ -6,7 +6,13 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type");
-  const next = searchParams.get("next") ?? "/record";
+  // Only same-origin paths: must start with a single "/" and contain no
+  // backslashes ("//host", "@host", and "\" variants all shift the URL host).
+  const rawNext = searchParams.get("next") ?? "";
+  const next =
+    rawNext.startsWith("/") && !rawNext.startsWith("//") && !rawNext.includes("\\")
+      ? rawNext
+      : "/record";
 
   const supabase = await createClient();
 

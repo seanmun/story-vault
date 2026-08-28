@@ -67,10 +67,14 @@ export async function POST(
     }
 
     // Update story with audio path
-    await supabase
+    const { error: updateError } = await supabase
       .from("stories")
       .update({ podcast_audio_path: fileName })
       .eq("id", story.id);
+
+    if (updateError) {
+      throw new Error("Failed to save audio path: " + updateError.message);
+    }
 
     return NextResponse.json({
       audioPath: fileName,

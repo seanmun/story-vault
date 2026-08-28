@@ -89,21 +89,44 @@ export async function POST(request: Request) {
     // Parse metadata JSON
     const metadata = parseJSON(metadataResult.text);
 
+    // The LLM's life_chapter feeds a Postgres enum — writing an unexpected
+    // value would abort the whole update, so validate it first.
+    const LIFE_CHAPTERS = [
+      "childhood",
+      "youth",
+      "career",
+      "family",
+      "adventures",
+      "wisdom",
+    ];
+    const lifeChapter =
+      typeof metadata?.life_chapter === "string" &&
+      LIFE_CHAPTERS.includes(metadata.life_chapter)
+        ? metadata.life_chapter
+        : "wisdom";
+    const themes = Array.isArray(metadata?.themes)
+      ? metadata.themes.filter((t): t is string => typeof t === "string")
+      : [];
+
     // Update story with generated content
-    await supabase
+    const { error: updateError } = await supabase
       .from("stories")
       .update({
         title: storyData.title,
         written_content: storyData.content,
         summary: storyData.summary || "",
-        themes: metadata?.themes || [],
+        themes,
         characters: metadata?.characters || [],
         time_period: metadata?.time_period || null,
         location: metadata?.location || null,
-        life_chapter: metadata?.life_chapter || "wisdom",
+        life_chapter: lifeChapter,
         status: "ready",
       })
       .eq("id", story.id);
+
+    if (updateError) {
+      throw new Error("Failed to save story: " + updateError.message);
+    }
 
     return NextResponse.json({
       id: story.id,
