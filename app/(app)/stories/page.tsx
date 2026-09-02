@@ -36,9 +36,14 @@ interface Recording {
   status: string;
   transcription: string | null;
   created_at: string;
-  // One story per recording (unique index) — PostgREST embeds it as an
-  // object, not an array.
-  stories: Story | null;
+  // PostgREST embeds this as an object when a UNIQUE *constraint* exists on
+  // stories.recording_id, and as an array otherwise. Handle BOTH shapes —
+  // assuming one hid every story from the library (Sept 2026 incident).
+  stories: Story | Story[] | null;
+}
+
+function firstStory(s: Story | Story[] | null): Story | undefined {
+  return Array.isArray(s) ? s[0] : (s ?? undefined);
 }
 
 interface Story {
@@ -106,7 +111,7 @@ export default function StoriesPage() {
           .single(),
       ]);
 
-    if (recs) setRecordings(recs as Recording[]);
+    if (recs) setRecordings(recs as unknown as Recording[]);
     if (cols) setCollections(cols as Collection[]);
     if (cms) {
       const map: Record<string, Set<string>> = {};
@@ -285,7 +290,7 @@ export default function StoriesPage() {
       ) : (
         <div className="space-y-3">
           {recordings.map((rec) => {
-            const story = rec.stories ?? undefined;
+            const story = firstStory(rec.stories);
             const renderActions = (
               <CardActions
                 onAddToCollection={() => setCollectionRecording(rec)}
@@ -542,7 +547,7 @@ function RecordingCard({
   const secs = recording.duration_seconds % 60;
   const durationStr = mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
 
-  const hasStoryGenerating = recording.stories?.status === "generating";
+  const hasStoryGenerating = firstStory(recording.stories)?.status === "generating";
 
   const statusLabel: Record<string, string> = {
     uploading: "Uploading",

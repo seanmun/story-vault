@@ -26,7 +26,9 @@ async function generateWithAnthropic(
 
   const response = await client.messages.create({
     model: "claude-opus-5",
-    max_tokens: 16000,
+    // Bounded so the client-driven fallback path fits Vercel's 120s function
+    // cap; stories run well under this.
+    max_tokens: 8192,
     system: systemPrompt,
     messages: [{ role: "user", content: userPrompt }],
   });

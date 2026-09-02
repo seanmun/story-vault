@@ -14,7 +14,7 @@ WITH ranked AS (
   SELECT id,
          ROW_NUMBER() OVER (
            PARTITION BY recording_id
-           ORDER BY (status = 'ready') DESC, created_at DESC
+           ORDER BY (status = 'ready') DESC NULLS LAST, created_at DESC
          ) AS rn
   FROM stories
 )

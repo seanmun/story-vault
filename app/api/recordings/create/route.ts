@@ -109,17 +109,21 @@ export async function POST(request: Request) {
     );
   }
 
-  // Queue the durable pipeline (transcribe → story). If Trigger.dev isn't
-  // reachable, the client falls back to driving the old route chain, and the
-  // reaper re-queues anything stranded.
+  // Queue the durable pipeline (transcribe → story) only when explicitly
+  // enabled — a queued run in a misconfigured environment reports success and
+  // then silently does nothing, which is worse than the client-driven
+  // fallback chain. Flip PIPELINE_ENABLED=true in Vercel once the pipeline's
+  // Supabase service key is verified working.
   let queued = false;
-  try {
-    await tasks.trigger<typeof processRecording>("process-recording", {
-      recordingId: recording.id,
-    });
-    queued = true;
-  } catch (err) {
-    console.error("Failed to queue process-recording", err);
+  if (process.env.PIPELINE_ENABLED === "true") {
+    try {
+      await tasks.trigger<typeof processRecording>("process-recording", {
+        recordingId: recording.id,
+      });
+      queued = true;
+    } catch (err) {
+      console.error("Failed to queue process-recording", err);
+    }
   }
 
   return NextResponse.json({

@@ -64,14 +64,21 @@ export default function RecordPage() {
     const fileExt = blob.type.includes("mp4") ? "mp4" : "webm";
     const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
+    // MediaRecorder produces parameterized types like "audio/webm;codecs=opus",
+    // which bucket MIME allowlists reject (exact subtype match). Re-wrap with
+    // the base type — the storage client uses the Blob's own type, not the
+    // contentType option, for Blob bodies.
+    const baseType = blob.type.split(";")[0].trim() || "audio/webm";
+    const uploadBlob = new Blob([blob], { type: baseType });
+
     toast.info("Uploading recording...");
 
     let uploadError: { message: string } | null = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       const { error } = await supabase.storage
         .from("recordings")
-        .upload(fileName, blob, {
-          contentType: blob.type,
+        .upload(fileName, uploadBlob, {
+          contentType: baseType,
           upsert: true,
         });
       uploadError = error;
