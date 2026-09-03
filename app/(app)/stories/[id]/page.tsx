@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock, Mic, Calendar, Sparkles, Volume2, Loader2 } from "lucide-react";
+import { StoryVideo } from "@/components/StoryVideo";
 import { toast } from "sonner";
 
 interface Recording {
@@ -199,6 +200,9 @@ function StoryReadingView({
       <div className="section-ornament mb-10">
         <span className="section-ornament-dot" />
       </div>
+
+      {/* Story film */}
+      <StoryVideo storyId={story.id} />
 
       {/* Audio player / generate button */}
       <div className="mb-10 rounded-lg border border-border bg-card p-5">
