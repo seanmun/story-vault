@@ -1,5 +1,5 @@
 import { defineConfig } from "@trigger.dev/sdk";
-import { syncEnvVars } from "@trigger.dev/build/extensions/core";
+import { ffmpeg, syncEnvVars } from "@trigger.dev/build/extensions/core";
 import { readFileSync } from "node:fs";
 
 // Env vars the tasks need at runtime on Trigger.dev's workers. Synced from
@@ -12,6 +12,7 @@ const TASK_ENV_KEYS = [
   "ANTHROPIC_API_KEY",
   "TRANSCRIPTION_PROVIDER",
   "LLM_PROVIDER",
+  "REPLICATE_API_TOKEN",
 ];
 
 function readEnvLocal(): Record<string, string> {
@@ -39,6 +40,7 @@ export default defineConfig({
   dirs: ["trigger"],
   maxDuration: 600,
   build: {
-    extensions: [syncEnvVars(() => readEnvLocal())],
+    external: ["sharp"],
+    extensions: [ffmpeg(), syncEnvVars(() => readEnvLocal())],
   },
 });

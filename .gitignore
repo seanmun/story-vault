@@ -41,3 +41,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Spike artifacts — never commit family photos or generated media
+spikes/flux-identity/photos/
+spikes/flux-identity/out/
+spikes/render/sample.mp4

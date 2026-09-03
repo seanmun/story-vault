@@ -266,6 +266,214 @@ export type Database = {
           },
         ];
       };
+      characters: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          aliases: string[];
+          role: string | null;
+          physical_description: string | null;
+          era_notes: string | null;
+          reference_image_path: string | null;
+          locked_seed: number | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name: string;
+          aliases?: string[];
+          role?: string | null;
+          physical_description?: string | null;
+          era_notes?: string | null;
+          reference_image_path?: string | null;
+          locked_seed?: number | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          name?: string;
+          aliases?: string[];
+          role?: string | null;
+          physical_description?: string | null;
+          era_notes?: string | null;
+          reference_image_path?: string | null;
+          locked_seed?: number | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "characters_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      story_scenes: {
+        Row: {
+          id: string;
+          story_id: string;
+          index: number;
+          start_ms: number;
+          end_ms: number;
+          setting: string | null;
+          beat: string | null;
+          characters_present: string[];
+          image_prompt: string | null;
+          image_path: string | null;
+          seed: number | null;
+          status: "pending" | "generating" | "done" | "failed";
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          story_id: string;
+          index: number;
+          start_ms: number;
+          end_ms: number;
+          setting?: string | null;
+          beat?: string | null;
+          characters_present?: string[];
+          image_prompt?: string | null;
+          image_path?: string | null;
+          seed?: number | null;
+          status?: "pending" | "generating" | "done" | "failed";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          story_id?: string;
+          index?: number;
+          start_ms?: number;
+          end_ms?: number;
+          setting?: string | null;
+          beat?: string | null;
+          characters_present?: string[];
+          image_prompt?: string | null;
+          image_path?: string | null;
+          seed?: number | null;
+          status?: "pending" | "generating" | "done" | "failed";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "story_scenes_story_id_fkey";
+            columns: ["story_id"];
+            referencedRelation: "stories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      story_videos: {
+        Row: {
+          id: string;
+          story_id: string;
+          video_path: string | null;
+          thumbnail_path: string | null;
+          watermark_variant: string | null;
+          duration_ms: number | null;
+          render_version: number;
+          status: "rendering" | "ready" | "failed";
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          story_id: string;
+          video_path?: string | null;
+          thumbnail_path?: string | null;
+          watermark_variant?: string | null;
+          duration_ms?: number | null;
+          render_version?: number;
+          status?: "rendering" | "ready" | "failed";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          story_id?: string;
+          video_path?: string | null;
+          thumbnail_path?: string | null;
+          watermark_variant?: string | null;
+          duration_ms?: number | null;
+          render_version?: number;
+          status?: "rendering" | "ready" | "failed";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "story_videos_story_id_fkey";
+            columns: ["story_id"];
+            referencedRelation: "stories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      story_questions: {
+        Row: {
+          id: string;
+          user_id: string;
+          story_id: string | null;
+          character_id: string | null;
+          question_text: string;
+          answer_text: string | null;
+          status: "pending" | "answered" | "dismissed";
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          story_id?: string | null;
+          character_id?: string | null;
+          question_text: string;
+          answer_text?: string | null;
+          status?: "pending" | "answered" | "dismissed";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          story_id?: string | null;
+          character_id?: string | null;
+          question_text?: string;
+          answer_text?: string | null;
+          status?: "pending" | "answered" | "dismissed";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "story_questions_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "story_questions_story_id_fkey";
+            columns: ["story_id"];
+            referencedRelation: "stories";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "story_questions_character_id_fkey";
+            columns: ["character_id"];
+            referencedRelation: "characters";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       family_groups: {
         Row: {
           id: string;
