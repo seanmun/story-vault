@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock, Mic, Calendar, Sparkles, Volume2, Loader2 } from "lucide-react";
 import { StoryVideo } from "@/components/StoryVideo";
 import { QuestionCards } from "@/components/QuestionCards";
+import { StoryCast } from "@/components/StoryCast";
 import { toast } from "sonner";
 
 interface Recording {
@@ -370,20 +371,15 @@ function StoryReadingView({
         })()}
       </div>
 
-      {/* Characters */}
-      {story.characters && Array.isArray(story.characters) && story.characters.length > 0 && (
-        <div className="mt-12 pt-8 border-t border-border">
-          <p className="label text-foreground mb-4">People in This Story</p>
-          <div className="space-y-2">
-            {(story.characters as { name: string; relationship: string; mentions: number }[]).map((char, i) => (
-              <p key={i} className="text-muted-foreground">
-                <span className="font-medium text-foreground">{char.name}</span>
-                {char.relationship && ` — ${char.relationship}`}
-              </p>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Characters — interactive cast matched to the account-level roster */}
+      <StoryCast
+        storyId={story.id}
+        metadataCharacters={
+          Array.isArray(story.characters)
+            ? (story.characters as { name: string; relationship?: string }[])
+            : []
+        }
+      />
 
       {/* Original Transcription */}
       {recording?.transcription && (
