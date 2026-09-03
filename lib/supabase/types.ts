@@ -315,6 +315,46 @@ export type Database = {
           },
         ];
       };
+      character_photos: {
+        Row: {
+          id: string;
+          character_id: string;
+          user_id: string;
+          image_path: string;
+          era_label: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          character_id: string;
+          user_id: string;
+          image_path: string;
+          era_label?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          character_id?: string;
+          user_id?: string;
+          image_path?: string;
+          era_label?: string | null;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "character_photos_character_id_fkey";
+            columns: ["character_id"];
+            referencedRelation: "characters";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "character_photos_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       story_scenes: {
         Row: {
           id: string;

@@ -22,6 +22,10 @@ interface CastEntry {
   matched: RosterCharacter | null;
 }
 
+function newPhotoPath(userId: string, characterId: string, ext: string): string {
+  return `${userId}/characters/${characterId}/${Date.now()}.${ext}`;
+}
+
 /** The people in THIS story, matched against the account-level cast.
  * Photos and descriptions edit the shared character, so every story
  * benefits; unmatched names get confirmed against existing characters
@@ -94,8 +98,6 @@ export function StoryCast({
   }, [metadataCharacters, storyId, supabase]);
 
   useEffect(() => {
-    // load() is async — setState happens after awaits only.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
   }, [load]);
 
@@ -110,7 +112,7 @@ export function StoryCast({
     } = await supabase.auth.getUser();
     if (!user) return;
     const ext = file.type === "image/png" ? "png" : "jpg";
-    const path = `${user.id}/characters/${character.id}.${ext}`;
+    const path = newPhotoPath(user.id, character.id, ext);
     const { error: upErr } = await supabase.storage
       .from("recordings")
       .upload(path, file, { contentType: file.type, upsert: true });
@@ -119,6 +121,9 @@ export function StoryCast({
       setBusyName(null);
       return;
     }
+    await supabase
+      .from("character_photos")
+      .insert({ character_id: character.id, user_id: user.id, image_path: path });
     await supabase
       .from("characters")
       .update({ reference_image_path: path })
