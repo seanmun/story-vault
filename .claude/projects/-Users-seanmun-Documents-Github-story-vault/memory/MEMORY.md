@@ -5,3 +5,4 @@
 - [Video pipeline pivot](project_video_pipeline.md) — async story→video pipeline (Deepgram word timestamps, Claude scenes, Flux, ffmpeg); ElevenLabs demoted to consent-gated extras
 - [Direct style](feedback_direct_style.md) — bullets, numbers, specific step-by-step instructions
 - [Phase 4 results](project_phase4_results.md) — all spikes passed; illustrated style chosen; flux-kontext-pro; de-aging needs era photos
+- [Status Sept 2026](project_status_sept2026.md) — full film loop live; re-roll/remake/questions shipped; remaining items need Sean
