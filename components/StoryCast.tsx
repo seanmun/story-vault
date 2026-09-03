@@ -98,6 +98,8 @@ export function StoryCast({
   }, [metadataCharacters, storyId, supabase]);
 
   useEffect(() => {
+    // load() is async — setState happens after awaits only.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
   }, [load]);
 
