@@ -41,33 +41,28 @@ export const generateStoryVideo = task({
       throw new Error("Recording lacks word-level timestamps — re-transcribe first");
     }
 
-    // Stage 2 — scene analysis (idempotent)
+    // Stage 2 — scene analysis (idempotent; also persists discovered characters)
     const sceneCount = await ensureStoryScenes(
-      supabase, story.id, recording.transcription, meta.words
+      supabase, story.id, story.user_id, recording.transcription, meta.words
     );
     logger.info(`Scenes ready: ${sceneCount}`);
 
-    // Narrator identity: user-scoped character row, created once
-    let { data: narrator } = await supabase
+    // Narrator row exists so users always have a place to put their own photo
+    await supabase.from("characters").upsert(
+      {
+        user_id: story.user_id,
+        name: "Narrator",
+        role: "storyteller",
+        locked_seed: randomInt(1, 1_000_000),
+      },
+      { onConflict: "user_id,name", ignoreDuplicates: true }
+    );
+
+    // Full roster: scenes anchor on whichever present character has a photo
+    const { data: roster } = await supabase
       .from("characters")
-      .select("id, reference_image_path, locked_seed")
-      .eq("user_id", story.user_id)
-      .eq("name", "Narrator")
-      .maybeSingle();
-    if (!narrator) {
-      const { data: created, error } = await supabase
-        .from("characters")
-        .insert({
-          user_id: story.user_id,
-          name: "Narrator",
-          role: "storyteller",
-          locked_seed: randomInt(1, 1_000_000),
-        })
-        .select("id, reference_image_path, locked_seed")
-        .single();
-      if (error) throw new Error("Failed to create narrator: " + error.message);
-      narrator = created;
-    }
+      .select("name, aliases, reference_image_path, locked_seed")
+      .eq("user_id", story.user_id);
 
     // Stage 4 — images, sequential (Replicate rate limits), resumable
     const { data: scenes } = await supabase
@@ -84,8 +79,8 @@ export const generateStoryVideo = task({
         scene,
         storyId: story.id,
         userId: story.user_id,
-        referenceImagePath: narrator.reference_image_path,
-        lockedSeed: narrator.locked_seed ?? 42,
+        characters: roster ?? [],
+        fallbackSeed: 42,
       });
     }
 

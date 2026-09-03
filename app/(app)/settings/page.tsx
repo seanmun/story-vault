@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { LogOut, User } from "lucide-react";
+import Link from "next/link";
+import { LogOut, User, Users, ChevronRight } from "lucide-react";
 
 export default function SettingsPage() {
   const [displayName, setDisplayName] = useState("");
@@ -115,6 +116,22 @@ export default function SettingsPage() {
           {saving ? "Saving..." : "Save Changes"}
         </Button>
       </div>
+
+      <Link
+        href="/characters"
+        className="flex items-center justify-between rounded-lg border border-border p-6 hover:bg-muted/50 transition-colors"
+      >
+        <div className="flex items-center gap-3">
+          <Users className="h-5 w-5 text-gold-dark" strokeWidth={1.5} />
+          <div>
+            <p className="label text-foreground">Characters</p>
+            <p className="text-muted-foreground">
+              The people in your stories — add photos so films draw them true
+            </p>
+          </div>
+        </div>
+        <ChevronRight className="h-5 w-5 text-muted-foreground shrink-0" />
+      </Link>
 
       <Separator />
 

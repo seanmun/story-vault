@@ -129,6 +129,7 @@ export async function analyzeScenes(
 export async function ensureStoryScenes(
   supabase: SupabaseClient<Database>,
   storyId: string,
+  userId: string,
   transcription: string,
   words: TranscriptWord[]
 ): Promise<number> {
@@ -139,6 +140,17 @@ export async function ensureStoryScenes(
   if ((count ?? 0) > 0) return count!;
 
   const analysis = await analyzeScenes(transcription, words);
+
+  // Persist discovered characters so users can attach photos/descriptions.
+  // ignoreDuplicates: never clobber a character the user has already edited.
+  if (analysis.characters.length > 0) {
+    await supabase.from("characters").upsert(
+      analysis.characters
+        .filter((c) => c.name.length <= 80)
+        .map((c) => ({ user_id: userId, name: c.name, role: c.role || null })),
+      { onConflict: "user_id,name", ignoreDuplicates: true }
+    );
+  }
   const { error } = await supabase.from("story_scenes").insert(
     analysis.scenes.map((s) => ({
       story_id: storyId,

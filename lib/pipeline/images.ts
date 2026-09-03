@@ -62,10 +62,40 @@ async function runWithBackoff(
   throw lastErr;
 }
 
+export interface CharacterRef {
+  name: string;
+  aliases: string[];
+  reference_image_path: string | null;
+  locked_seed: number | null;
+}
+
+/** Match a scene's present characters against the user's character roster.
+ * Returns the first present character that has a reference photo — narrator
+ * outranks the rest. (Kontext takes one input image, so multi-reference
+ * scenes anchor on that one identity.) */
+function matchReference(
+  present: string[],
+  roster: CharacterRef[]
+): CharacterRef | null {
+  const norm = (s: string) => s.trim().toLowerCase();
+  const matches = (c: CharacterRef, name: string) =>
+    norm(c.name) === norm(name) ||
+    c.aliases.some((a) => norm(a) === norm(name));
+  const ordered = [
+    ...present.filter((p) => /narrator/i.test(p)),
+    ...present.filter((p) => !/narrator/i.test(p)),
+  ];
+  for (const name of ordered) {
+    const hit = roster.find((c) => c.reference_image_path && matches(c, name));
+    if (hit) return hit;
+  }
+  return null;
+}
+
 /**
  * Generate one scene image and store it. Identity-anchored (Kontext + the
- * narrator's reference photo) when the narrator is in frame; plain
- * illustrated text-to-image otherwise. Idempotent per scene status.
+ * matched character's reference photo) when someone with a photo is in
+ * frame; plain illustrated text-to-image otherwise. Idempotent per status.
  */
 export async function generateSceneImage(
   supabase: SupabaseClient<Database>,
@@ -73,17 +103,17 @@ export async function generateSceneImage(
     scene: SceneRow;
     storyId: string;
     userId: string;
-    referenceImagePath: string | null;
-    lockedSeed: number;
+    characters: CharacterRef[];
+    fallbackSeed: number;
   }
 ): Promise<string> {
-  const { scene, storyId, userId, referenceImagePath, lockedSeed } = opts;
+  const { scene, storyId, userId, characters, fallbackSeed } = opts;
   const replicate = replicateClient();
-  const seed = lockedSeed + scene.index;
+  const matched = matchReference(scene.characters_present, characters);
+  const seed = (matched?.locked_seed ?? fallbackSeed) + scene.index;
   const scenePrompt = scene.image_prompt || scene.setting || "a quiet moment";
-  const narratorInFrame =
-    scene.characters_present.some((c) => /narrator/i.test(c)) &&
-    !!referenceImagePath;
+  const referenceImagePath = matched?.reference_image_path ?? null;
+  const narratorInFrame = !!referenceImagePath;
 
   await supabase
     .from("story_scenes")
