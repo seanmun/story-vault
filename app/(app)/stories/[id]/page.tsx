@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock, Mic, Calendar, Sparkles, Volume2, Loader2 } from "lucide-react";
 import { StoryVideo } from "@/components/StoryVideo";
+import { QuestionCards } from "@/components/QuestionCards";
 import { toast } from "sonner";
 
 interface Recording {
@@ -203,6 +204,9 @@ function StoryReadingView({
 
       {/* Story film */}
       <StoryVideo storyId={story.id} />
+
+      {/* Character enrichment questions */}
+      <QuestionCards storyId={story.id} />
 
       {/* Audio player / generate button */}
       <div className="mb-10 rounded-lg border border-border bg-card p-5">

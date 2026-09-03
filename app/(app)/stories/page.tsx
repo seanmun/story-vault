@@ -12,6 +12,7 @@ import {
   MoreVertical,
   Trash2,
   FolderPlus,
+  Film,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WaxSeal } from "@/components/WaxSeal";
@@ -54,6 +55,7 @@ interface Story {
   life_chapter: string;
   status: string;
   created_at: string;
+  story_videos?: { status: string }[] | null;
 }
 
 interface Collection {
@@ -90,7 +92,7 @@ export default function StoriesPage() {
         supabase
           .from("recordings")
           .select(
-            "id, duration_seconds, status, transcription, created_at, stories(id, title, summary, themes, life_chapter, status, created_at)"
+            "id, duration_seconds, status, transcription, created_at, stories(id, title, summary, themes, life_chapter, status, created_at, story_videos(status))"
           )
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
@@ -492,7 +494,15 @@ function StoryCard({
     <div className="rounded-lg border border-border bg-card p-5 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between gap-2">
         <Link href={`/stories/${story.id}`} className="flex-1 min-w-0">
-          <h3 className="mb-1">{story.title}</h3>
+          <h3 className="mb-1">
+            {story.title}
+            {story.story_videos?.some((v) => v.status === "ready") && (
+              <span className="ml-2 inline-flex items-center gap-1 align-middle rounded bg-gold/15 px-2 py-0.5 text-gold-dark text-base font-normal normal-case tracking-normal">
+                <Film className="h-4 w-4" aria-hidden />
+                Film
+              </span>
+            )}
+          </h3>
           <p className="text-muted-foreground mb-3">{story.summary}</p>
           <div className="flex flex-wrap items-center gap-3">
             <span className="flex items-center gap-1.5 text-muted-foreground">

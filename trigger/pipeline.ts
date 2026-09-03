@@ -77,9 +77,20 @@ export const reapStuckRecordings = schedules.task({
       .lt("updated_at", cutoff)
       .limit(20);
 
+    // Transcribed recordings with NO story at all — the gap between
+    // transcription finishing and the story insert (killed deploys land here).
+    const { data: storyless } = await supabase
+      .from("recordings")
+      .select("id, stories(id)")
+      .eq("status", "transcribed")
+      .is("stories", null)
+      .lt("updated_at", cutoff)
+      .limit(20);
+
     const ids = new Set<string>([
       ...(stuck ?? []).map((r) => r.id),
       ...(stuckStories ?? []).map((s) => s.recording_id),
+      ...(storyless ?? []).map((r) => r.id),
     ]);
 
     if (ids.size === 0) {
@@ -126,6 +137,12 @@ export const retranscribeBacklog = task({
         done++;
       } catch (err) {
         logger.error("Backlog item failed", { recordingId: rec.id, err });
+        // The old transcript text is intact — never downgrade a healthy row
+        // to "failed" over a transient re-transcription error.
+        await supabase
+          .from("recordings")
+          .update({ status: "transcribed" })
+          .eq("id", rec.id);
       }
     }
 

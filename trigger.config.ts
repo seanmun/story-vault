@@ -20,8 +20,11 @@ function readEnvLocal(): Record<string, string> {
   try {
     for (const line of readFileSync(".env.local", "utf8").split("\n")) {
       const match = line.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/);
-      if (match && TASK_ENV_KEYS.includes(match[1]) && match[2]) {
-        vars[match[1]] = match[2];
+      if (match && TASK_ENV_KEYS.includes(match[1])) {
+        // Strip CR (CRLF files) and surrounding quotes — a service key with a
+        // trailing \r 401s everywhere with no obvious cause.
+        const value = match[2].replace(/\r$/, "").trim().replace(/^"|"$/g, "");
+        if (value) vars[match[1]] = value;
       }
     }
   } catch {

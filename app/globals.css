@@ -75,8 +75,8 @@
 
   /* Muted: parchment tones */
   --muted: oklch(0.93 0.01 80);
-  /* Distinct from --foreground (0.15) so "muted" reads as hierarchy; still ≥7:1 on the paper background */
-  --muted-foreground: oklch(0.45 0.02 55);
+  /* Distinct from --foreground (0.15) so "muted" reads as hierarchy; 0.40 keeps ≥7:1 (AAA) on the paper background */
+  --muted-foreground: oklch(0.40 0.02 55);
 
   /* Accent: burnished amber */
   --accent: oklch(0.88 0.04 75);

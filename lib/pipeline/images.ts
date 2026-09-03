@@ -19,6 +19,7 @@ interface SceneRow {
   setting: string | null;
   characters_present: string[];
   status: string;
+  seed: number | null;
 }
 
 function replicateClient() {
@@ -67,6 +68,23 @@ export interface CharacterRef {
   aliases: string[];
   reference_image_path: string | null;
   locked_seed: number | null;
+  physical_description: string | null;
+}
+
+/** Fold saved character descriptions into the illustrator prompt so people
+ * without photos still look like themselves, story after story. */
+function describePresent(present: string[], roster: CharacterRef[]): string {
+  const norm = (s: string) => s.trim().toLowerCase();
+  const bits: string[] = [];
+  for (const name of present) {
+    const c = roster.find(
+      (r) =>
+        r.physical_description &&
+        (norm(r.name) === norm(name) || r.aliases.some((a) => norm(a) === norm(name)))
+    );
+    if (c && bits.length < 2) bits.push(`${c.name} looks like: ${c.physical_description}`);
+  }
+  return bits.length ? ` ${bits.join(". ")}.` : "";
 }
 
 /** Match a scene's present characters against the user's character roster.
@@ -110,8 +128,11 @@ export async function generateSceneImage(
   const { scene, storyId, userId, characters, fallbackSeed } = opts;
   const replicate = replicateClient();
   const matched = matchReference(scene.characters_present, characters);
-  const seed = (matched?.locked_seed ?? fallbackSeed) + scene.index;
-  const scenePrompt = scene.image_prompt || scene.setting || "a quiet moment";
+  // A re-rolled scene carries its own fresh seed; otherwise derive stably.
+  const seed = scene.seed ?? (matched?.locked_seed ?? fallbackSeed) + scene.index;
+  const scenePrompt =
+    (scene.image_prompt || scene.setting || "a quiet moment") +
+    describePresent(scene.characters_present, characters);
   const referenceImagePath = matched?.reference_image_path ?? null;
   const narratorInFrame = !!referenceImagePath;
 

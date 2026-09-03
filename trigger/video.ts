@@ -59,15 +59,42 @@ export const generateStoryVideo = task({
     );
 
     // Full roster: scenes anchor on whichever present character has a photo
-    const { data: roster } = await supabase
+    const { data: fullRoster } = await supabase
       .from("characters")
-      .select("name, aliases, reference_image_path, locked_seed")
+      .select("id, name, aliases, reference_image_path, locked_seed, physical_description")
       .eq("user_id", story.user_id);
+    const roster = fullRoster ?? [];
+
+    // Enrichment queue: faceless, description-less characters become
+    // questions for the storyteller (answers persist on the character).
+    const askable = roster.filter(
+      (c) => !c.reference_image_path && !c.physical_description && c.name !== "Narrator"
+    );
+    if (askable.length > 0) {
+      const { data: openQs } = await supabase
+        .from("story_questions")
+        .select("character_id")
+        .eq("user_id", story.user_id)
+        .eq("status", "pending");
+      const alreadyAsked = new Set((openQs ?? []).map((q) => q.character_id));
+      const fresh = askable.filter((c) => !alreadyAsked.has(c.id));
+      if (fresh.length > 0) {
+        await supabase.from("story_questions").insert(
+          fresh.map((c) => ({
+            user_id: story.user_id,
+            story_id: story.id,
+            character_id: c.id,
+            question_text: `You mentioned ${c.name} — what did they look like?`,
+          }))
+        );
+        logger.info(`Queued ${fresh.length} character question(s)`);
+      }
+    }
 
     // Stage 4 — images, sequential (Replicate rate limits), resumable
     const { data: scenes } = await supabase
       .from("story_scenes")
-      .select("id, index, image_prompt, setting, characters_present, image_path, status, start_ms, end_ms")
+      .select("id, index, image_prompt, setting, characters_present, image_path, status, start_ms, end_ms, seed")
       .eq("story_id", story.id)
       .order("index");
     if (!scenes?.length) throw new Error("No scenes found after analysis");
@@ -79,7 +106,7 @@ export const generateStoryVideo = task({
         scene,
         storyId: story.id,
         userId: story.user_id,
-        characters: roster ?? [],
+        characters: roster,
         fallbackSeed: 42,
       });
     }

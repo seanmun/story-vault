@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Film, Loader2 } from "lucide-react";
+import { Film, Loader2, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 interface VideoRow {
@@ -12,11 +12,16 @@ interface VideoRow {
   thumbnail_path: string | null;
 }
 
+interface SceneThumb {
+  index: number;
+  url: string;
+}
+
 type VideoState =
   | { kind: "loading" }
   | { kind: "none" }
   | { kind: "rendering"; progress: string }
-  | { kind: "ready"; url: string; poster: string | null }
+  | { kind: "ready"; url: string; poster: string | null; thumbs: SceneThumb[] }
   | { kind: "failed" };
 
 export function StoryVideo({ storyId }: { storyId: string }) {
@@ -67,8 +72,21 @@ export function StoryVideo({ storyId }: { storyId: string }) {
           .createSignedUrl(video.thumbnail_path, 3600);
         poster = t?.signedUrl ?? null;
       }
+      const { data: sceneRows } = await supabase
+        .from("story_scenes")
+        .select("index, image_path")
+        .eq("story_id", storyId)
+        .order("index");
+      const thumbs: SceneThumb[] = [];
+      for (const s of sceneRows ?? []) {
+        if (!s.image_path) continue;
+        const { data: t } = await supabase.storage
+          .from("recordings")
+          .createSignedUrl(s.image_path, 3600);
+        if (t?.signedUrl) thumbs.push({ index: s.index, url: t.signedUrl });
+      }
       if (signed?.signedUrl) {
-        setState({ kind: "ready", url: signed.signedUrl, poster });
+        setState({ kind: "ready", url: signed.signedUrl, poster, thumbs });
         return;
       }
     }
@@ -88,6 +106,30 @@ export function StoryVideo({ storyId }: { storyId: string }) {
     const t = setInterval(() => void refresh(), 8000);
     return () => clearInterval(t);
   }, [state.kind, refresh]);
+
+  async function rework(body: { sceneIndex?: number; all?: boolean }) {
+    if (
+      body.all &&
+      !window.confirm(
+        "Redraw every scene with the current character photos and descriptions, then re-render the film? Costs about a dollar."
+      )
+    ) {
+      return;
+    }
+    setState({ kind: "rendering", progress: "Starting..." });
+    const res = await fetch(`/api/stories/${storyId}/video/reroll`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      toast.error(data.error || "Could not start");
+      void refresh();
+      return;
+    }
+    void refresh();
+  }
 
   async function start() {
     setState({ kind: "rendering", progress: "Starting..." });
@@ -120,6 +162,41 @@ export function StoryVideo({ storyId }: { storyId: string }) {
           >
             Your browser does not support video playback.
           </video>
+          {state.thumbs.length > 0 && (
+            <div className="mt-4">
+              <p className="text-muted-foreground mb-2">
+                The scenes — tap ↺ on any you&rsquo;d like drawn differently
+              </p>
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {state.thumbs.map((t) => (
+                  <div key={t.index} className="relative shrink-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={t.url}
+                      alt={`Scene ${t.index + 1}`}
+                      className="h-24 w-[170px] rounded-md object-cover"
+                    />
+                    <button
+                      onClick={() => rework({ sceneIndex: t.index })}
+                      className="absolute bottom-1 right-1 flex h-11 w-11 items-center justify-center rounded-md bg-black/55 text-white hover:bg-black/75 transition-colors"
+                      aria-label={`Redraw scene ${t.index + 1}`}
+                    >
+                      <RefreshCw className="h-5 w-5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <Button
+                variant="outline"
+                size="lg"
+                className="mt-3 font-heading tracking-wide"
+                onClick={() => rework({ all: true })}
+              >
+                <RefreshCw className="h-5 w-5 mr-2" />
+                Remake with updated characters
+              </Button>
+            </div>
+          )}
         </div>
       ) : state.kind === "rendering" ? (
         <div className="flex items-center gap-3">
