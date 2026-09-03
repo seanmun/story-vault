@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 52faca79-125f-4d90-8d35-8ebe713012ae
-  modified: 2026-09-03T19:26:59.603Z
+  modified: 2026-09-03T22:47:21.170Z
 ---
 
 StoryVault status, end of Sept 3 2026 (site dc5a2cf, pipeline 20260903.6):
@@ -16,4 +16,6 @@ StoryVault status, end of Sept 3 2026 (site dc5a2cf, pipeline 20260903.6):
 
 **Remaining, all blocked on Sean:** Resend key → ready email; his own photo → Narrator; dad's young-era scans → era scenes; Supabase Pro ($25/mo) decision → uncapped video bitrate (currently ~900kbps/50MB free-tier cap); dad's account onboarding (the real milestone, birthday Jan 2027). Parked by plan: compiled stories, voice features (consent-gated), family sharing, succession.
 
-**Cost per film:** ~$0.65 (12 images) + pennies of compute. Render task needs large-1x (xfade OOMs medium). Related: [[project-video-pipeline]], [[project-phase4-results]], [[project-incident-sept2026]].
+**Cost per film:** ~$0.65 (12 images) + pennies of compute. Render task needs large-1x (xfade OOMs medium).
+
+Late Sept 3 additions (site f1da9db, migration 00008 applied): StoryCast on story pages — per-story people matched to the account roster, alias confirmation ("my dad"=Bumper), inline photo upload; character_photos table — multiple photos per character with an active "in films" selection (foundation for era-aware picks: young photo → young scenes). Sean's design call: characters live at account level, tools live in both places. Related: [[project-video-pipeline]], [[project-phase4-results]], [[project-incident-sept2026]].
